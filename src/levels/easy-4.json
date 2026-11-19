@@ -1,0 +1,83 @@
+{
+  "id": "easy-4",
+  "stage": "easy",
+  "order": 4,
+  "concepts": ["LIKE", "ORDER BY", "DESC"],
+  "title": {
+    "es": "El rebaño de los Lan",
+    "en": "The Lan Flock",
+    "fr": "Le troupeau des Lan"
+  },
+  "narrative": [
+    {
+      "speaker": "scribe",
+      "text": {
+        "es": "Mi rebaño huyó durante el asalto. Todas mis ovejas tienen nombres que empiezan por «Lan»: se los puso mi abuela, que era muy suya.",
+        "en": "My flock bolted during the raid. All my sheep have names starting with “Lan”: my grandmother named them, and she was very particular.",
+        "fr": "Mon troupeau s’est enfui pendant l’attaque. Tous mes moutons ont un nom qui commence par « Lan » : c’est ma grand-mère qui les a baptisés, elle avait ses idées."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Pues busquemos primero a las que se vieron más tarde: son las que pueden estar más cerca.",
+        "en": "Then let us look first for the ones seen most recently: they may be the closest.",
+        "fr": "Alors cherchons d’abord celles qu’on a vues le plus récemment : ce sont peut-être les plus proches."
+      }
+    }
+  ],
+  "task": {
+    "es": "Muestra `name`, `last_seen_at` y `last_seen_place` de las ovejas perdidas (`status = 'lost'`) cuyo nombre empieza por «Lan», de la vista más reciente a la más antigua.",
+    "en": "Show `name`, `last_seen_at` and `last_seen_place` of the lost sheep (`status = 'lost'`) whose name starts with “Lan”, from the most recently seen to the earliest.",
+    "fr": "Affiche `name`, `last_seen_at` et `last_seen_place` des moutons perdus (`status = 'lost'`) dont le nom commence par « Lan », du plus récemment vu au plus ancien."
+  },
+  "hints": [
+    {
+      "es": "Para buscar por parte de un texto se usa `LIKE` con comodines; para ordenar, `ORDER BY` al final de la consulta.",
+      "en": "To search by part of a text, use `LIKE` with wildcards; to sort, put `ORDER BY` at the end of the query.",
+      "fr": "Pour chercher une partie d’un texte, utilise `LIKE` avec des jokers ; pour trier, ajoute `ORDER BY` à la fin de la requête."
+    },
+    {
+      "es": "En `LIKE`, `%` significa «cualquier cosa». `'Lan%'` es «empieza por Lan», pero `'%Lan%'` también encontraría a Alana. `DESC` ordena de mayor a menor, es decir, de la fecha más reciente a la más antigua.",
+      "en": "In `LIKE`, `%` means “anything”. `'Lan%'` is “starts with Lan”, but `'%Lan%'` would also find Alana. `DESC` sorts from highest to lowest: newest date first.",
+      "fr": "Avec `LIKE`, `%` veut dire « n’importe quoi ». `'Lan%'` signifie « commence par Lan », mais `'%Lan%'` trouverait aussi Alana. `DESC` trie du plus grand au plus petit : la date la plus récente d’abord."
+    },
+    {
+      "es": "Casi lo tienes: `... WHERE status = 'lost' AND name LIKE 'Lan%' ORDER BY last_seen_at DESC;`",
+      "en": "Almost there: `... WHERE status = 'lost' AND name LIKE 'Lan%' ORDER BY last_seen_at DESC;`",
+      "fr": "Tu y es presque : `... WHERE status = 'lost' AND name LIKE 'Lan%' ORDER BY last_seen_at DESC;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "scribe",
+      "text": {
+        "es": "Lancelot, Lanky y Lanolin… las tres se vieron cerca de Riverwatch casi a medianoche. ¿Qué hacían allí, justo en la torre que daba al almacén real?",
+        "en": "Lancelot, Lanky and Lanolin… all three were seen near Riverwatch around midnight. What were they doing there, right by the tower facing the royal storehouse?",
+        "fr": "Lancelot, Lanky et Lanolin… toutes les trois ont été vues près de Riverwatch vers minuit. Que faisaient-elles là, juste à la tour qui donne sur l’entrepôt royal ?"
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Las ovejas siguen al ruido. Y anoche el ruido venía del río.",
+        "en": "Sheep follow the noise. And last night, the noise came from the river.",
+        "fr": "Les moutons suivent le bruit. Et cette nuit, le bruit venait de la rivière."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE sheep (id INTEGER PRIMARY KEY, name TEXT NOT NULL, wool TEXT, status TEXT NOT NULL, last_seen_at TEXT NOT NULL, last_seen_place TEXT NOT NULL);\nINSERT INTO sheep (name, wool, status, last_seen_at, last_seen_place) VALUES\n  ('Lanky', 'white', 'lost', '1247-03-14 23:40', 'Riverwatch road'),\n  ('Lancelot', 'black', 'lost', '1247-03-14 23:55', 'Riverwatch bridge'),\n  ('Lana', 'white', 'lost', '1247-03-14 21:15', 'Millpond'),\n  ('Landry', 'grey', 'lost', '1247-03-13 18:30', 'Northfield'),\n  ('Lanzo', 'grey', 'home', '1247-03-15 08:00', 'Barnstead'),\n  ('Alana', 'white', 'lost', '1247-03-14 22:05', 'Applegarth'),\n  ('Blanche', 'white', 'lost', '1247-03-14 22:30', 'Riverwatch road'),\n  ('Lena', 'white', 'lost', '1247-03-14 20:50', 'Northfield'),\n  ('Mrs Fluff', 'cream', 'lost', '1247-03-14 23:20', 'Applegarth'),\n  ('Lanolin', 'cream', 'lost', '1247-03-14 23:10', 'Riverwatch road'),\n  ('Cloud', 'white', 'home', '1247-03-15 07:45', 'Barnstead'),\n  ('Wooly', 'black', 'home', '1247-03-15 09:10', 'Barnstead');",
+  "solution": "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE status = 'lost' AND name LIKE 'Lan%' ORDER BY last_seen_at DESC;",
+  "check": { "mode": "result", "orderMatters": true },
+  "examples": {
+    "accepted": [
+      "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE name LIKE 'lan%' AND status = 'lost' ORDER BY last_seen_at DESC"
+    ],
+    "rejected": [
+      "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE status = 'lost' AND name LIKE 'Lan%'",
+      "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE status = 'lost' AND name LIKE 'Lan%' ORDER BY last_seen_at",
+      "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE status = 'lost' AND name LIKE '%lan%' ORDER BY last_seen_at DESC",
+      "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE name LIKE 'Lan%' ORDER BY last_seen_at DESC"
+    ]
+  }
+}

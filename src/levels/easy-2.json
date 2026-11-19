@@ -1,0 +1,73 @@
+{
+  "id": "easy-2",
+  "stage": "easy",
+  "order": 2,
+  "concepts": ["WHERE", "="],
+  "title": {
+    "es": "Ojos en las torres",
+    "en": "Eyes on the Towers",
+    "fr": "Des yeux sur les tours"
+  },
+  "narrative": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Cuatro torres vigilan Bluebrook, y anoche ninguna dio la alarma. Si los goblins vuelven, quiero un arquero en cada una.",
+        "en": "Four towers watch over Bluebrook, and last night not one of them raised the alarm. If the goblins come back, I want an archer in each.",
+        "fr": "Quatre tours veillent sur Bluebrook, et cette nuit aucune n’a donné l’alerte. Si les gobelins reviennent, je veux un archer dans chacune."
+      }
+    },
+    {
+      "speaker": "scribe",
+      "text": {
+        "es": "El Registro tiene a todos los aldeanos… ¿Podré pedirle solo a los arqueros?",
+        "en": "The Registry lists every villager… Can I ask it for the archers only?",
+        "fr": "Le Registre liste tous les villageois… Puis-je lui demander seulement les archers ?"
+      }
+    }
+  ],
+  "task": {
+    "es": "Muestra solo el nombre (`name`) de los aldeanos cuyo oficio (`role`) es `'archer'`.",
+    "en": "Show only the `name` of the villagers whose `role` is `'archer'`.",
+    "fr": "Affiche seulement le nom (`name`) des villageois dont le rôle (`role`) est `'archer'`."
+  },
+  "hints": [
+    {
+      "es": "Para quedarte solo con algunas filas, añade una condición al final con `WHERE`.",
+      "en": "To keep only some rows, add a condition at the end with `WHERE`.",
+      "fr": "Pour ne garder que certaines lignes, ajoute une condition à la fin avec `WHERE`."
+    },
+    {
+      "es": "Los textos van entre comillas simples y deben escribirse exactamente igual: `'archer'`, en minúsculas.",
+      "en": "Texts go between single quotes and must match exactly: `'archer'`, in lower case.",
+      "fr": "Les textes s’écrivent entre apostrophes et doivent correspondre exactement : `'archer'`, en minuscules."
+    },
+    {
+      "es": "Casi lo tienes: `SELECT name FROM villagers WHERE role = ...;`",
+      "en": "Almost there: `SELECT name FROM villagers WHERE role = ...;`",
+      "fr": "Tu y es presque : `SELECT name FROM villagers WHERE role = ...;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Wren, Bram, Elsie e Ivo: cuatro arqueros para cuatro torres. Que alguien suba a Riverwatch la primera; está junto al almacén real.",
+        "en": "Wren, Bram, Elsie and Ivo: four archers for four towers. Someone get up Riverwatch first; it stands right by the royal storehouse.",
+        "fr": "Wren, Bram, Elsie et Ivo : quatre archers pour quatre tours. Que quelqu’un monte d’abord à Riverwatch ; elle est juste à côté de l’entrepôt royal."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE villagers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, role TEXT NOT NULL, age INTEGER);\nINSERT INTO villagers (name, role, age) VALUES\n  ('Sir Aldric', 'warrior', 63),\n  ('Pip', 'pawn', 16),\n  ('Wren', 'archer', 24),\n  ('Bram', 'archer', 31),\n  ('Tilda', 'monk', 58),\n  ('Hob', 'pawn', 42),\n  ('Marta', 'pawn', 35),\n  ('Osric', 'lancer', 29),\n  ('Elsie', 'archer', 19),\n  ('Brother Fen', 'monk', 71),\n  ('Ivo', 'archer', 27);",
+  "solution": "SELECT name FROM villagers WHERE role = 'archer';",
+  "check": { "mode": "result" },
+  "examples": {
+    "accepted": ["SELECT name FROM villagers WHERE 'archer' = role", "select name from villagers where role='archer';"],
+    "rejected": [
+      "SELECT name FROM villagers",
+      "SELECT name, role FROM villagers WHERE role = 'archer'",
+      "SELECT name FROM villagers WHERE role = 'Archer'",
+      "SELECT name FROM villagers WHERE role = 'pawn'"
+    ]
+  }
+}

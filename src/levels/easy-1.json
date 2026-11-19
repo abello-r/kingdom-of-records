@@ -1,0 +1,68 @@
+{
+  "id": "easy-1",
+  "stage": "easy",
+  "order": 1,
+  "concepts": ["SELECT", "FROM"],
+  "title": {
+    "es": "El libro que no ardió",
+    "en": "The Book That Would Not Burn",
+    "fr": "Le livre qui refusa de brûler"
+  },
+  "narrative": [
+    {
+      "speaker": "narrator",
+      "text": {
+        "es": "Bluebrook aún huele a humo. Entre las cenizas del archivo real, un libro enorme sigue intacto, tibio como una hogaza recién hecha.",
+        "en": "Bluebrook still smells of smoke. Among the ashes of the royal archive lies a huge book, untouched and warm as a fresh loaf.",
+        "fr": "Bluebrook sent encore la fumée. Dans les cendres des archives royales, un énorme livre est resté intact, tiède comme une miche sortie du four."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "El Gran Registro. Solo responde si le hablas en su lengua antigua… y resulta que tú la entiendes. Empecemos por lo básico: ¿quién vive en esta aldea?",
+        "en": "The Great Registry. It only answers in its ancient tongue… and it turns out you understand it. Let us start simple: who lives in this village?",
+        "fr": "Le Grand Registre. Il ne répond que dans sa langue ancienne… et il se trouve que tu la comprends. Commençons simplement : qui vit dans ce village ?"
+      }
+    }
+  ],
+  "task": {
+    "es": "Muestra el nombre (`name`) y el oficio (`role`) de todos los aldeanos de la tabla `villagers`.",
+    "en": "Show the `name` and `role` of every villager in the `villagers` table.",
+    "fr": "Affiche le nom (`name`) et le rôle (`role`) de tous les villageois de la table `villagers`."
+  },
+  "hints": [
+    {
+      "es": "Para leer del Registro se usa `SELECT`: primero dices qué columnas quieres y luego de qué tabla.",
+      "en": "To read from the Registry you use `SELECT`: first say which columns you want, then which table.",
+      "fr": "Pour lire le Registre, on utilise `SELECT` : d’abord les colonnes voulues, puis la table."
+    },
+    {
+      "es": "Las columnas se separan con comas, y la tabla se indica con `FROM`. `SELECT *` mostraría todas las columnas, pero aquí solo queremos dos.",
+      "en": "Separate columns with commas and name the table with `FROM`. `SELECT *` would show every column, but we only want two.",
+      "fr": "Sépare les colonnes par des virgules et indique la table avec `FROM`. `SELECT *` afficherait toutes les colonnes, mais on n’en veut que deux."
+    },
+    {
+      "es": "Casi lo tienes: `SELECT name, role FROM ...;`",
+      "en": "Almost there: `SELECT name, role FROM ...;`",
+      "fr": "Tu y es presque : `SELECT name, role FROM ...;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "¡Por mis bigotes, el libro te obedece! Once almas, y todas siguen aquí. Ahora necesitamos ojos en las torres.",
+        "en": "By my whiskers, the book obeys you! Eleven souls, and all of them still here. Now we need eyes on the towers.",
+        "fr": "Par ma moustache, le livre t’obéit ! Onze âmes, et toutes encore là. Maintenant, il nous faut des yeux sur les tours."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE villagers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, role TEXT NOT NULL, age INTEGER);\nINSERT INTO villagers (name, role, age) VALUES\n  ('Sir Aldric', 'warrior', 63),\n  ('Pip', 'pawn', 16),\n  ('Wren', 'archer', 24),\n  ('Bram', 'archer', 31),\n  ('Tilda', 'monk', 58),\n  ('Hob', 'pawn', 42),\n  ('Marta', 'pawn', 35),\n  ('Osric', 'lancer', 29),\n  ('Elsie', 'archer', 19),\n  ('Brother Fen', 'monk', 71),\n  ('Ivo', 'archer', 27);",
+  "solution": "SELECT name, role FROM villagers;",
+  "check": { "mode": "result" },
+  "examples": {
+    "accepted": ["select role, name from villagers", "SELECT villagers.name, villagers.role FROM villagers"],
+    "rejected": ["SELECT * FROM villagers", "SELECT name FROM villagers", "SELECT name, age FROM villagers"]
+  }
+}

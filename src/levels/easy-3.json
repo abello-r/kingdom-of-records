@@ -1,0 +1,76 @@
+{
+  "id": "easy-3",
+  "stage": "easy",
+  "order": 3,
+  "concepts": ["AND", "OR", "IN"],
+  "title": {
+    "es": "Manos para reconstruir",
+    "en": "Hands to Rebuild",
+    "fr": "Des bras pour reconstruire"
+  },
+  "narrative": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Media aldea es carbón. Necesitamos madera y piedra, y para eso, leñadores y mineros.",
+        "en": "Half the village is charcoal. We need timber and stone, and for that, woodcutters and miners.",
+        "fr": "La moitié du village n’est plus que charbon. Il nous faut du bois et de la pierre, donc des bûcherons et des mineurs."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Pero ojo: solo peones, y solo los que puedan trabajar. Nell se torció el tobillo huyendo del fuego y Ulric aún tose humo.",
+        "en": "But mind you: pawns only, and only those fit to work. Nell twisted her ankle fleeing the fire, and Ulric is still coughing up smoke.",
+        "fr": "Mais attention : seulement des paysans, et seulement ceux qui peuvent travailler. Nell s’est tordu la cheville en fuyant le feu, et Ulric tousse encore de la fumée."
+      }
+    }
+  ],
+  "task": {
+    "es": "Muestra el nombre (`name`) y el trabajo (`trade`) de los aldeanos que cumplen las tres cosas: su `role` es `'pawn'`, su `trade` es `'woodcutter'` o `'miner'`, y están disponibles (`available = 1`).",
+    "en": "Show the `name` and `trade` of the villagers who meet all three conditions: their `role` is `'pawn'`, their `trade` is `'woodcutter'` or `'miner'`, and they are available (`available = 1`).",
+    "fr": "Affiche le nom (`name`) et le métier (`trade`) des villageois qui remplissent les trois conditions : leur `role` est `'pawn'`, leur `trade` est `'woodcutter'` ou `'miner'`, et ils sont disponibles (`available = 1`)."
+  },
+  "hints": [
+    {
+      "es": "Puedes unir varias condiciones en un mismo `WHERE`: `AND` exige que se cumplan todas, `OR` que se cumpla al menos una.",
+      "en": "You can join several conditions in one `WHERE`: `AND` needs all of them to be true, `OR` needs at least one.",
+      "fr": "Tu peux réunir plusieurs conditions dans un même `WHERE` : `AND` exige qu’elles soient toutes vraies, `OR` qu’au moins une le soit."
+    },
+    {
+      "es": "Cuidado: `AND` se evalúa antes que `OR`. Usa paréntesis para agrupar el «o», o mejor aún `IN`, que comprueba si un valor está en una lista: `trade IN ('woodcutter', 'miner')`.",
+      "en": "Careful: `AND` is evaluated before `OR`. Use brackets to group the “or”, or better still `IN`, which checks whether a value is in a list: `trade IN ('woodcutter', 'miner')`.",
+      "fr": "Attention : `AND` passe avant `OR`. Utilise des parenthèses pour regrouper le « ou », ou mieux encore `IN`, qui vérifie si une valeur fait partie d’une liste : `trade IN ('woodcutter', 'miner')`."
+    },
+    {
+      "es": "Casi lo tienes: `... WHERE role = 'pawn' AND trade IN ('woodcutter', 'miner') AND ...;`",
+      "en": "Almost there: `... WHERE role = 'pawn' AND trade IN ('woodcutter', 'miner') AND ...;`",
+      "fr": "Tu y es presque : `... WHERE role = 'pawn' AND trade IN ('woodcutter', 'miner') AND ...;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Hob y Tam a los árboles, Marta y Dunstan a la cantera. Y a Osric déjalo con su lanza: que fuera minero hace diez años no lo hace peón.",
+        "en": "Hob and Tam to the trees, Marta and Dunstan to the quarry. And leave Osric with his lance: being a miner ten years ago does not make him a pawn.",
+        "fr": "Hob et Tam aux arbres, Marta et Dunstan à la carrière. Et laisse Osric à sa lance : avoir été mineur il y a dix ans n’en fait pas un paysan."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE villagers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, role TEXT NOT NULL, trade TEXT NOT NULL, available INTEGER NOT NULL);\nINSERT INTO villagers (name, role, trade, available) VALUES\n  ('Pip', 'pawn', 'shepherd', 1),\n  ('Hob', 'pawn', 'woodcutter', 1),\n  ('Marta', 'pawn', 'miner', 1),\n  ('Nell', 'pawn', 'woodcutter', 0),\n  ('Dunstan', 'pawn', 'miner', 1),\n  ('Greta', 'pawn', 'builder', 1),\n  ('Ulric', 'pawn', 'miner', 0),\n  ('Tam', 'pawn', 'woodcutter', 1),\n  ('Agnes', 'pawn', 'butcher', 1),\n  ('Osric', 'lancer', 'miner', 1),\n  ('Wren', 'archer', 'woodcutter', 1),\n  ('Tilda', 'monk', 'herbalist', 1);",
+  "solution": "SELECT name, trade FROM villagers WHERE role = 'pawn' AND trade IN ('woodcutter', 'miner') AND available = 1;",
+  "check": { "mode": "result" },
+  "examples": {
+    "accepted": [
+      "SELECT name, trade FROM villagers WHERE role = 'pawn' AND (trade = 'woodcutter' OR trade = 'miner') AND available = 1",
+      "SELECT name, trade FROM villagers WHERE available = 1 AND trade IN ('miner', 'woodcutter') AND role = 'pawn'"
+    ],
+    "rejected": [
+      "SELECT name, trade FROM villagers WHERE role = 'pawn' AND trade = 'woodcutter' OR trade = 'miner' AND available = 1",
+      "SELECT name, trade FROM villagers WHERE role = 'pawn' AND trade IN ('woodcutter', 'miner')",
+      "SELECT name, trade FROM villagers WHERE trade IN ('woodcutter', 'miner') AND available = 1",
+      "SELECT name FROM villagers WHERE role = 'pawn' AND trade IN ('woodcutter', 'miner') AND available = 1"
+    ]
+  }
+}

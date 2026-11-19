@@ -1,0 +1,84 @@
+{
+  "id": "easy-5",
+  "stage": "easy",
+  "order": 5,
+  "concepts": ["INSERT", "UPDATE"],
+  "title": {
+    "es": "Escriba del rey",
+    "en": "The King's Scribe",
+    "fr": "Scribe du roi"
+  },
+  "narrative": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "El maestro Ambrose guardó el Registro durante cuarenta años, hasta la noche del fuego. Hoy el libro necesita un nuevo escriba, y el rey ha dicho tu nombre.",
+        "en": "Master Ambrose kept the Registry for forty years, until the night of the fire. Today the book needs a new scribe, and the king has spoken your name.",
+        "fr": "Maître Ambrose a tenu le Registre pendant quarante ans, jusqu’à la nuit de l’incendie. Aujourd’hui, le livre a besoin d’un nouveau scribe, et le roi a prononcé ton nom."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Primero, firma. Después, la buena noticia: todas las casas que estaban en obras ya tienen tejado. Que el Registro lo sepa.",
+        "en": "First, sign your name. Then, the good news: every house that was being rebuilt has a roof again. Let the Registry know.",
+        "fr": "D’abord, signe. Ensuite, la bonne nouvelle : toutes les maisons en travaux ont retrouvé un toit. Que le Registre le sache."
+      }
+    }
+  ],
+  "task": {
+    "es": "1) Añade a la tabla `scribes` un escriba con `name` `'Pip'` y `sworn_on` `'1247-03-16'`. 2) En `houses`, cambia a `'rebuilt'` el `status` de todas las casas que están en `'rebuilding'`.",
+    "en": "1) Add a scribe to the `scribes` table with `name` `'Pip'` and `sworn_on` `'1247-03-16'`. 2) In `houses`, set the `status` to `'rebuilt'` for every house currently `'rebuilding'`.",
+    "fr": "1) Ajoute à la table `scribes` un scribe avec `name` `'Pip'` et `sworn_on` `'1247-03-16'`. 2) Dans `houses`, passe à `'rebuilt'` le `status` de toutes les maisons en `'rebuilding'`."
+  },
+  "hints": [
+    {
+      "es": "Para escribir en el Registro hay dos conjuros nuevos: `INSERT` añade filas y `UPDATE` cambia las que ya existen. Puedes escribir los dos seguidos, separados por `;`.",
+      "en": "Two new spells write to the Registry: `INSERT` adds rows and `UPDATE` changes existing ones. You can write both, one after the other, separated by `;`.",
+      "fr": "Deux nouveaux sorts écrivent dans le Registre : `INSERT` ajoute des lignes et `UPDATE` modifie celles qui existent. Tu peux écrire les deux à la suite, séparés par `;`."
+    },
+    {
+      "es": "`INSERT INTO tabla (columnas) VALUES (valores);` y `UPDATE tabla SET columna = valor WHERE condición;`. ¡No olvides el `WHERE` en el `UPDATE`, o cambiarás todas las casas!",
+      "en": "`INSERT INTO table (columns) VALUES (values);` and `UPDATE table SET column = value WHERE condition;`. Don’t forget the `WHERE` in the `UPDATE`, or you will change every house!",
+      "fr": "`INSERT INTO table (colonnes) VALUES (valeurs);` et `UPDATE table SET colonne = valeur WHERE condition;`. N’oublie pas le `WHERE` dans l’`UPDATE`, sinon tu modifieras toutes les maisons !"
+    },
+    {
+      "es": "Casi lo tienes: `INSERT INTO scribes (name, sworn_on) VALUES ('Pip', '1247-03-16'); UPDATE houses SET status = 'rebuilt' WHERE ...;`",
+      "en": "Almost there: `INSERT INTO scribes (name, sworn_on) VALUES ('Pip', '1247-03-16'); UPDATE houses SET status = 'rebuilt' WHERE ...;`",
+      "fr": "Tu y es presque : `INSERT INTO scribes (name, sworn_on) VALUES ('Pip', '1247-03-16'); UPDATE houses SET status = 'rebuilt' WHERE ...;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Escriba Pip. Suena bien. Pero mira esta línea: de todos los edificios, el único saqueado fue el almacén real… escondido detrás del molino, donde ningún forastero lo encontraría.",
+        "en": "Scribe Pip. It suits you. But look at this line: of all the buildings, only the royal storehouse was looted… hidden behind the mill, where no stranger would ever find it.",
+        "fr": "Scribe Pip. Ça te va bien. Mais regarde cette ligne : de tous les bâtiments, seul l’entrepôt royal a été pillé… caché derrière le moulin, là où aucun étranger ne l’aurait trouvé."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Los goblins sabían dónde estaba el oro. Alguien se lo dijo. Coge el libro: nos vamos al castillo.",
+        "en": "The goblins knew where the gold was. Someone told them. Bring the book: we ride to the castle.",
+        "fr": "Les gobelins savaient où était l’or. Quelqu’un le leur a dit. Prends le livre : on part au château."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE scribes (id INTEGER PRIMARY KEY, name TEXT NOT NULL, sworn_on TEXT NOT NULL);\nINSERT INTO scribes (name, sworn_on) VALUES ('Master Ambrose', '1207-09-01');\nCREATE TABLE houses (id INTEGER PRIMARY KEY, building TEXT NOT NULL, owner TEXT NOT NULL, status TEXT NOT NULL);\nINSERT INTO houses (building, owner, status) VALUES\n  ('Hob''s cottage', 'Hob', 'rebuilding'),\n  ('Bakery', 'Marta', 'burnt'),\n  ('Mill', 'Dunstan', 'rebuilt'),\n  ('Chapel', 'Brother Fen', 'rebuilding'),\n  ('Nell''s cottage', 'Nell', 'burnt'),\n  ('Archery', 'Wren', 'rebuilding'),\n  ('Royal storehouse', 'The Crown', 'looted'),\n  ('Pip''s hut', 'Pip', 'rebuilding'),\n  ('Herb garden shed', 'Tilda', 'rebuilt');",
+  "solution": "INSERT INTO scribes (name, sworn_on) VALUES ('Pip', '1247-03-16');\nUPDATE houses SET status = 'rebuilt' WHERE status = 'rebuilding';",
+  "check": { "mode": "state", "tables": ["scribes", "houses"] },
+  "examples": {
+    "accepted": [
+      "UPDATE houses SET status = 'rebuilt' WHERE status = 'rebuilding'; INSERT INTO scribes VALUES (2, 'Pip', '1247-03-16');",
+      "INSERT INTO scribes (sworn_on, name) VALUES ('1247-03-16', 'Pip'); UPDATE houses SET status = 'rebuilt' WHERE id IN (1, 4, 6, 8);"
+    ],
+    "rejected": [
+      "INSERT INTO scribes (name, sworn_on) VALUES ('Pip', '1247-03-16');",
+      "INSERT INTO scribes (name, sworn_on) VALUES ('Pip', '1247-03-16'); UPDATE houses SET status = 'rebuilt';",
+      "INSERT INTO scribes (name, sworn_on) VALUES ('pip', '1247-03-16'); UPDATE houses SET status = 'rebuilt' WHERE status = 'rebuilding';",
+      "UPDATE houses SET status = 'rebuilt' WHERE status = 'rebuilding';"
+    ]
+  }
+}
