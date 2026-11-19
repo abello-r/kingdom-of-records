@@ -89,6 +89,7 @@ export function mapScreen(ctx: AppContext, select?: LevelId): Screen {
       h('span', {}, i18n.t('map.progress', { done, total: ALL_LEVELS.length })),
       h('span', { class: 'bar', role: 'img', 'aria-label': `${done} / ${ALL_LEVELS.length}` },
         h('i', { style: `width:${(done / ALL_LEVELS.length) * 100}%` })),
+      done > 0 ? resetButton(ctx) : null,
     ),
     h('main', { id: 'main', class: 'map', tabindex: '-1' },
       h('h1', { class: 'visually-hidden' }, i18n.t('map.title')),
@@ -96,6 +97,31 @@ export function mapScreen(ctx: AppContext, select?: LevelId): Screen {
     ),
   );
   return { element, title: `${i18n.t('map.title')} — ${i18n.t('app.title')}`, focus: focusTarget };
+}
+
+/** "Start over" with a confirmation dialog; the safe choice (keep progress) has the focus. */
+function resetButton(ctx: AppContext): HTMLElement {
+  const { i18n } = ctx;
+  const keep = h('button', { type: 'button', class: 'btn btn--primary', value: 'keep' }, i18n.t('reset.cancel'));
+  const erase = h('button', { type: 'button', class: 'btn btn--danger btn--small', value: 'erase' }, i18n.t('reset.confirm'));
+  const dialog = h('dialog', { class: 'paper confirm', 'aria-labelledby': 'reset-title', 'aria-describedby': 'reset-body' },
+    h('h2', { id: 'reset-title' }, i18n.t('reset.title')),
+    h('p', { id: 'reset-body' }, i18n.t('reset.body')),
+    h('div', { class: 'confirm__actions' }, keep, erase));
+  keep.addEventListener('click', () => dialog.close());
+  erase.addEventListener('click', () => {
+    dialog.close();
+    ctx.progress.reset();
+    ctx.memory.reset();
+    ctx.sessions.clear();
+    ctx.navigate({ name: 'home' });
+  });
+  const open = h('button', { type: 'button', class: 'btn btn--ghost btn--small' }, i18n.t('map.reset'));
+  open.addEventListener('click', () => {
+    dialog.showModal();
+    keep.focus();
+  });
+  return h('span', { class: 'map__reset' }, open, dialog);
 }
 
 function levelCard(ctx: AppContext, id: LevelId): HTMLElement | null {

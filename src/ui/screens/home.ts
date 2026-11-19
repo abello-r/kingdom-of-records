@@ -21,7 +21,7 @@ export function homeScreen(ctx: AppContext): Screen {
   const primary = nextLevel
     ? h('a', { class: 'btn btn--primary btn--big', href: routeHash({ name: 'level', id: nextLevel.id }) },
         i18n.t(done === 0 ? 'home.start' : 'home.continue'))
-    : h('a', { class: 'btn btn--primary btn--big', href: routeHash({ name: 'map' }) }, i18n.t('home.map'));
+    : h('a', { class: 'btn btn--primary btn--big', href: routeHash({ name: 'epilogue' }) }, i18n.t('home.epilogue'));
 
   let status: HTMLElement | null = null;
   if (nextLevel && done > 0) status = h('p', { class: 'tag' }, i18n.t('home.resume', { level: nextLevel.title[i18n.language] }));
@@ -35,7 +35,7 @@ export function homeScreen(ctx: AppContext): Screen {
     h('div', { class: 'home__actions' },
       primary,
       status,
-      nextLevel && done > 0 ? h('a', { class: 'btn btn--ghost btn--small', href: routeHash({ name: 'map' }) }, i18n.t('home.map')) : null,
+      done > 0 ? h('a', { class: 'btn btn--ghost btn--small', href: routeHash({ name: 'map' }) }, i18n.t('home.map')) : null,
     ),
   );
 

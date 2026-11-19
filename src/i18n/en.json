@@ -21,7 +21,8 @@
     "continue": "Keep reading",
     "resume": "You stopped at «{level}»",
     "allDone": "The Registry is restored. Read it again whenever you like.",
-    "map": "See the map"
+    "map": "See the map",
+    "epilogue": "Read the epilogue"
   },
   "map": {
     "title": "The kingdom",
@@ -33,7 +34,8 @@
     "nodeLabel": "Level {n}: {title}",
     "done": "completed",
     "current": "next to read",
-    "locked": "locked"
+    "locked": "locked",
+    "reset": "Start over"
   },
   "stages": {
     "easy": {
@@ -88,7 +90,9 @@
     "next": "Turn the page",
     "toMap": "Back to the map",
     "finish": "Close the book",
-    "engineError": "The Registry could not be opened. Reload the page to try again."
+    "engineError": "The Registry could not be opened. Reload the page to try again.",
+    "replay": "You have already solved this page. You can solve it again.",
+    "restart": "Start again"
   },
   "types": {
     "integer": "number",
@@ -143,5 +147,31 @@
   },
   "footer": {
     "credits": "Pixel art: Tiny Swords by Pixel Frog · Effects: Will Tice / unTied Games"
+  },
+  "reset": {
+    "title": "Start over?",
+    "body": "This erases the completed levels, the hints you used and the spells you were writing. Language and sound settings stay as they are.",
+    "confirm": "Erase my progress",
+    "cancel": "Keep my progress"
+  },
+  "epilogue": {
+    "title": "Epilogue",
+    "name": "The Registry Restored",
+    "l1": "That very night, the guards opened Corvin’s coffers: three hundred coins, each stamped with the seal of the royal storehouse.",
+    "l2": "In his garden they found Lancelot and Lanolin, fat and pleased with themselves. Not a single rose was left.",
+    "l3": "Lady Maud, we owe you an apology. You paid those ransoms from your own purse to bring back what was ours.",
+    "l4": "The Red Kingdom asks your forgiveness. Corvin never spoke for us, and he will answer to both crowns.",
+    "l5": "And the Great Registry… no longer smells of smoke.",
+    "l6": "From this day on, the Registry is in Pip’s keeping. Let no one ever write a lie in it again.",
+    "back": "Back to the map",
+    "home": "Back to the title screen"
+  },
+  "credits": {
+    "title": "Credits",
+    "art": "Pixel art",
+    "effects": "Effects",
+    "fonts": "Fonts",
+    "tech": "Inside the Registry",
+    "thanks": "Thank you for reading the Registry."
   }
 }

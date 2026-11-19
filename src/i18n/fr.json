@@ -21,7 +21,8 @@
     "continue": "Reprendre la lecture",
     "resume": "Ta lecture s’est arrêtée à « {level} »",
     "allDone": "Le Registre est restauré. Relis-le quand tu veux.",
-    "map": "Voir la carte"
+    "map": "Voir la carte",
+    "epilogue": "Lire l’épilogue"
   },
   "map": {
     "title": "Le royaume",
@@ -33,7 +34,8 @@
     "nodeLabel": "Niveau {n} : {title}",
     "done": "terminé",
     "current": "à lire ensuite",
-    "locked": "verrouillé"
+    "locked": "verrouillé",
+    "reset": "Tout recommencer"
   },
   "stages": {
     "easy": {
@@ -88,7 +90,9 @@
     "next": "Tourner la page",
     "toMap": "Retour à la carte",
     "finish": "Refermer le livre",
-    "engineError": "Impossible d’ouvrir le Registre. Recharge la page pour réessayer."
+    "engineError": "Impossible d’ouvrir le Registre. Recharge la page pour réessayer.",
+    "replay": "Tu as déjà résolu cette page. Tu peux la résoudre à nouveau.",
+    "restart": "Recommencer"
   },
   "types": {
     "integer": "nombre",
@@ -143,5 +147,31 @@
   },
   "footer": {
     "credits": "Pixel art : Tiny Swords par Pixel Frog · Effets : Will Tice / unTied Games"
+  },
+  "reset": {
+    "title": "Tout recommencer ?",
+    "body": "Les niveaux terminés, les indices utilisés et les sorts en cours d’écriture seront effacés. La langue et le son restent tels quels.",
+    "confirm": "Effacer ma progression",
+    "cancel": "Garder ma progression"
+  },
+  "epilogue": {
+    "title": "Épilogue",
+    "name": "Le Registre restauré",
+    "l1": "Cette nuit-là, les gardes ouvrirent les coffres de Corvin : trois cents pièces, toutes marquées du sceau de l’entrepôt royal.",
+    "l2": "Dans son jardin, on trouva Lancelot et Lanolin, dodues et très contentes d’elles. Il ne restait plus une seule rose.",
+    "l3": "Dame Maud, nous vous devons des excuses. Vous avez payé ces rançons de votre poche pour nous rendre ce qui était à nous.",
+    "l4": "Le Royaume Rouge vous demande pardon. Corvin n’a jamais parlé en notre nom, et il répondra devant les deux couronnes.",
+    "l5": "Et le Grand Registre… ne sent plus la fumée.",
+    "l6": "À partir de ce jour, le Registre est confié à Pip. Que plus personne n’y écrive jamais un mensonge.",
+    "back": "Retour à la carte",
+    "home": "Retour à l’écran titre"
+  },
+  "credits": {
+    "title": "Crédits",
+    "art": "Pixel art",
+    "effects": "Effets",
+    "fonts": "Polices",
+    "tech": "Dans le Registre",
+    "thanks": "Merci d’avoir lu le Registre."
   }
 }

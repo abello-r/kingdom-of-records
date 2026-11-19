@@ -17,7 +17,7 @@ describe('router', () => {
   });
 
   it('round-trips', () => {
-    const routes: Route[] = [{ name: 'home' }, { name: 'map' }, { name: 'map', select: 'hard-1' }, { name: 'level', id: 'medium-4' }];
+    const routes: Route[] = [{ name: 'home' }, { name: 'map' }, { name: 'map', select: 'hard-1' }, { name: 'level', id: 'medium-4' }, { name: 'epilogue' }];
     for (const r of routes) expect(parseRoute(routeHash(r))).toEqual(r);
   });
 });

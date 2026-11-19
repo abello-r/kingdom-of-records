@@ -23,6 +23,27 @@ describe('LevelMemory', () => {
     expect(new LevelMemory(store).draft('easy-2')).toBeNull();
   });
 
+  it('can restart a single level', () => {
+    const memory = new LevelMemory(createMemoryStore());
+    memory.useHint('easy-1', 3);
+    memory.useHint('easy-2', 3);
+    memory.saveDraft('easy-1', 'SELECT 1');
+    memory.resetLevel('easy-1');
+    expect(memory.hintsUsed('easy-1')).toBe(0);
+    expect(memory.draft('easy-1')).toBeNull();
+    expect(memory.hintsUsed('easy-2')).toBe(1);
+  });
+
+  it('forgets everything on reset', () => {
+    const store = createMemoryStore();
+    const memory = new LevelMemory(store);
+    memory.useHint('easy-1', 3);
+    memory.saveDraft('easy-1', 'SELECT 1');
+    memory.reset();
+    expect(memory.hintsUsed('easy-1')).toBe(0);
+    expect(new LevelMemory(store).draft('easy-1')).toBeNull();
+  });
+
   it('ignores corrupt stored data', () => {
     const store = createMemoryStore();
     store.set(HINTS_KEY, JSON.stringify({ 'easy-1': -2, 'easy-2': 'x', 'easy-3': 1 }));

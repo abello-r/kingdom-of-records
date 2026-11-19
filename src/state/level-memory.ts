@@ -42,6 +42,22 @@ export class LevelMemory {
     return this.drafts[id] ?? null;
   }
 
+  /** Forgets the hints and draft of one level (replaying a completed page from scratch). */
+  resetLevel(id: LevelId): void {
+    delete this.hints[id];
+    delete this.drafts[id];
+    this.store.set(HINTS_KEY, JSON.stringify(this.hints));
+    this.store.set(DRAFTS_KEY, JSON.stringify(this.drafts));
+  }
+
+  /** Forgets every hint and draft (used when the player starts over). */
+  reset(): void {
+    this.hints = {};
+    this.drafts = {};
+    this.store.remove(HINTS_KEY);
+    this.store.remove(DRAFTS_KEY);
+  }
+
   saveDraft(id: LevelId, sql: string): void {
     if (sql.trim() === '') delete this.drafts[id];
     else this.drafts[id] = sql.slice(0, MAX_DRAFT);

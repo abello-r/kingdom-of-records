@@ -21,7 +21,8 @@
     "continue": "Seguir leyendo",
     "resume": "Te quedaste en «{level}»",
     "allDone": "El Registro está restaurado. Vuelve a leerlo cuando quieras.",
-    "map": "Ver el mapa"
+    "map": "Ver el mapa",
+    "epilogue": "Leer el epílogo"
   },
   "map": {
     "title": "El reino",
@@ -33,7 +34,8 @@
     "nodeLabel": "Nivel {n}: {title}",
     "done": "completado",
     "current": "siguiente por leer",
-    "locked": "bloqueado"
+    "locked": "bloqueado",
+    "reset": "Empezar de cero"
   },
   "stages": {
     "easy": {
@@ -88,7 +90,9 @@
     "next": "Pasar página",
     "toMap": "Volver al mapa",
     "finish": "Cerrar el libro",
-    "engineError": "No se ha podido abrir el Registro. Recarga la página para intentarlo de nuevo."
+    "engineError": "No se ha podido abrir el Registro. Recarga la página para intentarlo de nuevo.",
+    "replay": "Ya resolviste esta página. Puedes volver a resolverla.",
+    "restart": "Empezar de nuevo"
   },
   "types": {
     "integer": "número",
@@ -143,5 +147,31 @@
   },
   "footer": {
     "credits": "Pixel art: Tiny Swords de Pixel Frog · Efectos: Will Tice / unTied Games"
+  },
+  "reset": {
+    "title": "¿Empezar de cero?",
+    "body": "Se borrarán los niveles completados, las pistas usadas y los conjuros que estabas escribiendo. El idioma y el sonido se mantienen.",
+    "confirm": "Borrar mi progreso",
+    "cancel": "Conservar mi progreso"
+  },
+  "epilogue": {
+    "title": "Epílogo",
+    "name": "El Registro restaurado",
+    "l1": "Esa misma noche, los guardias abrieron los cofres de Corvin: trescientas monedas, todas con el sello del almacén real.",
+    "l2": "En su jardín encontraron a Lancelot y Lanolin, gordas y muy satisfechas. No quedaba ni una rosa.",
+    "l3": "Lady Maud, os debemos una disculpa. Pagasteis esos rescates de vuestro bolsillo para devolvernos lo que era nuestro.",
+    "l4": "El Reino Rojo os pide perdón. Corvin nunca habló en nuestro nombre, y responderá ante las dos coronas.",
+    "l5": "Y el Gran Registro… ya no huele a humo.",
+    "l6": "Desde hoy, el Registro queda a cargo de Pip. Que nadie vuelva a escribir en él una mentira.",
+    "back": "Volver al mapa",
+    "home": "Volver a la portada"
+  },
+  "credits": {
+    "title": "Créditos",
+    "art": "Pixel art",
+    "effects": "Efectos",
+    "fonts": "Fuentes",
+    "tech": "Dentro del Registro",
+    "thanks": "Gracias por leer el Registro."
   }
 }

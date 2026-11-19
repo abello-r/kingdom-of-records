@@ -107,6 +107,14 @@ export class App {
       history.replaceState(null, '', routeHash({ name: 'map' }));
       return mapScreen(this.ctx);
     }
+    if (route.name === 'epilogue') {
+      if (this.deps.progress.nextLevel() === null) {
+        const { epilogueScreen } = await import('../ui/screens/epilogue');
+        return epilogueScreen(this.ctx);
+      }
+      history.replaceState(null, '', routeHash({ name: 'map' }));
+      return mapScreen(this.ctx);
+    }
     if (route.name === 'map') return mapScreen(this.ctx, route.select);
     return homeScreen(this.ctx);
   }

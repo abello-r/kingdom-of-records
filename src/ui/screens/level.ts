@@ -2,22 +2,16 @@ import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import { feedbackMessages, type Message } from '../../engine/messages';
 import type { SchemaTable } from '../../engine/runner';
-import type { DialogueLine, Level, ResultSet, Speaker, TableSnapshot } from '../../engine/types';
+import type { DialogueLine, Level, ResultSet, TableSnapshot } from '../../engine/types';
 import { ALL_LEVELS } from '../../state/levels';
 import { fill, h, img, prefersReducedMotion } from '../dom';
 import { createSqlEditor, type SqlEditor } from '../editor';
 import { rich } from '../rich';
 import { levelStrip } from '../scenes';
+import { dialogue as storyLine } from '../story';
 import { typeKey } from '../sql-types';
 import { World } from '../world';
 
-const PORTRAIT: Partial<Record<Speaker, string>> = {
-  aldric: 'portraits/aldric.png',
-  scribe: 'portraits/pip.png',
-  garrick: 'portraits/garrick.png',
-  corvin: 'portraits/corvin.png',
-  grubnak: 'portraits/grubnak.png',
-};
 
 /** A level: the open Great Registry under a diorama of the region. */
 export function levelScreen(ctx: AppContext, level: Level): Screen {
@@ -29,10 +23,12 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
 
   // ---------- scene ----------
   const compact = innerWidth < 761;
-  const sceneHeight = compact ? 150 : 262;
+  // Tall enough on phones for archers standing on the towers.
+  const sceneHeight = compact ? 190 : 262;
   const world = new World('world--strip');
   world.el.style.height = `${sceneHeight}px`;
-  levelStrip(world, level.stage, Math.min(innerWidth, 1920), sceneHeight);
+  // The level's own scene; `solve` plays its reaction when the spell is right.
+  const solve = levelStrip(world, level, Math.min(innerWidth, 1920), sceneHeight);
   const title = h('h1', { class: 'ribbon-small ribbon-small--blue level-title' },
     h('small', {}, `${t(`stages.${level.stage}.difficulty`)} ${level.order}`), ' ', level.title[lang]);
 
@@ -65,6 +61,7 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     'section',
     { class: 'page paper spell', 'aria-labelledby': 'spell-title' },
     h('div', { class: 'spell__head' }, h('h2', { id: 'spell-title' }, t('level.spell')), clearBtn),
+    replayNote(),
     editorHost,
     h('div', { class: 'actions' }, runBtns[0], hintBtns[0]),
     h('p', { class: 'shortcut' }, t('level.shortcut'), ' ', h('kbd', {}, 'Ctrl'), ' + ', h('kbd', {}, 'Enter')),
@@ -80,6 +77,23 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     h('main', { id: 'main', class: 'book wood', tabindex: '-1' }, h('div', { class: 'pages' }, storyPage, spellPage)),
     dock,
   );
+
+  /** On a page solved before, offer to start it again from a blank page (progress is kept). */
+  function replayNote(): HTMLElement | null {
+    if (!progress.isCompleted(level.id) || session.solvedNow) return null;
+    const restart = h('button', { type: 'button', class: 'btn btn--ghost btn--small' }, t('level.restart'));
+    const note = h('div', { class: 'replay' }, h('p', {}, t('level.replay')), restart);
+    restart.addEventListener('click', () => {
+      memory.resetLevel(level.id);
+      editor.setValue('');
+      session.result = undefined;
+      renderHints();
+      renderAnswer();
+      note.remove();
+      editor.focus();
+    });
+    return note;
+  }
 
   // ---------- behaviour ----------
   let running = false;
@@ -103,15 +117,7 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     .catch(() => fill(schemaBox, h('p', { class: 'note note--error' }, t('level.engineError'))));
 
   function dialogue(line: DialogueLine, isNew = false): HTMLElement {
-    const text = h('p', {}, rich(line.text[lang]));
-    if (line.speaker === 'narrator') return h('div', { class: `line line--narrator${isNew ? ' line--new' : ''}` }, text);
-    const portrait = PORTRAIT[line.speaker];
-    return h(
-      'div',
-      { class: `line${line.speaker === 'scribe' ? ' line--me' : ''}${isNew ? ' line--new' : ''}` },
-      portrait ? img(portrait, `portrait${line.speaker === 'scribe' ? ' portrait--flip' : ''}`) : null,
-      h('div', { class: 'say' }, h('b', {}, t(`speakers.${line.speaker}`)), text),
-    );
+    return storyLine(i18n, line.speaker, line.text[lang], isNew);
   }
 
   /** One ledger card per table: "Table: villagers", then "Columns:" with each column and its type in plain words. */
@@ -162,7 +168,7 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
   function nextTarget(): { href: string; labelKey: string } {
     const i = ALL_LEVELS.indexOf(level.id);
     const following = ALL_LEVELS[i + 1];
-    if (!following) return { href: routeHash({ name: 'home' }), labelKey: 'level.finish' };
+    if (!following) return { href: routeHash({ name: 'epilogue' }), labelKey: 'level.finish' };
     if (level.order === 5) return { href: routeHash({ name: 'map', select: following }), labelKey: 'level.next' };
     return { href: routeHash({ name: 'level', id: following }), labelKey: 'level.next' };
   }
@@ -229,6 +235,7 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
       session.solvedNow = true;
       progress.complete(level.id);
       story.append(...level.success.map((line) => dialogue(line, true)));
+      solve();
       world.celebrate();
     }
     renderButtons();
@@ -255,7 +262,11 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
   // Restore what this page showed before (e.g. after switching language).
   if (session.solvedNow) {
     story.append(...level.success.map((line) => dialogue(line)));
-    world.celebrate(false);
+    // Redrawing a solved page (e.g. after a language change): show the end state without replaying it.
+    const animated = world.instant;
+    world.instant = true;
+    solve();
+    world.instant = animated;
   }
   renderHints();
   renderButtons();
@@ -265,7 +276,10 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     element,
     title: `${level.title[lang]} — ${i18n.t('app.title')}`,
     focus: editor.view.contentDOM,
-    destroy: () => editor.destroy(),
+    destroy: () => {
+      editor.destroy();
+      world.destroy();
+    },
   };
 }
 
