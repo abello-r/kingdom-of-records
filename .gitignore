@@ -1,0 +1,17 @@
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+.vite/
+*.log
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.claude/settings.local.json
+
+# Original asset packs (source material, never modified).
+# The game only uses the cleaned copies in public/assets/.
+/Tiny Swords (Free Pack)/
+/Tiny Swords (Update 010)/
+/Super Pixel Effects Gigapack (Free Version)/
