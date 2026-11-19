@@ -21,20 +21,25 @@ function levenshtein(a: string, b: string): number {
   return prev[b.length]!;
 }
 
-/** Closest keyword to a misspelt token (distance ≤ 2, and not the token itself). */
-export function suggestKeyword(token: string): string | undefined {
-  const upper = token.toUpperCase();
-  if (upper.length < 3 || KEYWORDS.includes(upper)) return undefined;
+/** Closest candidate to a misspelt word (case-insensitive, distance ≤ 2, never the word itself). */
+function closest(word: string, candidates: readonly string[]): string | undefined {
+  const w = word.toLowerCase();
+  if (w.length < 3 || candidates.some((c) => c.toLowerCase() === w)) return undefined;
   let best: string | undefined;
   let bestDistance = 3;
-  for (const kw of KEYWORDS) {
-    const d = levenshtein(upper, kw);
+  for (const c of candidates) {
+    const d = levenshtein(w, c.toLowerCase());
     if (d < bestDistance) {
-      best = kw;
+      best = c;
       bestDistance = d;
     }
   }
   return best;
+}
+
+/** Closest keyword to a misspelt token, e.g. `SELEC` → `SELECT`. */
+export function suggestKeyword(token: string): string | undefined {
+  return closest(token, KEYWORDS);
 }
 
 interface Rule {
@@ -92,10 +97,15 @@ export function describeSqlError(raw: string, context: ErrorContext = {}): SqlEr
       const suggestion = suggestKeyword(params.token ?? '');
       if (suggestion) info.tip = { key: 'didYouMean', params: { keyword: suggestion } };
     } else if (rule.key === 'noSuchColumn') {
-      // `role = pawn`: an unquoted word that is not a column is probably a text value.
       const column = params.column ?? '';
       const known = context.knownColumns ?? [];
-      if (!column.includes('.') && known.length > 0 && !known.includes(column.toLowerCase())) {
+      const bare = column.includes('.') ? column.slice(column.lastIndexOf('.') + 1) : column;
+      const typo = closest(bare, known);
+      if (typo) {
+        // `nme` → "Did you mean name?"
+        info.tip = { key: 'didYouMean', params: { keyword: typo } };
+      } else if (!column.includes('.') && known.length > 0 && !known.includes(column.toLowerCase())) {
+        // `role = pawn`: an unquoted word that is not a column is probably a text value.
         info.tip = { key: 'quoteText', params: { value: column } };
       }
     } else if (rule.key === 'unrecognizedToken' && /^'/.test(params.token ?? '')) {

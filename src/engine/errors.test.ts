@@ -71,6 +71,11 @@ describe('describeSqlError with real SQLite messages', () => {
     expect(info.tip).toEqual({ key: 'quoteText', params: { value: 'pawn' } });
   });
 
+  it('suggests the closest column for typos instead of quotes', () => {
+    expect(errorFor('SELECT nme FROM villagers').tip).toEqual({ key: 'didYouMean', params: { keyword: 'name' } });
+    expect(errorFor('SELECT v.rol FROM villagers v').tip).toEqual({ key: 'didYouMean', params: { keyword: 'role' } });
+  });
+
   it('does not suggest quotes for qualified column names', () => {
     expect(errorFor('SELECT v.house FROM villagers v').tip).toBeUndefined();
   });
