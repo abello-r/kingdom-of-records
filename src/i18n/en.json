@@ -59,6 +59,8 @@
   "level": {
     "task": "Your task",
     "schema": "What the Registry holds",
+    "schemaTable": "Table:",
+    "schemaColumns": "Columns:",
     "spell": "Your spell",
     "run": "Cast spell",
     "running": "Casting…",
@@ -87,6 +89,12 @@
     "toMap": "Back to the map",
     "finish": "Close the book",
     "engineError": "The Registry could not be opened. Reload the page to try again."
+  },
+  "types": {
+    "integer": "number",
+    "text": "text",
+    "real": "decimal number",
+    "blob": "binary data"
   },
   "notices": {
     "doubleQuotes": "A tip: in SQL, texts go in single quotes: {value}. Double quotes are for the names of tables and columns."

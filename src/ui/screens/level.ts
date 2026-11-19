@@ -8,6 +8,7 @@ import { fill, h, img, prefersReducedMotion } from '../dom';
 import { createSqlEditor, type SqlEditor } from '../editor';
 import { rich } from '../rich';
 import { levelStrip } from '../scenes';
+import { typeKey } from '../sql-types';
 import { World } from '../world';
 
 const PORTRAIT: Partial<Record<Speaker, string>> = {
@@ -113,11 +114,20 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     );
   }
 
+  /** One ledger card per table: "Table: villagers", then "Columns:" with each column and its type in plain words. */
   function renderSchema(): void {
-    fill(schemaBox, ...schema.map((tb) =>
-      h('div', { class: 'schema__table' },
-        h('code', { class: 'schema__name' }, tb.name),
-        ...tb.columns.map((c) => h('code', { class: 'schema__col' }, c.name, h('small', {}, c.type))))));
+    fill(schemaBox, ...schema.map((tb) => {
+      const titleId = `schema-${tb.name}`;
+      return h('section', { class: 'ledger', 'aria-labelledby': titleId },
+        h('p', { class: 'ledger__head', id: titleId }, h('span', {}, t('level.schemaTable')), ' ', h('code', {}, tb.name)),
+        h('p', { class: 'ledger__label' }, t('level.schemaColumns')),
+        h('dl', { class: 'ledger__cols' }, ...tb.columns.map((c) => {
+          const key = typeKey(c.type);
+          return h('div', { class: 'ledger__row' },
+            h('dt', {}, h('code', {}, c.name)),
+            h('dd', {}, key ? t(`types.${key}`) : c.type.toLowerCase() || '—'));
+        })));
+    }));
   }
 
   function renderHints(): void {

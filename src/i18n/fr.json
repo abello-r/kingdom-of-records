@@ -59,6 +59,8 @@
   "level": {
     "task": "Ta mission",
     "schema": "Ce que contient le Registre",
+    "schemaTable": "Table :",
+    "schemaColumns": "Colonnes :",
     "spell": "Ton sort",
     "run": "Lancer le sort",
     "running": "Lancement…",
@@ -87,6 +89,12 @@
     "toMap": "Retour à la carte",
     "finish": "Refermer le livre",
     "engineError": "Impossible d’ouvrir le Registre. Recharge la page pour réessayer."
+  },
+  "types": {
+    "integer": "nombre",
+    "text": "texte",
+    "real": "nombre décimal",
+    "blob": "données binaires"
   },
   "notices": {
     "doubleQuotes": "Un conseil : en SQL, les textes s’écrivent entre apostrophes : {value}. Les guillemets doubles servent aux noms de tables et de colonnes."

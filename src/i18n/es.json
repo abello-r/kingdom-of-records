@@ -59,6 +59,8 @@
   "level": {
     "task": "Tu tarea",
     "schema": "Lo que guarda el Registro",
+    "schemaTable": "Tabla:",
+    "schemaColumns": "Columnas:",
     "spell": "Tu conjuro",
     "run": "Lanzar conjuro",
     "running": "Lanzando…",
@@ -87,6 +89,12 @@
     "toMap": "Volver al mapa",
     "finish": "Cerrar el libro",
     "engineError": "No se ha podido abrir el Registro. Recarga la página para intentarlo de nuevo."
+  },
+  "types": {
+    "integer": "número",
+    "text": "texto",
+    "real": "número decimal",
+    "blob": "datos binarios"
   },
   "notices": {
     "doubleQuotes": "Un consejo: en SQL los textos van entre comillas simples: {value}. Las dobles son para nombres de tablas y columnas."
