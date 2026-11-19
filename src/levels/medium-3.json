@@ -1,0 +1,84 @@
+{
+  "id": "medium-3",
+  "stage": "medium",
+  "order": 3,
+  "concepts": ["HAVING", ">"],
+  "title": {
+    "es": "Las aldeas que resistirán",
+    "en": "The Villages That Will Hold",
+    "fr": "Les villages qui tiendront"
+  },
+  "narrative": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "No tenemos soldados para todas partes. Una guarnición necesita comer: solo pondremos tropas donde el año pasado se produjeron más de 150 piezas de carne.",
+        "en": "We do not have soldiers for everywhere. A garrison needs feeding: we will only station troops where last year’s meat came to more than 150.",
+        "fr": "Nous n’avons pas de soldats pour tout le monde. Une garnison doit manger : on n’enverra des troupes que là où l’année dernière a produit plus de 150 pièces de viande."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Y no me vale una buena cosecha suelta: Fernvale cazó un jabalí gigante en otoño y todavía lo celebran. Cuenta el año entero.",
+        "en": "And one lucky season won’t do: Fernvale caught a giant boar in autumn and they are still celebrating. Count the whole year.",
+        "fr": "Et une bonne saison isolée ne suffit pas : Fernvale a attrapé un sanglier géant en automne et ils le fêtent encore. Compte l’année entière."
+      }
+    }
+  ],
+  "task": {
+    "es": "En la tabla `harvests`, muestra cada aldea (`village`) y su total de `meat` del año, pero solo las aldeas cuyo total es mayor que 150.",
+    "en": "From the `harvests` table, show each `village` and its total `meat` for the year, but only villages whose total is greater than 150.",
+    "fr": "Dans la table `harvests`, affiche chaque village (`village`) et son total de `meat` sur l’année, mais seulement les villages dont le total dépasse 150."
+  },
+  "hints": [
+    {
+      "es": "Primero agrupa por aldea y suma la carne, como en el nivel anterior. Luego filtra… pero no las filas, sino los grupos.",
+      "en": "First group by village and add up the meat, as in the last level. Then filter… not the rows, but the groups.",
+      "fr": "D’abord, regroupe par village et additionne la viande, comme au niveau précédent. Ensuite, filtre… non pas les lignes, mais les groupes."
+    },
+    {
+      "es": "`WHERE` filtra filas antes de agrupar; `HAVING` filtra grupos después, y puede usar agregados como `SUM(meat)`. Va justo después del `GROUP BY`.",
+      "en": "`WHERE` filters rows before grouping; `HAVING` filters groups afterwards and can use aggregates such as `SUM(meat)`. It goes right after `GROUP BY`.",
+      "fr": "`WHERE` filtre les lignes avant le regroupement ; `HAVING` filtre les groupes après, et peut utiliser des agrégats comme `SUM(meat)`. Il se place juste après le `GROUP BY`."
+    },
+    {
+      "es": "Casi lo tienes: `SELECT village, SUM(meat) FROM harvests GROUP BY village HAVING ...;`",
+      "en": "Almost there: `SELECT village, SUM(meat) FROM harvests GROUP BY village HAVING ...;`",
+      "fr": "Tu y es presque : `SELECT village, SUM(meat) FROM harvests GROUP BY village HAVING ...;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Bluebrook, Oakhollow y Fernvale. Stonewatch se queda a cinco piezas… que los canteros cacen más conejos.",
+        "en": "Bluebrook, Oakhollow and Fernvale. Stonewatch falls five short… the stonecutters will have to hunt more rabbits.",
+        "fr": "Bluebrook, Oakhollow et Fernvale. Stonewatch rate de cinq pièces… les tailleurs de pierre devront chasser plus de lapins."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Ahora, un asunto más feo: han llegado mercaderes nuevos al castillo, y algunos huelen a pantano.",
+        "en": "Now, an uglier matter: new merchants have arrived at the castle, and some of them smell of swamp.",
+        "fr": "Maintenant, une affaire plus laide : de nouveaux marchands sont arrivés au château, et certains sentent le marécage."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE harvests (id INTEGER PRIMARY KEY, village TEXT NOT NULL, season TEXT NOT NULL, meat INTEGER NOT NULL, wood INTEGER NOT NULL);\nINSERT INTO harvests (village, season, meat, wood) VALUES\n  ('Bluebrook', 'spring', 40, 30),\n  ('Bluebrook', 'summer', 55, 45),\n  ('Bluebrook', 'autumn', 50, 60),\n  ('Bluebrook', 'winter', 15, 20),\n  ('Millford', 'spring', 20, 50),\n  ('Millford', 'summer', 30, 55),\n  ('Millford', 'autumn', 35, 40),\n  ('Millford', 'winter', 10, 25),\n  ('Oakhollow', 'spring', 60, 90),\n  ('Oakhollow', 'summer', 70, 110),\n  ('Oakhollow', 'autumn', 65, 95),\n  ('Oakhollow', 'winter', 30, 40),\n  ('Fernvale', 'spring', 25, 35),\n  ('Fernvale', 'summer', 35, 30),\n  ('Fernvale', 'autumn', 130, 45),\n  ('Fernvale', 'winter', 5, 15),\n  ('Stonewatch', 'spring', 10, 20),\n  ('Stonewatch', 'summer', 20, 25),\n  ('Stonewatch', 'autumn', 25, 30),\n  ('Stonewatch', 'winter', 90, 10);",
+  "solution": "SELECT village, SUM(meat) FROM harvests GROUP BY village HAVING SUM(meat) > 150;",
+  "check": { "mode": "result", "ignoreColumnNames": true },
+  "examples": {
+    "accepted": [
+      "SELECT village, SUM(meat) AS total_meat FROM harvests GROUP BY village HAVING total_meat > 150",
+      "SELECT village, SUM(meat) FROM harvests GROUP BY village HAVING SUM(meat) >= 151"
+    ],
+    "rejected": [
+      "SELECT village, SUM(meat) FROM harvests WHERE meat > 150 GROUP BY village",
+      "SELECT village, SUM(meat) FROM harvests WHERE meat > 50 GROUP BY village",
+      "SELECT village, SUM(meat) FROM harvests GROUP BY village",
+      "SELECT village, SUM(meat) FROM harvests GROUP BY village HAVING SUM(meat) >= 145"
+    ]
+  }
+}

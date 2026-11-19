@@ -1,0 +1,84 @@
+{
+  "id": "medium-4",
+  "stage": "medium",
+  "order": 4,
+  "concepts": ["DELETE", "UPDATE … WHERE"],
+  "title": {
+    "es": "Mercaderes con olor a pantano",
+    "en": "Merchants Who Smell of Swamp",
+    "fr": "Des marchands qui sentent le marécage"
+  },
+  "narrative": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "«Bob Totalmente Humano, vendedor de sombreros muy normales.» Venga ya. Todo mercader honrado lleva el sello real; esos tres no tienen ninguno.",
+        "en": "“Totally Human Bob, seller of very normal hats.” Please. Every honest merchant carries the royal seal; those three have none.",
+        "fr": "« Bob Totalement Humain, vendeur de chapeaux très normaux. » Sans blague. Tout marchand honnête porte le sceau royal ; ces trois-là n’en ont aucun."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Bórralos del Registro. Y ya que estamos, los guardias del mercado se van al almacén: no pienso perder ni una moneda más.",
+        "en": "Strike them from the Registry. And while you are at it, the market guards move to the storehouse: I will not lose a single coin more.",
+        "fr": "Raye-les du Registre. Et tant qu’on y est, les gardes du marché passent à l’entrepôt : je ne perdrai pas une pièce de plus."
+      }
+    }
+  ],
+  "task": {
+    "es": "1) Borra de `merchants` a todos los mercaderes cuyo `seal` es `'none'`. 2) En `guards`, cambia a `'Storehouse'` el `post` de todos los guardias que ahora están en `'Market'`.",
+    "en": "1) Delete from `merchants` every merchant whose `seal` is `'none'`. 2) In `guards`, change the `post` to `'Storehouse'` for every guard currently at `'Market'`.",
+    "fr": "1) Supprime de `merchants` tous les marchands dont le `seal` vaut `'none'`. 2) Dans `guards`, passe à `'Storehouse'` le `post` de tous les gardes actuellement au `'Market'`."
+  },
+  "hints": [
+    {
+      "es": "`DELETE` borra filas enteras. Como `UPDATE`, sin un `WHERE` afecta a toda la tabla, así que piensa bien la condición.",
+      "en": "`DELETE` removes whole rows. Like `UPDATE`, without a `WHERE` it hits the entire table, so think carefully about the condition.",
+      "fr": "`DELETE` supprime des lignes entières. Comme `UPDATE`, sans `WHERE` il touche toute la table : réfléchis bien à la condition."
+    },
+    {
+      "es": "Fíjate en que algunos mercaderes legítimos también traen permiso de la `'Red Treasury'`: lo que delata a los goblins es el sello, no el permiso.",
+      "en": "Notice that some honest merchants also carry a permit from the `'Red Treasury'`: what gives the goblins away is the seal, not the permit.",
+      "fr": "Remarque que certains marchands honnêtes ont aussi un permis de la `'Red Treasury'` : ce qui trahit les gobelins, c’est le sceau, pas le permis."
+    },
+    {
+      "es": "Casi lo tienes: `DELETE FROM merchants WHERE seal = 'none'; UPDATE guards SET post = 'Storehouse' WHERE ...;`",
+      "en": "Almost there: `DELETE FROM merchants WHERE seal = 'none'; UPDATE guards SET post = 'Storehouse' WHERE ...;`",
+      "fr": "Tu y es presque : `DELETE FROM merchants WHERE seal = 'none'; UPDATE guards SET post = 'Storehouse' WHERE ...;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "scribe",
+      "text": {
+        "es": "Sir Aldric… los tres goblins traían permisos de la Tesorería Roja. Falsos, ¿verdad?",
+        "en": "Sir Aldric… all three goblins carried permits from the Red Treasury. Forged, surely?",
+        "fr": "Sire Aldric… les trois gobelins avaient des permis de la Trésorerie Rouge. Des faux, sûrement ?"
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "El Reino Rojo es nuestro aliado desde hace veinte años. Seguro que son falsos. Seguro.",
+        "en": "The Red Kingdom has been our ally for twenty years. They must be forged. They must.",
+        "fr": "Le Royaume Rouge est notre allié depuis vingt ans. Ce sont forcément des faux. Forcément."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE merchants (id INTEGER PRIMARY KEY, name TEXT NOT NULL, goods TEXT NOT NULL, permit_from TEXT NOT NULL, seal TEXT NOT NULL);\nINSERT INTO merchants (name, goods, permit_from, seal) VALUES\n  ('Hilda Brightwool', 'wool', 'Blue Castle', 'royal'),\n  ('Odo the Salter', 'salt', 'Blue Castle', 'royal'),\n  ('Mira of Redmoor', 'spices', 'Red Treasury', 'royal'),\n  ('Totally Human Bob', 'very normal hats', 'Red Treasury', 'none'),\n  ('Snik Honestman', 'sheep (slightly used)', 'Red Treasury', 'none'),\n  ('Pell the Tinker', 'pots and pans', 'Blue Castle', 'royal'),\n  ('Gubbins & Sons', 'barrels (do not shake)', 'Red Treasury', 'none'),\n  ('Ysolde', 'silk', 'Red Treasury', 'royal');\nCREATE TABLE guards (id INTEGER PRIMARY KEY, name TEXT NOT NULL, post TEXT NOT NULL);\nINSERT INTO guards (name, post) VALUES\n  ('Bertram', 'Market'),\n  ('Joss', 'Northwatch'),\n  ('Hilde', 'Market'),\n  ('Rolf', 'East gate'),\n  ('Wilm', 'Market'),\n  ('Cedric', 'Castle gate');",
+  "solution": "DELETE FROM merchants WHERE seal = 'none';\nUPDATE guards SET post = 'Storehouse' WHERE post = 'Market';",
+  "check": { "mode": "state", "tables": ["merchants", "guards"] },
+  "examples": {
+    "accepted": [
+      "UPDATE guards SET post = 'Storehouse' WHERE post = 'Market'; DELETE FROM merchants WHERE seal <> 'royal';",
+      "DELETE FROM merchants WHERE id IN (4, 5, 7); UPDATE guards SET post = 'Storehouse' WHERE name IN ('Bertram', 'Hilde', 'Wilm');"
+    ],
+    "rejected": [
+      "DELETE FROM merchants WHERE permit_from = 'Red Treasury'; UPDATE guards SET post = 'Storehouse' WHERE post = 'Market';",
+      "DELETE FROM merchants WHERE seal = 'none'; UPDATE guards SET post = 'Storehouse';",
+      "DELETE FROM merchants; UPDATE guards SET post = 'Storehouse' WHERE post = 'Market';",
+      "DELETE FROM merchants WHERE seal = 'none';"
+    ]
+  }
+}

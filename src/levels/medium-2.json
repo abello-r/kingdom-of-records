@@ -1,0 +1,67 @@
+{
+  "id": "medium-2",
+  "stage": "medium",
+  "order": 2,
+  "concepts": ["GROUP BY"],
+  "title": {
+    "es": "Aldea por aldea",
+    "en": "Village by Village",
+    "fr": "Village par village"
+  },
+  "narrative": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "El rey ha escuchado el total y ahora pregunta lo de siempre: «¿Y quién tiene qué?». Cinco aldeas, cinco alcaldes quejándose de que el vecino tiene más.",
+        "en": "The king heard the total and now asks the usual question: “And who has what?” Five villages, five mayors complaining that the neighbour has more.",
+        "fr": "Le roi a entendu le total et pose maintenant l’éternelle question : « Et qui a quoi ? » Cinq villages, cinq maires qui se plaignent que le voisin en a plus."
+      }
+    }
+  ],
+  "task": {
+    "es": "Para cada aldea (`village`) de `storehouses`, muestra su nombre y sus totales de `gold`, `wood` y `meat`, en ese orden.",
+    "en": "For each `village` in `storehouses`, show its name and its total `gold`, `wood` and `meat`, in that order.",
+    "fr": "Pour chaque village (`village`) de `storehouses`, affiche son nom et ses totaux de `gold`, `wood` et `meat`, dans cet ordre."
+  },
+  "hints": [
+    {
+      "es": "Un `SUM` a secas lo mezcla todo en una fila. Necesitas que el Registro haga un montón por aldea antes de sumar.",
+      "en": "A plain `SUM` lumps everything into one row. You need the Registry to make one pile per village before adding up.",
+      "fr": "Un `SUM` tout seul mélange tout sur une ligne. Il faut que le Registre fasse un tas par village avant d’additionner."
+    },
+    {
+      "es": "`GROUP BY columna`, después del `FROM`, crea un grupo por cada valor distinto. Los agregados se calculan entonces dentro de cada grupo.",
+      "en": "`GROUP BY column`, after the `FROM`, makes one group per distinct value. Aggregates are then computed within each group.",
+      "fr": "`GROUP BY colonne`, après le `FROM`, crée un groupe par valeur différente. Les agrégats sont alors calculés dans chaque groupe."
+    },
+    {
+      "es": "Casi lo tienes: `SELECT village, SUM(gold), SUM(wood), SUM(meat) FROM storehouses GROUP BY ...;`",
+      "en": "Almost there: `SELECT village, SUM(gold), SUM(wood), SUM(meat) FROM storehouses GROUP BY ...;`",
+      "fr": "Tu y es presque : `SELECT village, SUM(gold), SUM(wood), SUM(meat) FROM storehouses GROUP BY ...;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "scribe",
+      "text": {
+        "es": "Stonewatch tiene trescientas cinco monedas y Bluebrook… treinta y cinco. Nuestra aldea era la más rica, y se lo llevaron todo de un solo sitio.",
+        "en": "Stonewatch has three hundred and five coins and Bluebrook… thirty-five. Our village was the richest, and they took it all from one single place.",
+        "fr": "Stonewatch a trois cent cinq pièces et Bluebrook… trente-cinq. Notre village était le plus riche, et ils ont tout pris à un seul endroit."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE storehouses (id INTEGER PRIMARY KEY, name TEXT NOT NULL, village TEXT NOT NULL, gold INTEGER NOT NULL, wood INTEGER NOT NULL, meat INTEGER NOT NULL);\nINSERT INTO storehouses (name, village, gold, wood, meat) VALUES\n  ('Royal storehouse', 'Bluebrook', 0, 40, 25),\n  ('Mill loft', 'Bluebrook', 35, 60, 40),\n  ('Old granary', 'Millford', 120, 80, 90),\n  ('River barn', 'Millford', 60, 45, 30),\n  ('Oak cellar', 'Oakhollow', 80, 150, 60),\n  ('Hunters'' lodge', 'Oakhollow', 20, 30, 110),\n  ('Fern hall', 'Fernvale', 95, 70, 75),\n  ('Stone vault', 'Stonewatch', 210, 20, 35),\n  ('Quarry shed', 'Stonewatch', 40, 90, 15),\n  ('Watch keep', 'Stonewatch', 55, 25, 45);",
+  "solution": "SELECT village, SUM(gold), SUM(wood), SUM(meat) FROM storehouses GROUP BY village;",
+  "check": { "mode": "result", "ignoreColumnNames": true },
+  "examples": {
+    "accepted": [
+      "SELECT village, SUM(gold) AS gold, SUM(wood) AS wood, SUM(meat) AS meat FROM storehouses GROUP BY village ORDER BY village"
+    ],
+    "rejected": [
+      "SELECT village, SUM(gold), SUM(wood), SUM(meat) FROM storehouses",
+      "SELECT name, SUM(gold), SUM(wood), SUM(meat) FROM storehouses GROUP BY name",
+      "SELECT village, gold, wood, meat FROM storehouses",
+      "SELECT SUM(gold), SUM(wood), SUM(meat) FROM storehouses GROUP BY village"
+    ]
+  }
+}

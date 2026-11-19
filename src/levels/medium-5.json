@@ -1,0 +1,92 @@
+{
+  "id": "medium-5",
+  "stage": "medium",
+  "order": 5,
+  "concepts": ["JOIN", "ON", "table.column"],
+  "title": {
+    "es": "La torre sin guardia",
+    "en": "The Unguarded Tower",
+    "fr": "La tour sans garde"
+  },
+  "narrative": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Una pregunta me quita el sueño: ¿cómo cruzaron el río sin que nadie diera la alarma? El Registro guarda las torres en una tabla y los soldados en otra.",
+        "en": "One question keeps me awake: how did they cross the river without anyone raising the alarm? The Registry keeps towers in one table and soldiers in another.",
+        "fr": "Une question m’empêche de dormir : comment ont-ils traversé la rivière sans que personne ne donne l’alerte ? Le Registre range les tours dans une table et les soldats dans une autre."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Cada torre apunta a su último guardia con `last_guard_id`, que es el `id` de un soldado. Une las dos piezas, escriba.",
+        "en": "Each tower points to its last guard with `last_guard_id`, which is a soldier’s `id`. Put the two pieces together, scribe.",
+        "fr": "Chaque tour désigne son dernier garde avec `last_guard_id`, qui est l’`id` d’un soldat. Assemble les deux morceaux, scribe."
+      }
+    }
+  ],
+  "task": {
+    "es": "Para las torres que quedaron sin guardia la noche del asalto (`guarded_on_raid_night = 0`), muestra el nombre de la torre, el nombre de su último guardia y el reino (`kingdom`) de ese guardia, en ese orden.",
+    "en": "For the towers left unguarded on the night of the raid (`guarded_on_raid_night = 0`), show the tower’s name, the name of its last guard and that guard’s `kingdom`, in that order.",
+    "fr": "Pour les tours restées sans garde la nuit de l’attaque (`guarded_on_raid_night = 0`), affiche le nom de la tour, le nom de son dernier garde et le royaume (`kingdom`) de ce garde, dans cet ordre."
+  },
+  "hints": [
+    {
+      "es": "`JOIN` combina dos tablas en una sola consulta, emparejando las filas que cumplen una condición escrita con `ON`.",
+      "en": "`JOIN` combines two tables in one query, pairing up the rows that meet a condition written with `ON`.",
+      "fr": "`JOIN` combine deux tables dans une seule requête, en associant les lignes qui remplissent une condition écrite avec `ON`."
+    },
+    {
+      "es": "Las dos tablas tienen una columna `name`: escribe `towers.name` y `soldiers.name` para que el Registro sepa cuál es cuál. La condición de unión es `towers.last_guard_id = soldiers.id`.",
+      "en": "Both tables have a `name` column: write `towers.name` and `soldiers.name` so the Registry knows which is which. The join condition is `towers.last_guard_id = soldiers.id`.",
+      "fr": "Les deux tables ont une colonne `name` : écris `towers.name` et `soldiers.name` pour que le Registre s’y retrouve. La condition de jointure est `towers.last_guard_id = soldiers.id`."
+    },
+    {
+      "es": "Casi lo tienes: `SELECT towers.name, soldiers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.last_guard_id = soldiers.id WHERE ...;`",
+      "en": "Almost there: `SELECT towers.name, soldiers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.last_guard_id = soldiers.id WHERE ...;`",
+      "fr": "Tu y es presque : `SELECT towers.name, soldiers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.last_guard_id = soldiers.id WHERE ...;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Oldwatch lleva en ruinas desde que el viejo Tom se jubiló. Pero Riverwatch… Sir Garrick. Un caballero del Reino Rojo, prestado por nuestros aliados.",
+        "en": "Oldwatch has been a ruin since old Tom retired. But Riverwatch… Sir Garrick. A knight of the Red Kingdom, lent to us by our allies.",
+        "fr": "Oldwatch est en ruine depuis que le vieux Tom a pris sa retraite. Mais Riverwatch… Sire Garrick. Un chevalier du Royaume Rouge, prêté par nos alliés."
+      }
+    },
+    {
+      "speaker": "garrick",
+      "text": {
+        "es": "¡No abandoné mi puesto por cobardía! Esa tarde me llegó una orden sellada por la Tesorería Roja: volver a casa de inmediato. Yo solo obedecí.",
+        "en": "I did not leave my post out of cowardice! That afternoon I received an order sealed by the Red Treasury: return home at once. I only obeyed.",
+        "fr": "Je n’ai pas quitté mon poste par lâcheté ! Cet après-midi-là, j’ai reçu un ordre scellé par la Trésorerie Rouge : rentrer immédiatement. Je n’ai fait qu’obéir."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Otra vez la Tesorería Roja. Las respuestas están al otro lado de la frontera, escriba. En los campamentos goblin.",
+        "en": "The Red Treasury again. The answers lie beyond the border, scribe. In the goblin camps.",
+        "fr": "Encore la Trésorerie Rouge. Les réponses sont de l’autre côté de la frontière, scribe. Dans les camps gobelins."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE soldiers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, kingdom TEXT NOT NULL, rank TEXT NOT NULL);\nINSERT INTO soldiers (name, kingdom, rank) VALUES\n  ('Joss', 'Blue Kingdom', 'guard'),\n  ('Bram', 'Blue Kingdom', 'archer'),\n  ('Sir Garrick', 'Red Kingdom', 'knight'),\n  ('Old Tom', 'Blue Kingdom', 'veteran'),\n  ('Osric', 'Blue Kingdom', 'lancer'),\n  ('Dame Rowena', 'Yellow Kingdom', 'knight'),\n  ('Wren', 'Blue Kingdom', 'archer');\nCREATE TABLE towers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, last_guard_id INTEGER REFERENCES soldiers(id), guarded_on_raid_night INTEGER NOT NULL);\nINSERT INTO towers (name, last_guard_id, guarded_on_raid_night) VALUES\n  ('Northwatch', 1, 1),\n  ('Eastwatch', 7, 1),\n  ('Riverwatch', 3, 0),\n  ('Westwatch', 2, 1),\n  ('Oldwatch', 4, 0),\n  ('Castle keep', 6, 1);",
+  "solution": "SELECT towers.name, soldiers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.last_guard_id = soldiers.id WHERE towers.guarded_on_raid_night = 0;",
+  "check": { "mode": "result", "ignoreColumnNames": true },
+  "examples": {
+    "accepted": [
+      "SELECT t.name AS tower, s.name AS guard, s.kingdom FROM towers t JOIN soldiers s ON s.id = t.last_guard_id WHERE t.guarded_on_raid_night = 0",
+      "SELECT towers.name, soldiers.name, kingdom FROM soldiers INNER JOIN towers ON towers.last_guard_id = soldiers.id WHERE guarded_on_raid_night = 0"
+    ],
+    "rejected": [
+      "SELECT towers.name, soldiers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.last_guard_id = soldiers.id",
+      "SELECT towers.name, soldiers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.id = soldiers.id WHERE towers.guarded_on_raid_night = 0",
+      "SELECT soldiers.name, towers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.last_guard_id = soldiers.id WHERE towers.guarded_on_raid_night = 0",
+      "SELECT name, last_guard_id FROM towers WHERE guarded_on_raid_night = 0"
+    ]
+  }
+}

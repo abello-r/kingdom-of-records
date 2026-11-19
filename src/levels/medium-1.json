@@ -1,0 +1,73 @@
+{
+  "id": "medium-1",
+  "stage": "medium",
+  "order": 1,
+  "concepts": ["SUM", "aggregate functions"],
+  "title": {
+    "es": "El informe del rey",
+    "en": "A Report for the King",
+    "fr": "Un rapport pour le roi"
+  },
+  "narrative": [
+    {
+      "speaker": "narrator",
+      "text": {
+        "es": "El Castillo Azul se alza entre campos dorados por el otoño. En la sala del trono, el rey no quiere historias: quiere números.",
+        "en": "The Blue Castle rises above fields turned gold by autumn. In the throne room, the king wants no stories: he wants numbers.",
+        "fr": "Le Château Bleu domine des champs dorés par l’automne. Dans la salle du trône, le roi ne veut pas d’histoires : il veut des chiffres."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Cuánto oro, cuánta madera y cuánta carne nos queda en todos los almacenes del reino. No me leas fila por fila, escriba: el rey se dormiría.",
+        "en": "How much gold, wood and meat we have left across every storehouse in the realm. Don’t read it row by row, scribe: the king would fall asleep.",
+        "fr": "Combien d’or, de bois et de viande il nous reste dans tous les entrepôts du royaume. Ne lis pas ligne par ligne, scribe : le roi s’endormirait."
+      }
+    }
+  ],
+  "task": {
+    "es": "Muestra en una sola fila el total de `gold`, el total de `wood` y el total de `meat` de la tabla `storehouses`, en ese orden.",
+    "en": "Show, in a single row, the total `gold`, total `wood` and total `meat` of the `storehouses` table, in that order.",
+    "fr": "Affiche sur une seule ligne le total de `gold`, le total de `wood` et le total de `meat` de la table `storehouses`, dans cet ordre."
+  },
+  "hints": [
+    {
+      "es": "Las funciones de agregado resumen muchas filas en un solo valor: `COUNT` cuenta, `SUM` suma, `AVG` hace la media, y `MIN` y `MAX` buscan el menor y el mayor.",
+      "en": "Aggregate functions sum up many rows into one value: `COUNT` counts, `SUM` adds up, `AVG` averages, `MIN` and `MAX` find the smallest and largest.",
+      "fr": "Les fonctions d’agrégat résument plusieurs lignes en une seule valeur : `COUNT` compte, `SUM` additionne, `AVG` fait la moyenne, `MIN` et `MAX` trouvent le plus petit et le plus grand."
+    },
+    {
+      "es": "Se usan dentro del `SELECT`, con la columna entre paréntesis: `SUM(gold)`. Puedes poner varias separadas por comas.",
+      "en": "Use them inside the `SELECT`, with the column in brackets: `SUM(gold)`. You can list several, separated by commas.",
+      "fr": "On les utilise dans le `SELECT`, avec la colonne entre parenthèses : `SUM(gold)`. Tu peux en mettre plusieurs, séparées par des virgules."
+    },
+    {
+      "es": "Casi lo tienes: `SELECT SUM(gold), SUM(wood), ... FROM storehouses;`",
+      "en": "Almost there: `SELECT SUM(gold), SUM(wood), ... FROM storehouses;`",
+      "fr": "Tu y es presque : `SELECT SUM(gold), SUM(wood), ... FROM storehouses;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Setecientas quince monedas de oro. Antes del asalto eran más de mil: solo el almacén real guardaba trescientas, y ahora el Registro dice cero.",
+        "en": "Seven hundred and fifteen gold coins. Before the raid there were over a thousand: the royal storehouse alone held three hundred, and now the Registry says zero.",
+        "fr": "Sept cent quinze pièces d’or. Avant l’attaque, il y en avait plus de mille : l’entrepôt royal à lui seul en gardait trois cents, et le Registre indique zéro."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE storehouses (id INTEGER PRIMARY KEY, name TEXT NOT NULL, village TEXT NOT NULL, gold INTEGER NOT NULL, wood INTEGER NOT NULL, meat INTEGER NOT NULL);\nINSERT INTO storehouses (name, village, gold, wood, meat) VALUES\n  ('Royal storehouse', 'Bluebrook', 0, 40, 25),\n  ('Mill loft', 'Bluebrook', 35, 60, 40),\n  ('Old granary', 'Millford', 120, 80, 90),\n  ('River barn', 'Millford', 60, 45, 30),\n  ('Oak cellar', 'Oakhollow', 80, 150, 60),\n  ('Hunters'' lodge', 'Oakhollow', 20, 30, 110),\n  ('Fern hall', 'Fernvale', 95, 70, 75),\n  ('Stone vault', 'Stonewatch', 210, 20, 35),\n  ('Quarry shed', 'Stonewatch', 40, 90, 15),\n  ('Watch keep', 'Stonewatch', 55, 25, 45);",
+  "solution": "SELECT SUM(gold), SUM(wood), SUM(meat) FROM storehouses;",
+  "check": { "mode": "result", "ignoreColumnNames": true },
+  "examples": {
+    "accepted": ["SELECT SUM(gold) AS gold, SUM(wood) AS wood, SUM(meat) AS meat FROM storehouses"],
+    "rejected": [
+      "SELECT gold, wood, meat FROM storehouses",
+      "SELECT SUM(gold) FROM storehouses",
+      "SELECT COUNT(gold), COUNT(wood), COUNT(meat) FROM storehouses",
+      "SELECT SUM(meat), SUM(wood), SUM(gold) FROM storehouses"
+    ]
+  }
+}
