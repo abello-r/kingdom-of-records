@@ -27,6 +27,13 @@ the game loads and by the test suite (`src/levels/levels.test.ts`). The TypeScri
 
 Speakers: `narrator`, `aldric`, `scribe`, `garrick`, `corvin`, `grubnak`.
 
+Texts may mark code with backticks (`` `role = 'archer'` ``); the UI shows it in the code font. A test
+checks that backticks are balanced in every text.
+
+Writing rules: a level never requires a concept that has not been introduced in an earlier level or in
+its own narrative/hints; hints go from vague to almost the answer; the player is addressed without
+gender in ES and FR. Story facts quoted in texts (totals, names) must match what the solution returns.
+
 ## How attempts are checked
 
 The database is rebuilt from `setup` before **every** attempt, so the player's SQL always starts from
