@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "The Kingdom of Records",
+    "subtitle": "The Chronicles of the Registry"
+  },
+  "a11y": {
+    "skipLink": "Skip to content",
+    "languageSelector": "Language",
+    "locked": "Locked"
+  },
+  "sound": {
+    "mute": "Mute sound",
+    "unmute": "Unmute sound"
+  },
+  "home": {
+    "intro": "Goblins have burned the royal archive. Only the Great Registry survived — a magic book that answers questions asked in an ancient tongue: SQL. You can read it.",
+    "stagesHeading": "Your journey",
+    "progress": "{done} of {total} levels completed",
+    "lockedHint": "Complete \"{previous}\" to unlock."
+  },
+  "stages": {
+    "easy": { "difficulty": "Easy", "name": "The Village in Ashes" },
+    "medium": { "difficulty": "Medium", "name": "The Blue Castle" },
+    "hard": { "difficulty": "Hard", "name": "The Goblin Frontier" }
+  },
+  "footer": {
+    "credits": "Pixel art: Tiny Swords by Pixel Frog · Effects: Will Tice / unTied Games"
+  }
+}

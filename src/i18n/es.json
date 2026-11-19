@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "The Kingdom of Records",
+    "subtitle": "Las Crónicas del Registro"
+  },
+  "a11y": {
+    "skipLink": "Saltar al contenido",
+    "languageSelector": "Idioma",
+    "locked": "Bloqueado"
+  },
+  "sound": {
+    "mute": "Silenciar sonido",
+    "unmute": "Activar sonido"
+  },
+  "home": {
+    "intro": "Los goblins han quemado el archivo real. Solo sobrevivió el Gran Registro, un libro mágico que responde a preguntas hechas en una lengua antigua: SQL. Tú sabes leerlo.",
+    "stagesHeading": "Tu viaje",
+    "progress": "{done} de {total} niveles completados",
+    "lockedHint": "Completa «{previous}» para desbloquear."
+  },
+  "stages": {
+    "easy": { "difficulty": "Fácil", "name": "La Aldea en Cenizas" },
+    "medium": { "difficulty": "Medio", "name": "El Castillo Azul" },
+    "hard": { "difficulty": "Difícil", "name": "La Frontera Goblin" }
+  },
+  "footer": {
+    "credits": "Pixel art: Tiny Swords de Pixel Frog · Efectos: Will Tice / unTied Games"
+  }
+}

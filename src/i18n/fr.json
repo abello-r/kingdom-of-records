@@ -1,0 +1,29 @@
+{
+  "app": {
+    "title": "The Kingdom of Records",
+    "subtitle": "Les Chroniques du Registre"
+  },
+  "a11y": {
+    "skipLink": "Aller au contenu",
+    "languageSelector": "Langue",
+    "locked": "Verrouillé"
+  },
+  "sound": {
+    "mute": "Couper le son",
+    "unmute": "Activer le son"
+  },
+  "home": {
+    "intro": "Les gobelins ont brûlé les archives royales. Seul le Grand Registre a survécu : un livre magique qui répond aux questions posées dans une langue ancienne, le SQL. Toi, tu sais le lire.",
+    "stagesHeading": "Ton voyage",
+    "progress": "{done} niveaux terminés sur {total}",
+    "lockedHint": "Termine « {previous} » pour débloquer."
+  },
+  "stages": {
+    "easy": { "difficulty": "Facile", "name": "Le Village en Cendres" },
+    "medium": { "difficulty": "Moyen", "name": "Le Château Bleu" },
+    "hard": { "difficulty": "Difficile", "name": "La Frontière Gobeline" }
+  },
+  "footer": {
+    "credits": "Pixel art : Tiny Swords par Pixel Frog · Effets : Will Tice / unTied Games"
+  }
+}
