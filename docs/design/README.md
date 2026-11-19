@@ -1,7 +1,18 @@
 # Design — The Kingdom of Records
 
-Status: **Phase 4 mock-ups, second round, pending validation.** Static compositions built with the
-real Tiny Swords / SPE art; no game code yet.
+Status: **mock-ups validated; implemented in Phase 4** with the adjustments below. The mock-ups in
+`mockups/` are the design reference; screenshots of the real game are in `screens/`.
+
+## Adjustments made while implementing (requested at validation)
+
+| Request | Implementation |
+|---|---|
+| Clear hint counter | "Pista · quedan 2" / "Hint · 2 left" / "Indice · il en reste 2"; disabled with "No quedan pistas" at 0. |
+| Success sparkle from the tick, not over the table | The burst is anchored to the ✓ of the success note. |
+| Compact phone header, no cut sprites | On phones the controls are a solid bar above the scene (smaller buttons); the level title sits below the scene. |
+| Phone dialogue bubbles | Portraits (40 px) sit above the bubble, so the text keeps the full width. |
+| Map progress bar | Empty part in dark wood (`#2e1b15`), filled part kit blue. |
+| Sound button | Back to the round kit button with a parchment speaker; the icon has a thin ink outline for ≥ 3:1 contrast. |
 
 ## Idea
 
