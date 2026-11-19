@@ -1,5 +1,4 @@
-import '@fontsource/pixelify-sans/latin-400.css';
-import '@fontsource/pixelify-sans/latin-700.css';
+import '@fontsource/jersey-10/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import './styles/main.css';
 import sqlWasmUrl from 'sql.js/dist/sql-wasm-browser.wasm?url';

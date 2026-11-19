@@ -10,7 +10,7 @@ pack folders are never modified and are not tracked by git.
 | Pack strategy | TS-2 is the base. TS-1 only for what TS-2 lacks (goblins, destroyed / construction states, gold mine, deco). SPE only as short UI feedback. On-screen text is always HTML, never baked into images. |
 | Licences | Both Tiny Swords packs: personal and commercial use, modification allowed, credit optional (given anyway), older versions also allowed by the author, no AI training. SPE: credit "Will Tice / unTied Games", no redistribution of loose files. Details in `/public/assets/CREDITS.md`. |
 | Audio | None for now. A mute toggle is present in the UI, ready for later. |
-| Fonts | Pixelify Sans (UI text) and JetBrains Mono (SQL editor), both SIL OFL 1.1, bundled locally (no CDN). |
+| Fonts | Jersey 10 (all UI text) and JetBrains Mono (SQL editor and result tables only), both SIL OFL 1.1, bundled locally (no CDN). Pixelify Sans was dropped: its "5" looks like "S" and "C" like "O" (see `docs/design/font-comparison.png`). Press Start 2P may be tried for the logo only in the Phase 4 mock-ups. |
 | Hover / disabled buttons | CSS filters. |
 | Language selector | Text labels `ES · EN · FR`. |
 | Lock icon | CSS / inline SVG. |

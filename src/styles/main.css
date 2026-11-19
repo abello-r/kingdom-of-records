@@ -17,7 +17,8 @@
   --c-dusk: #3f7f7b;
   --c-locked: #6b6f7a;
 
-  --font-ui: 'Pixelify Sans', system-ui, sans-serif;
+  /* Jersey 10 has a single weight: never let the browser fake bold or italic pixel glyphs. */
+  --font-ui: 'Jersey 10', system-ui, sans-serif;
   --font-code: 'JetBrains Mono', ui-monospace, monospace;
 
   --gutter: 16px;
@@ -43,8 +44,9 @@ body {
   background: var(--c-sea);
   color: var(--c-ink);
   font-family: var(--font-ui);
-  font-size: 1.125rem;
-  line-height: 1.5;
+  font-size: 1.5rem; /* Jersey 10 is condensed: 24px reads like ~18px of a regular font */
+  line-height: 1.3;
+  font-synthesis: none;
 }
 
 #app {

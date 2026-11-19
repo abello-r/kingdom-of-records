@@ -32,7 +32,7 @@ Both fonts are bundled locally with the game (no CDN), from the `@fontsource` np
 
 | Font | Use | Authors | Licence |
 |---|---|---|---|
-| Pixelify Sans | Interface and story text | The Pixelify Sans Project Authors (https://github.com/eifetx/Pixelify-Sans) | SIL Open Font License 1.1 — [`licenses/PixelifySans-OFL.txt`](licenses/PixelifySans-OFL.txt) |
+| Jersey 10 | Interface and story text | The Soft Type Project Authors (https://github.com/scfried/soft-type-jersey) | SIL Open Font License 1.1 — [`licenses/Jersey10-OFL.txt`](licenses/Jersey10-OFL.txt) |
 | JetBrains Mono | SQL editor and results | The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono) | SIL Open Font License 1.1 — [`licenses/JetBrainsMono-OFL.txt`](licenses/JetBrainsMono-OFL.txt) |
 
 ## Audio
