@@ -27,10 +27,12 @@ The build output in `dist/` is a static site and can be served from any static h
 ## Project layout
 
 ```
-docs/              Asset inventory (ASSETS.md) and story (STORY.md)
+docs/              Asset inventory, story, level file format, design references
 public/assets/     Cleaned copies of the art used by the game + CREDITS.md and licences
 src/
-  db/              sql.js loader (SQL engine)
+  db/              sql.js loader
+  engine/          SQL runner, answer validation, friendly errors, Web Worker client
+  levels/          One JSON file per level + loader and content tests
   i18n/            Translations: es.json, en.json, fr.json
   state/           Levels, progress and settings (persisted in localStorage)
   styles/          Global CSS
@@ -40,6 +42,12 @@ src/
 
 The original asset packs live at the repository root for reference only. They are never modified and
 are not tracked by git.
+
+## SQL engine
+
+Player queries run in SQLite (sql.js) inside a Web Worker, on a database rebuilt from the level data
+before every attempt; queries running longer than 3 seconds are stopped. How answers are checked and
+how to write a level: [`docs/LEVEL_FORMAT.md`](docs/LEVEL_FORMAT.md).
 
 ## Languages
 
