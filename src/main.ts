@@ -5,7 +5,7 @@ import './styles/main.css';
 import sqlWasmUrl from 'sql.js/dist/sql-wasm-browser.wasm?url';
 
 import { I18n } from './i18n';
-import { loadSqlEngine } from './db/engine';
+import { SqlClient } from './engine/client';
 import { Progress } from './state/progress';
 import { loadSettings, saveSettings } from './state/settings';
 import { createBrowserStore } from './state/storage';
@@ -54,10 +54,13 @@ i18n.onChange(() => {
 app.append(header.element, main, footer);
 render();
 
-// Warm up the SQL engine in the background so the first level opens instantly (used from Phase 2).
+// The SQL engine lives in a Web Worker; warm it up in the background so the first level opens instantly.
+// The wasm URL is made absolute because the worker resolves relative URLs from its own location.
+const sqlClient = new SqlClient(new URL(sqlWasmUrl, document.baseURI).href);
 const root = document.documentElement;
 root.dataset.sqlEngine = 'loading';
-loadSqlEngine(sqlWasmUrl)
+sqlClient
+  .warmup()
   .then(() => (root.dataset.sqlEngine = 'ready'))
   .catch((error: unknown) => {
     root.dataset.sqlEngine = 'error';
