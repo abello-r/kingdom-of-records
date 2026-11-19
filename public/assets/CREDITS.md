@@ -3,6 +3,13 @@
 All third-party assets used by **The Kingdom of Records**, where they come from and under which terms.
 Original packs are kept unmodified outside this folder; only cleaned copies are placed in `public/assets/`.
 
+## How the files here are made
+
+`scripts/build_assets.py` copies the images the game uses from the original packs, with clean names.
+Some are recomposed so the browser can use them directly: 9-slice panels joined into contiguous images,
+single animation frames, portraits cropped to their content, and map standards built from the small
+ribbons. The original packs are never modified.
+
 ## Pixel art
 
 ### Tiny Swords — Pixel Frog
