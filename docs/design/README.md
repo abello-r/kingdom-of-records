@@ -1,71 +1,89 @@
 # Design — The Kingdom of Records
 
-Status: **Phase 4 mock-ups, pending validation.** Screenshots in [`mockups/`](mockups/). They are
-static compositions built with the real Tiny Swords / SPE art; no game code yet.
+Status: **Phase 4 mock-ups, second round, pending validation.** Static compositions built with the
+real Tiny Swords / SPE art; no game code yet.
 
 ## Idea
 
-The level screen **is the Great Registry, open on a wooden lectern**. Left page: the story and the
-task. Right page: the player's spell (the SQL editor) and the Registry's answer. Above the book, a
-live diorama of the current region, built tile by tile from Tiny Swords, reacts to the answers
-(e.g. archers appear on the towers when the player finds them). That is the one bold element;
-everything else stays quiet.
+The level screen **is the Great Registry, open on a wooden lectern**. Left page: the story, the task
+and any hint the player asked for. Right page: the player's spell (the SQL editor) and the Registry's
+answer. Above the book, a diorama of the current region, built tile by tile from Tiny Swords, reacts
+to the answers. That is the one bold element; everything else stays quiet.
 
-No pop-ups: when an answer is right, the story continues on the left page (the new line is outlined
-in gold) and a "Turn the page" button appears. Errors are written on the spell page, in the
-Registry's voice, with a tip when one applies.
+No pop-ups. When an answer is right:
+- the story continues on the left page (the new line is outlined in kit blue);
+- a single success note appears on the right page, with any extra advice (e.g. double quotes) as a
+  small aside inside it;
+- a short effect plays on the book (≈ 600 ms sparkle burst around the success note — SPE
+  `round_sparkle_burst_001` + `status_sparkling_001`), never over the controls;
+- the diorama characters celebrate (pawns hop with a dust puff, Aldric raises his sword, sheep jump,
+  archers appear on the towers when the level is about them);
+- "Turn the page" becomes the primary action.
 
-## Tokens
+All motion respects `prefers-reduced-motion` (the effect is replaced by the static note).
 
-| Name | Hex | Use |
+## Colour rules
+
+All colours are sampled from the Tiny Swords art.
+
+| Token | Hex | Use |
 |---|---|---|
-| Sea | `#47aba9` | World background (taken from TS-2 `Water Background color`) |
+| Sea | `#47aba9` | World background (TS-2 water) |
 | Parchment | `#eee1c6` | Pages, light surfaces (TS-2 paper) |
-| Ink | `#1d2334` | Text, outlines, focus ring backing |
-| Royal blue | `#2e5f8a` | Primary action ("Cast spell"), Blue Kingdom |
-| Gold | `#f2c14e` | Rewards, completed levels, focus ring, "next" action |
-| Ember | `#b9483f` | Errors (light tint `#f3d6cf` for the error note) |
-| Wood dark | `#4d2d22` | Language plank, mobile dock |
+| Ink | `#161c2e` | Text and outlines (TS-2 outline) |
+| Kit blue | `#41919d` (light `#4ea39c`, shade `#4a6982`) | Secondary buttons, progress fill, the line that just appeared, hint card |
+| **Kit yellow** | `#bbb552` (shade `#a38250`) | **Only the primary action of each screen** |
+| Wood | `#9b6253`, light `#d7b888`, dark `#4d2d22` | Lectern, poles, progress track, language plank |
+| Ember | `#b9483f` (tint `#f3d6cf`) | Errors |
 
-Code ink (editor and results only): keywords `#2e5f8a`, text values `#9b3b2e`, numbers `#4f7a28`.
+Primary action per screen: Home "Seguir leyendo"; Map "Abrir esta página"; Level "Lanzar conjuro"
+until solved, then "Pasar página" (and "Lanzar conjuro" turns kit blue). Nothing else is yellow.
+Text on kit blue is ink (4.4:1; parchment would be 2.8:1). Ink on kit yellow is 7.3:1.
+Keyboard focus: parchment ring on ink (no yellow).
 
-Stage terrain: Easy `Tilemap_color1/2` (spring green), Medium `Tilemap_color4` (autumn olive),
-Hard `Tilemap_color5` (dusk teal). Locked regions are desaturated and covered by clouds.
+Stage terrain: Easy `Tilemap_color1/2`, Medium `Tilemap_color4`, Hard `Tilemap_color5`. Stage name
+ribbons: blue, purple, red. Locked regions are desaturated and covered by clouds.
 
 ## Type
 
-- **Jersey 10** for everything (logo included). Sizes: 22 / 24 (body) / 28 / 34 (page heads) /
-  140 (logo). No faux bold or italic.
-- **JetBrains Mono** only for SQL: editor, results tables, table/column chips, inline code.
-- Press Start 2P was tried for the logo (`mockups/home-press.png`): it reads as 8-bit arcade and
-  clashes with the soft, chunky Tiny Swords line. Recommendation: Jersey 10 (`mockups/home-jersey.png`).
+- **Jersey 10** for everything, logo included (decided). No faux bold or italic.
+- **JetBrains Mono** only for SQL: editor, results, table/column chips, identifiers inside messages
+  (e.g. "no column called `archer`" shows `archer` as a code chip, not in quotes).
+- Jersey 10 draws « » as two separate chevrons that read like "<<". The two guillemet glyphs are taken
+  from JetBrains Mono via `unicode-range` (needed for ES and FR).
 
 ## Components
 
-- Panels: TS-2 parchment and wood table as 9-slice `border-image` at 1× (slices rebuilt into
-  contiguous images, since the originals have gaps between cells).
-- Titles: TS-2 ribbons (big on the home screen, small in the level header and on the map).
-- Buttons: CSS pixel buttons in the palette (ink outline, top highlight, bottom shade, pressed state
-  by moving down). The TS-2 button images only stay crisp at large sizes.
-- Map: one island per stage; levels are numbered tokens on a dotted route (numbering is meaningful:
-  the levels are a sequence). States: done (gold + tick), current (blue + gold ring), locked (grey +
-  padlock).
+- Panels: TS-2 parchment and wood table as 9-slice `border-image` at 1×.
+- Map nodes: **standards** made from TS-2 small ribbons (body + forked tail, rotated) on a wooden pole.
+  Done: kit blue + tick. Current: kit blue, raised, parchment outline, Pip standing at its foot.
+  Locked: slate (black ribbon) + padlock.
+- Buttons: CSS pixel buttons (ink outline, top highlight, bottom shade). The TS-2 button images only
+  stay crisp at large sizes.
+- Hint button: always visible next to "Lanzar conjuro", with a counter of the hints **left**
+  (`2/3`; disabled at `0/3`). Revealed hints appear on the story page, below the task.
+- "Borrar" (clear) sits on the spell heading row, so it never covers the code.
 - Always visible: back button (top left), `ES · EN · FR` plank and mute button (top right).
 
-## Responsive and accessibility
+## Responsive
 
-- Desktop: two pages side by side. Phone (≤ 760 px): one column, no wood frame, the level title
-  moves to the bottom of the diorama, and a fixed dock at the bottom holds "Cast spell" and "Hint".
-- Text contrast ≥ 4.5:1 on parchment; focus ring gold on ink; all actions are real buttons;
-  diorama is decorative (`aria-hidden`); motion limited to the reacting diorama and respects
-  `prefers-reduced-motion`.
+Desktop: two pages side by side. Phone (≤ 760 px): one column, no wood frame, level title at the bottom
+of the diorama, and a sticky bar with the primary action and the hint button.
 
-## Screens
+## Files
 
 | File | Shows |
 |---|---|
-| `home-jersey.png` / `home-press.png` | Title screen, returning player, logo comparison |
-| `map.png` | Kingdom map: Easy done, Medium in progress (level 3 selected), Hard locked |
-| `level-error.png` | Level, SQL error with tip (`role = archer` without quotes) |
-| `level-success.png` | Same level solved with `"archer"`: result, soft double-quote notice, story continues, archers on the towers |
-| `level-mobile.png` / `level-mobile-full.png` | Phone, first screen and full page (the dock is fixed at the bottom on a real phone) |
+| `home.png` | Title screen, returning player (same progress as the map: Medium 3) |
+| `home-press.png` | Logo test with Press Start 2P (rejected, kept for reference) |
+| `map.png` | Kingdom map: Easy done, Medium on level 3, Hard locked |
+| `level-error.png` | Level with an SQL error and tip, one hint revealed (2 left) |
+| `level-success.png` | Same level solved: story continues, success note with aside, sparkles, celebrating diorama |
+| `level-mobile.png` / `level-mobile-full.png` | Phone: first screen, and full page in the success state |
+
+Sources: `home.html`, `map.html`, `level.html` (`?state=error|success`), `kit.css`, `world.js`.
+Open them directly in a browser after `npm install` (fonts are read from `node_modules`).
+`a/` holds images cut from the original packs; rebuild it with
+`python prep.py <project root> a` (requires Pillow). These are design references only: the game's
+own assets go to `public/assets/` in Phase 5. The repository is private; SPE frames must not be
+redistributed outside the game (see `public/assets/CREDITS.md`).
