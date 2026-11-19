@@ -26,6 +26,16 @@ describe('Progress', () => {
     expect(p.isStageUnlocked('hard')).toBe(false);
   });
 
+  it('knows the next level to read', () => {
+    const p = new Progress(createMemoryStore());
+    expect(p.nextLevel()).toBe('easy-1');
+    levelsOf('easy').forEach((id) => p.complete(id));
+    p.complete('medium-1');
+    expect(p.nextLevel()).toBe('medium-2');
+    [...levelsOf('medium'), ...levelsOf('hard')].forEach((id) => p.complete(id));
+    expect(p.nextLevel()).toBeNull();
+  });
+
   it('persists progress across instances', () => {
     const store = createMemoryStore();
     new Progress(store).complete('easy-1');

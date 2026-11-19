@@ -58,6 +58,11 @@ export class Progress {
     return parsed.n === 1 || this.completed.has(`${parsed.stage}-${parsed.n - 1}`);
   }
 
+  /** First unlocked level not yet completed, in game order; `null` when everything is done. */
+  nextLevel(): LevelId | null {
+    return ALL_LEVELS.find((id) => !this.completed.has(id) && this.isLevelUnlocked(id)) ?? null;
+  }
+
   completedCount(): number {
     return this.completed.size;
   }
