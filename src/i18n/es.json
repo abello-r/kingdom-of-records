@@ -6,30 +6,98 @@
   "a11y": {
     "skipLink": "Saltar al contenido",
     "languageSelector": "Idioma",
-    "locked": "Bloqueado"
+    "locked": "Bloqueado",
+    "backToMap": "Volver al mapa",
+    "backToHome": "Volver a la portada",
+    "editor": "Editor SQL",
+    "scene": "Escena"
   },
   "sound": {
     "mute": "Silenciar sonido",
     "unmute": "Activar sonido"
   },
   "home": {
-    "intro": "Los goblins han quemado el archivo real. Solo sobrevivió el Gran Registro, un libro mágico que responde a preguntas hechas en una lengua antigua: SQL. Tú sabes leerlo.",
-    "stagesHeading": "Tu viaje",
-    "progress": "{done} de {total} niveles completados",
-    "lockedHint": "Completa «{previous}» para desbloquear."
+    "start": "Abrir el Registro",
+    "continue": "Seguir leyendo",
+    "resume": "Te quedaste en «{level}»",
+    "allDone": "El Registro está restaurado. Vuelve a leerlo cuando quieras.",
+    "map": "Ver el mapa"
+  },
+  "map": {
+    "title": "El reino",
+    "progress": "{done} de {total} conjuros",
+    "levelOf": "Nivel {n} de {stage}",
+    "open": "Abrir esta página",
+    "again": "Volver a leer esta página",
+    "lockedStage": "Se abre al completar {previous}",
+    "nodeLabel": "Nivel {n}: {title}",
+    "done": "completado",
+    "current": "siguiente por leer",
+    "locked": "bloqueado"
   },
   "stages": {
-    "easy": { "difficulty": "Fácil", "name": "La Aldea en Cenizas" },
-    "medium": { "difficulty": "Medio", "name": "El Castillo Azul" },
-    "hard": { "difficulty": "Difícil", "name": "La Frontera Goblin" }
+    "easy": {
+      "difficulty": "Fácil",
+      "name": "La Aldea en Cenizas"
+    },
+    "medium": {
+      "difficulty": "Medio",
+      "name": "El Castillo Azul"
+    },
+    "hard": {
+      "difficulty": "Difícil",
+      "name": "La Frontera Goblin"
+    }
+  },
+  "speakers": {
+    "aldric": "Sir Aldric",
+    "scribe": "Pip",
+    "garrick": "Sir Garrick",
+    "corvin": "Corvin",
+    "grubnak": "Grubnak"
+  },
+  "level": {
+    "task": "Tu tarea",
+    "schema": "Lo que guarda el Registro",
+    "spell": "Tu conjuro",
+    "run": "Lanzar conjuro",
+    "running": "Lanzando…",
+    "clear": "Borrar",
+    "shortcut": "Atajo:",
+    "answer": "Respuesta del Registro",
+    "waiting": "Lanza tu conjuro para ver qué responde el Registro.",
+    "hintTitle": "Pista {n} de {total}",
+    "hint": {
+      "one": "Pista · queda {count}",
+      "other": "Pista · quedan {count}"
+    },
+    "noHints": "No quedan pistas",
+    "rows": {
+      "one": "{count} fila",
+      "other": "{count} filas"
+    },
+    "noRows": "Ninguna fila",
+    "changes": {
+      "one": "{count} fila modificada",
+      "other": "{count} filas modificadas"
+    },
+    "tableNow": "Así queda la tabla {table}",
+    "success": "¡El Registro te responde! Tu conjuro es correcto.",
+    "next": "Pasar página",
+    "toMap": "Volver al mapa",
+    "finish": "Cerrar el libro",
+    "engineError": "No se ha podido abrir el Registro. Recarga la página para intentarlo de nuevo."
+  },
+  "notices": {
+    "doubleQuotes": "Un consejo: en SQL los textos van entre comillas simples: {value}. Las dobles son para nombres de tablas y columnas."
   },
   "sqlErrors": {
-    "noSuchTable": "No existe ninguna tabla llamada «{table}». Revisa el nombre en la lista de tablas.",
-    "noSuchColumn": "No existe ninguna columna llamada «{column}». Revisa cómo se escribe y a qué tabla pertenece.",
-    "syntaxNear": "El Registro no ha entendido el conjuro cerca de «{token}».",
+    "noSuchTable": "No existe ninguna tabla llamada {table}. Revisa el nombre en la lista de tablas.",
+    "noSuchColumn": "No existe ninguna columna llamada {column}. Revisa cómo se escribe y a qué tabla pertenece.",
+    "syntaxNear": "El Registro no ha entendido el conjuro cerca de {token}.",
     "incomplete": "La consulta termina antes de tiempo. Falta algo al final (una condición, una columna, un paréntesis…).",
     "unrecognizedToken": "Símbolo desconocido: {token}",
-    "ambiguousColumn": "«{column}» existe en más de una tabla. Indica cuál, por ejemplo tabla.{column}.",
+    "ambiguousColumn": "{column} existe en más de una tabla. Indica cuál, por ejemplo tabla.{column}.",
     "aggregateMisuse": "{fn}() no se puede usar aquí. Para filtrar por un agregado, usa HAVING después de GROUP BY.",
     "havingWithoutGroupBy": "HAVING necesita un GROUP BY antes.",
     "unique": "Ese valor ya existe en {column} y no se puede repetir.",

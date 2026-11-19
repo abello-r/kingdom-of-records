@@ -6,30 +6,98 @@
   "a11y": {
     "skipLink": "Skip to content",
     "languageSelector": "Language",
-    "locked": "Locked"
+    "locked": "Locked",
+    "backToMap": "Back to the map",
+    "backToHome": "Back to the title screen",
+    "editor": "SQL editor",
+    "scene": "Scene"
   },
   "sound": {
     "mute": "Mute sound",
     "unmute": "Unmute sound"
   },
   "home": {
-    "intro": "Goblins have burned the royal archive. Only the Great Registry survived — a magic book that answers questions asked in an ancient tongue: SQL. You can read it.",
-    "stagesHeading": "Your journey",
-    "progress": "{done} of {total} levels completed",
-    "lockedHint": "Complete \"{previous}\" to unlock."
+    "start": "Open the Registry",
+    "continue": "Keep reading",
+    "resume": "You stopped at «{level}»",
+    "allDone": "The Registry is restored. Read it again whenever you like.",
+    "map": "See the map"
+  },
+  "map": {
+    "title": "The kingdom",
+    "progress": "{done} of {total} spells",
+    "levelOf": "Level {n} of {stage}",
+    "open": "Open this page",
+    "again": "Read this page again",
+    "lockedStage": "Opens when you complete {previous}",
+    "nodeLabel": "Level {n}: {title}",
+    "done": "completed",
+    "current": "next to read",
+    "locked": "locked"
   },
   "stages": {
-    "easy": { "difficulty": "Easy", "name": "The Village in Ashes" },
-    "medium": { "difficulty": "Medium", "name": "The Blue Castle" },
-    "hard": { "difficulty": "Hard", "name": "The Goblin Frontier" }
+    "easy": {
+      "difficulty": "Easy",
+      "name": "The Village in Ashes"
+    },
+    "medium": {
+      "difficulty": "Medium",
+      "name": "The Blue Castle"
+    },
+    "hard": {
+      "difficulty": "Hard",
+      "name": "The Goblin Frontier"
+    }
+  },
+  "speakers": {
+    "aldric": "Sir Aldric",
+    "scribe": "Pip",
+    "garrick": "Sir Garrick",
+    "corvin": "Corvin",
+    "grubnak": "Grubnak"
+  },
+  "level": {
+    "task": "Your task",
+    "schema": "What the Registry holds",
+    "spell": "Your spell",
+    "run": "Cast spell",
+    "running": "Casting…",
+    "clear": "Clear",
+    "shortcut": "Shortcut:",
+    "answer": "The Registry's answer",
+    "waiting": "Cast your spell to see what the Registry answers.",
+    "hintTitle": "Hint {n} of {total}",
+    "hint": {
+      "one": "Hint · {count} left",
+      "other": "Hint · {count} left"
+    },
+    "noHints": "No hints left",
+    "rows": {
+      "one": "{count} row",
+      "other": "{count} rows"
+    },
+    "noRows": "No rows",
+    "changes": {
+      "one": "{count} row changed",
+      "other": "{count} rows changed"
+    },
+    "tableNow": "The table {table} now",
+    "success": "The Registry answers! Your spell is right.",
+    "next": "Turn the page",
+    "toMap": "Back to the map",
+    "finish": "Close the book",
+    "engineError": "The Registry could not be opened. Reload the page to try again."
+  },
+  "notices": {
+    "doubleQuotes": "A tip: in SQL, texts go in single quotes: {value}. Double quotes are for the names of tables and columns."
   },
   "sqlErrors": {
-    "noSuchTable": "There is no table called \"{table}\". Check the name in the list of tables.",
-    "noSuchColumn": "There is no column called \"{column}\". Check its spelling and which table it belongs to.",
-    "syntaxNear": "The Registry did not understand the spell near \"{token}\".",
+    "noSuchTable": "There is no table called {table}. Check the name in the list of tables.",
+    "noSuchColumn": "There is no column called {column}. Check its spelling and which table it belongs to.",
+    "syntaxNear": "The Registry did not understand the spell near {token}.",
     "incomplete": "The query ends too soon. Something is missing at the end (a condition, a column, a closing bracket…).",
     "unrecognizedToken": "Unknown symbol: {token}",
-    "ambiguousColumn": "\"{column}\" exists in more than one table. Say which one, e.g. table.{column}.",
+    "ambiguousColumn": "{column} exists in more than one table. Say which one, e.g. table.{column}.",
     "aggregateMisuse": "{fn}() cannot be used here. To filter by an aggregate, use HAVING after GROUP BY.",
     "havingWithoutGroupBy": "HAVING needs a GROUP BY before it.",
     "unique": "That value already exists in {column}, and it must be unique.",

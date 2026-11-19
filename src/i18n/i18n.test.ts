@@ -39,11 +39,20 @@ describe('I18n', () => {
     const seen: string[] = [];
     i18n.onChange((lang) => seen.push(lang));
 
-    expect(i18n.t('home.progress', { done: 2, total: 15 })).toBe('2 of 15 levels completed');
+    expect(i18n.t('map.progress', { done: 2, total: 15 })).toBe('2 of 15 spells');
     i18n.setLanguage('es');
     expect(i18n.t('stages.easy.name')).toBe('La Aldea en Cenizas');
     i18n.setLanguage('es'); // same language: no event
     expect(seen).toEqual(['es']);
+  });
+
+  it('picks plural forms per language', () => {
+    expect(new I18n('en').tp('level.rows', 1)).toBe('1 row');
+    expect(new I18n('en').tp('level.rows', 0)).toBe('0 rows');
+    expect(new I18n('es').tp('level.rows', 4)).toBe('4 filas');
+    expect(new I18n('fr').tp('level.rows', 0)).toBe('0 ligne');
+    expect(new I18n('fr').tp('level.rows', 2)).toBe('2 lignes');
+    expect(new I18n('es').tp('level.hint', 2)).toBe('Pista · quedan 2');
   });
 
   it('returns the key for unknown entries so gaps are visible', () => {

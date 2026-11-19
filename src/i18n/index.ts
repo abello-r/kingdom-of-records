@@ -24,6 +24,12 @@ export function interpolate(text: string, params: Record<string, string | number
   );
 }
 
+/** CLDR plural category for the supported languages (French treats 0 as singular). */
+export function pluralForm(lang: Language, count: number): 'one' | 'other' {
+  if (lang === 'fr') return count === 0 || count === 1 ? 'one' : 'other';
+  return count === 1 ? 'one' : 'other';
+}
+
 type Listener = (lang: Language) => void;
 
 export class I18n {
@@ -48,7 +54,16 @@ export class I18n {
 
   /** Translates a key; falls back to English, then to the key itself so gaps are visible. */
   t(key: string, params?: Record<string, string | number>): string {
-    const text = lookup(MESSAGES[this.lang], key) ?? lookup(MESSAGES.en, key) ?? key;
-    return interpolate(text, params);
+    return interpolate(this.raw(key), params);
+  }
+
+  /** Untranslated template (placeholders kept), for callers that render rich parameters. */
+  raw(key: string): string {
+    return lookup(MESSAGES[this.lang], key) ?? lookup(MESSAGES.en, key) ?? key;
+  }
+
+  /** Plural-aware translation: uses `key.one` / `key.other` and provides `{count}`. */
+  tp(key: string, count: number, params: Record<string, string | number> = {}): string {
+    return this.t(`${key}.${pluralForm(this.lang, count)}`, { ...params, count });
   }
 }

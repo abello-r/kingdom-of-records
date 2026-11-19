@@ -6,30 +6,98 @@
   "a11y": {
     "skipLink": "Aller au contenu",
     "languageSelector": "Langue",
-    "locked": "Verrouillé"
+    "locked": "Verrouillé",
+    "backToMap": "Retour à la carte",
+    "backToHome": "Retour à l’écran titre",
+    "editor": "Éditeur SQL",
+    "scene": "Scène"
   },
   "sound": {
     "mute": "Couper le son",
     "unmute": "Activer le son"
   },
   "home": {
-    "intro": "Les gobelins ont brûlé les archives royales. Seul le Grand Registre a survécu : un livre magique qui répond aux questions posées dans une langue ancienne, le SQL. Toi, tu sais le lire.",
-    "stagesHeading": "Ton voyage",
-    "progress": "{done} niveaux terminés sur {total}",
-    "lockedHint": "Termine « {previous} » pour débloquer."
+    "start": "Ouvrir le Registre",
+    "continue": "Reprendre la lecture",
+    "resume": "Ta lecture s’est arrêtée à « {level} »",
+    "allDone": "Le Registre est restauré. Relis-le quand tu veux.",
+    "map": "Voir la carte"
+  },
+  "map": {
+    "title": "Le royaume",
+    "progress": "{done} sorts sur {total}",
+    "levelOf": "Niveau {n} de {stage}",
+    "open": "Ouvrir cette page",
+    "again": "Relire cette page",
+    "lockedStage": "S’ouvre quand tu auras terminé {previous}",
+    "nodeLabel": "Niveau {n} : {title}",
+    "done": "terminé",
+    "current": "à lire ensuite",
+    "locked": "verrouillé"
   },
   "stages": {
-    "easy": { "difficulty": "Facile", "name": "Le Village en Cendres" },
-    "medium": { "difficulty": "Moyen", "name": "Le Château Bleu" },
-    "hard": { "difficulty": "Difficile", "name": "La Frontière Gobeline" }
+    "easy": {
+      "difficulty": "Facile",
+      "name": "Le Village en Cendres"
+    },
+    "medium": {
+      "difficulty": "Moyen",
+      "name": "Le Château Bleu"
+    },
+    "hard": {
+      "difficulty": "Difficile",
+      "name": "La Frontière Gobeline"
+    }
+  },
+  "speakers": {
+    "aldric": "Sire Aldric",
+    "scribe": "Pip",
+    "garrick": "Sire Garrick",
+    "corvin": "Corvin",
+    "grubnak": "Grubnak"
+  },
+  "level": {
+    "task": "Ta mission",
+    "schema": "Ce que contient le Registre",
+    "spell": "Ton sort",
+    "run": "Lancer le sort",
+    "running": "Lancement…",
+    "clear": "Effacer",
+    "shortcut": "Raccourci :",
+    "answer": "La réponse du Registre",
+    "waiting": "Lance ton sort pour voir ce que répond le Registre.",
+    "hintTitle": "Indice {n} sur {total}",
+    "hint": {
+      "one": "Indice · il en reste {count}",
+      "other": "Indice · il en reste {count}"
+    },
+    "noHints": "Plus d’indices",
+    "rows": {
+      "one": "{count} ligne",
+      "other": "{count} lignes"
+    },
+    "noRows": "Aucune ligne",
+    "changes": {
+      "one": "{count} ligne modifiée",
+      "other": "{count} lignes modifiées"
+    },
+    "tableNow": "La table {table} maintenant",
+    "success": "Le Registre te répond ! Ton sort est juste.",
+    "next": "Tourner la page",
+    "toMap": "Retour à la carte",
+    "finish": "Refermer le livre",
+    "engineError": "Impossible d’ouvrir le Registre. Recharge la page pour réessayer."
+  },
+  "notices": {
+    "doubleQuotes": "Un conseil : en SQL, les textes s’écrivent entre apostrophes : {value}. Les guillemets doubles servent aux noms de tables et de colonnes."
   },
   "sqlErrors": {
-    "noSuchTable": "Aucune table ne s’appelle « {table} ». Vérifie le nom dans la liste des tables.",
-    "noSuchColumn": "Aucune colonne ne s’appelle « {column} ». Vérifie l’orthographe et sa table.",
-    "syntaxNear": "Le Registre n’a pas compris le sort près de « {token} ».",
+    "noSuchTable": "Aucune table ne s’appelle {table}. Vérifie le nom dans la liste des tables.",
+    "noSuchColumn": "Aucune colonne ne s’appelle {column}. Vérifie l’orthographe et sa table.",
+    "syntaxNear": "Le Registre n’a pas compris le sort près de {token}.",
     "incomplete": "La requête s’arrête trop tôt. Il manque quelque chose à la fin (une condition, une colonne, une parenthèse…).",
     "unrecognizedToken": "Symbole inconnu : {token}",
-    "ambiguousColumn": "« {column} » existe dans plusieurs tables. Précise laquelle, par exemple table.{column}.",
+    "ambiguousColumn": "{column} existe dans plusieurs tables. Précise laquelle, par exemple table.{column}.",
     "aggregateMisuse": "{fn}() ne peut pas être utilisée ici. Pour filtrer sur un agrégat, utilise HAVING après GROUP BY.",
     "havingWithoutGroupBy": "HAVING a besoin d’un GROUP BY avant.",
     "unique": "Cette valeur existe déjà dans {column} et ne peut pas être répétée.",
