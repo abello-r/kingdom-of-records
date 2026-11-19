@@ -1,11 +1,21 @@
 import { autocompletion, closeBrackets, closeBracketsKeymap, completionKeymap } from '@codemirror/autocomplete';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-import { SQLite, sql } from '@codemirror/lang-sql';
-import { HighlightStyle, bracketMatching, syntaxHighlighting } from '@codemirror/language';
-import { Compartment, EditorState } from '@codemirror/state';
-import { EditorView, keymap, lineNumbers, placeholder } from '@codemirror/view';
+import { sql } from '@codemirror/lang-sql';
+import { HighlightStyle, bracketMatching, syntaxHighlighting, syntaxTree } from '@codemirror/language';
+import { Compartment, EditorState, RangeSetBuilder } from '@codemirror/state';
+import {
+  Decoration,
+  EditorView,
+  ViewPlugin,
+  keymap,
+  lineNumbers,
+  placeholder,
+  type DecorationSet,
+  type ViewUpdate,
+} from '@codemirror/view';
 import { tags as t } from '@lezer/highlight';
 import type { SchemaTable } from '../engine/runner';
+import { levelDialect } from './sql-dialect';
 
 /** Ink colours of the Registry (see docs/design/README.md). */
 const inks = HighlightStyle.define([
@@ -26,7 +36,47 @@ const parchmentTheme = EditorView.theme({
   '.cm-placeholder': { color: '#7a6c55' },
   '.cm-tooltip-autocomplete': { fontFamily: "'JetBrains Mono', monospace", border: '3px solid #161c2e', backgroundColor: '#f7efdc' },
   '.cm-tooltip-autocomplete > ul > li[aria-selected]': { backgroundColor: '#41919d', color: '#161c2e' },
+  // The level's own tables and columns get their own ink, distinct from keywords (blue) and texts (brick).
+  '.cm-sql-name, .cm-sql-name *': { color: '#7a3d78' },
+  '.cm-sql-name.cm-sql-table': { textDecoration: 'underline dotted', textUnderlineOffset: '4px' },
 });
+
+/** Marks identifiers that are tables or columns of the level, from the syntax tree (never in strings). */
+function schemaNames(tables: SchemaTable[]) {
+  const tableNames = new Set(tables.map((t) => t.name.toLowerCase()));
+  const columnNames = new Set(tables.flatMap((t) => t.columns.map((c) => c.name.toLowerCase())));
+  const tableMark = Decoration.mark({ class: 'cm-sql-name cm-sql-table' });
+  const columnMark = Decoration.mark({ class: 'cm-sql-name cm-sql-column' });
+  const build = (view: EditorView): DecorationSet => {
+    const builder = new RangeSetBuilder<Decoration>();
+    for (const { from, to } of view.visibleRanges) {
+      syntaxTree(view.state).iterate({
+        from,
+        to,
+        enter: (node) => {
+          if (node.name !== 'Identifier' && node.name !== 'QuotedIdentifier') return;
+          let word = view.state.sliceDoc(node.from, node.to).toLowerCase();
+          if (node.name === 'QuotedIdentifier') word = word.slice(1, -1);
+          if (tableNames.has(word)) builder.add(node.from, node.to, tableMark);
+          else if (columnNames.has(word)) builder.add(node.from, node.to, columnMark);
+        },
+      });
+    }
+    return builder.finish();
+  };
+  return ViewPlugin.fromClass(
+    class {
+      decorations: DecorationSet;
+      constructor(view: EditorView) {
+        this.decorations = build(view);
+      }
+      update(u: ViewUpdate) {
+        if (u.docChanged || u.viewportChanged || syntaxTree(u.startState) !== syntaxTree(u.state)) this.decorations = build(u.view);
+      }
+    },
+    { decorations: (v) => v.decorations },
+  );
+}
 
 export interface SqlEditor {
   view: EditorView;
@@ -48,9 +98,11 @@ export interface EditorOptions {
   onChange: (text: string) => void;
 }
 
+/** SQL support for one level: real SQLite keywords, schema autocompletion and schema-name highlighting. */
 function sqlConfig(tables: SchemaTable[]) {
   const schema = Object.fromEntries(tables.map((tb) => [tb.name, tb.columns.map((c) => c.name)]));
-  return sql({ dialect: SQLite, schema, upperCaseKeywords: true });
+  const names = tables.flatMap((tb) => [tb.name, ...tb.columns.map((c) => c.name)]);
+  return [sql({ dialect: levelDialect(names), schema, upperCaseKeywords: true }), schemaNames(tables)];
 }
 
 export function createSqlEditor(opts: EditorOptions): SqlEditor {
