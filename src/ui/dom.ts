@@ -1,5 +1,5 @@
 type Attrs = Record<string, string | boolean | undefined>;
-type Child = Node | string | null | undefined | false;
+export type Child = Node | string | null | undefined | false;
 
 /** Small helper to build DOM nodes without innerHTML (no injection risk with translated text). */
 export function h<K extends keyof HTMLElementTagNameMap>(
@@ -16,6 +16,18 @@ export function h<K extends keyof HTMLElementTagNameMap>(
     if (child === null || child === undefined || child === false) continue;
     el.append(child);
   }
+  return el;
+}
+
+/** URL of a file in public/assets, honouring Vite's base path. */
+export function asset(path: string): string {
+  return `${import.meta.env.BASE_URL}assets/${path}`;
+}
+
+/** Decorative image (empty alt) from public/assets. */
+export function img(path: string, cls = ''): HTMLImageElement {
+  const el = h('img', { src: asset(path), alt: '', class: cls || undefined, draggable: 'false' });
+  el.decoding = 'async';
   return el;
 }
 
@@ -45,3 +57,13 @@ export const ICONS = {
     'M14 6h1v1h-1zM13 7h1v1h-1zM11 9h1v1h-1zM10 10h1v1h-1z',
   lock: 'M5 7V5h1V4h4v1h1v2h1v7H4V7zm2 0h2V5H7z',
 };
+
+/** Removes every child and appends the new ones. */
+export function fill(el: Element, ...children: Child[]): void {
+  el.replaceChildren(...(children.filter((c) => c !== null && c !== undefined && c !== false) as (Node | string)[]));
+}
+
+/** True when the user asked the system to reduce motion. */
+export function prefersReducedMotion(): boolean {
+  return typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
