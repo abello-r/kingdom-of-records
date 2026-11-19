@@ -52,15 +52,21 @@ are not tracked by git.
 - **Kingdom map** — one island per stage, a standard per level (done, next, locked).
 - **Level** — the Great Registry open on a lectern: story, task, hints and tables on the left; the SQL
   editor (highlighting, table/column autocompletion, `Ctrl`/`Cmd` + `Enter`) and the Registry's answer
-  on the right; a diorama of the region above it that celebrates correct answers.
+  on the right. Above it, an animated diorama of the region **reacts to each correct answer** (archers
+  climb the towers, ruins become houses, fake merchants vanish…; see `src/ui/reactions.ts`).
+- **Epilogue** — the ending and the credits, unlocked after the last level.
+
+Completed pages can be played again from a blank page, and the map offers *Start over* (with a
+confirmation) to erase all progress.
 
 The level screen and the editor are loaded on demand, so the title screen and the map open quickly.
 
 ## Assets
 
 `python scripts/build_assets.py` copies the art the game uses from the original packs (kept at the
-repository root, never modified, not tracked by git) into `public/assets/`, with clean names. The
-output is committed, so this is only needed when the list of assets changes.
+repository root, never modified, not tracked by git) into `public/assets/`, with clean names, and
+writes `src/ui/sprite-manifest.json` (size and frame count of every animated strip). The output is
+committed, so this is only needed when the list of assets changes.
 
 ## SQL engine
 

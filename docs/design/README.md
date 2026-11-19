@@ -105,3 +105,36 @@ Open them directly in a browser after `npm install` (fonts are read from `node_m
 `python prep.py <project root> a` (requires Pillow). These are design references only: the game's
 own assets go to `public/assets/` in Phase 5. The repository is private; SPE frames must not be
 redistributed outside the game (see `public/assets/CREDITS.md`).
+
+## Phase 5 — living dioramas
+
+Every level has its own scene in the strip above the Registry, and the world **reacts when the spell is
+right** (`src/ui/reactions.ts`, tested in `src/ui/reactions.test.ts`). Recordings: `reactions/*.gif`,
+and before/after for all 15 levels in `reactions/all-levels-before-after.png` (desktop) and
+`reactions/phone-before-after.png`.
+
+| Level | Reaction |
+|---|---|
+| Easy 1 | The villagers gather in the square. |
+| Easy 2 | The four archers climb the four towers. |
+| Easy 3 | Woodcutters walk to the trees and miners to the rock, and start working. |
+| Easy 4 | The lost sheep are spotted by Riverwatch, at the water's edge. |
+| Easy 5 | The burnt houses are rebuilt (the looted royal storehouse stays a ruin). |
+| Medium 1 | Gold, wood and meat are piled in front of the castle. |
+| Medium 2 | Each village shows what it holds. |
+| Medium 3 | Soldiers march to the three villages that can feed them. |
+| Medium 4 | The fake merchants vanish; the guards move to the storehouse. |
+| Medium 5 | Sir Garrick is found at the foot of the unguarded tower. |
+| Hard 1 | Every goblin's loot comes to light. |
+| Hard 2 | The recovered goods are carried home; the royal gold is not among them. |
+| Hard 3 | Kragg and Gorb are caught; Grubnak runs for it. |
+| Hard 4 | Skull Rock's TNT goes off and Grubnak is caught. |
+| Hard 5 | Corvin is arrested; the royal gold appears beside him. |
+
+Sprites are animated strips (idles, work, runs, celebrations, fire, foam, trees). After a reaction,
+characters celebrate with their action animation. With *reduce motion*, the end state is shown without
+animation. On phones, scenes skip items marked `wide` and the edge trees, and the strip is 190 px tall.
+
+The **epilogue** (`#/epilogue`, after the last level) shows the castle court and closes the story:
+the gold in Corvin's coffers, the sheep in his garden, Lady Maud cleared, the Registry restored; then
+the credits. Screens: `screens/epilogue-*.png`, `screens/reset-dialog-desktop.png`.

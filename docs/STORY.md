@@ -97,6 +97,10 @@ Scene: dusk (`Tilemap_color5`), goblin camps, towers, fire and TNT.
 royal coins are found in Corvin's coffers, Lancelot and Lanolin in his garden; the Great Registry is
 restored.
 
+**Epilogue** (screen after the last level, texts `epilogue.*` in `src/i18n`): the coffers are opened,
+the sheep are found among Corvin's eaten roses, Aldric apologises to Lady Maud, Garrick apologises for
+the Red Kingdom, and the Registry is entrusted to Pip. Then the credits.
+
 ## Asset adaptations
 
 | Story element | Problem | Adaptation |
