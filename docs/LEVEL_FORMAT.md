@@ -33,6 +33,7 @@ checks that backticks are balanced in every text.
 Writing rules: a level never requires a concept that has not been introduced in an earlier level or in
 its own narrative/hints; hints go from vague to almost the answer; the player is addressed without
 gender in ES and FR. Story facts quoted in texts (totals, names) must match what the solution returns.
+Table and column names must not be SQLite keywords (checked by `src/ui/sql-dialect.test.ts`).
 
 ## How attempts are checked
 

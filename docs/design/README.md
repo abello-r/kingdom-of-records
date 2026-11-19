@@ -13,6 +13,7 @@ Status: **mock-ups validated; implemented in Phase 4** with the adjustments belo
 | Phone dialogue bubbles | Portraits (40 px) sit above the bubble, so the text keeps the full width. |
 | Map progress bar | Empty part in dark wood (`#2e1b15`), filled part kit blue. |
 | Sound button | Back to the round kit button with a parchment speaker; the icon has a thin ink outline for ≥ 3:1 contrast. |
+| "What the Registry holds" | One ledger card per table: "Table: villagers", then "Columns:" with each column and its type in plain words (number / text), joined by dotted leaders. |
 
 ## Idea
 
@@ -62,6 +63,12 @@ ribbons: blue, purple, red. Locked regions are desaturated and covered by clouds
   (e.g. "no column called `archer`" shows `archer` as a code chip, not in quotes).
 - Jersey 10 draws « » as two separate chevrons that read like "<<". The two guillemet glyphs are taken
   from JetBrains Mono via `unicode-range` (needed for ES and FR).
+
+## Code ink
+
+Editor: keywords `#2e5f8a`, text values `#9b3b2e`, numbers `#4f7a28`, the level's own tables and columns
+`#7a3d78` (tables also dotted-underlined). Keywords come from the real SQLite list, never from a generic SQL
+list (CodeMirror's default marked `role` as a keyword).
 
 ## Components
 
