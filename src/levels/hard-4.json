@@ -1,0 +1,76 @@
+{
+  "id": "hard-4",
+  "stage": "hard",
+  "order": 4,
+  "concepts": ["subquery in FROM", "MAX of an aggregate"],
+  "title": {
+    "es": "Donde más retumba",
+    "en": "Where the Booms Are",
+    "fr": "Là où ça gronde le plus"
+  },
+  "narrative": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Cada campamento anota sus envíos de suministros, y algunos reciben varias cajas de TNT. No me vale la caja más grande: quiero el campamento que más TNT acumula en total.",
+        "en": "Each camp logs its supply deliveries, and some get several crates of TNT. The biggest single crate won’t do: I want the camp that has stockpiled the most TNT in total.",
+        "fr": "Chaque camp note ses livraisons, et certains reçoivent plusieurs caisses de TNT. La plus grosse caisse ne suffit pas : je veux le camp qui a accumulé le plus de TNT au total."
+      }
+    }
+  ],
+  "task": {
+    "es": "En `supplies`, muestra el campamento (`camp`) con el mayor total de `quantity` para el `item` `'TNT'`, junto con ese total.",
+    "en": "From `supplies`, show the `camp` with the largest total `quantity` of the `item` `'TNT'`, together with that total.",
+    "fr": "Dans `supplies`, affiche le camp (`camp`) qui a le plus grand total de `quantity` pour l’`item` `'TNT'`, avec ce total."
+  },
+  "hints": [
+    {
+      "es": "Divídelo en dos pasos: primero, el total de TNT de cada campamento (`WHERE` + `GROUP BY`); después, quedarte con el mayor de esos totales.",
+      "en": "Split it into two steps: first, each camp’s TNT total (`WHERE` + `GROUP BY`); then keep the largest of those totals.",
+      "fr": "Découpe en deux étapes : d’abord le total de TNT de chaque camp (`WHERE` + `GROUP BY`) ; ensuite, garde le plus grand de ces totaux."
+    },
+    {
+      "es": "No puedes anidar `MAX(SUM(...))`, pero una subconsulta puede hacer de tabla en el `FROM`: `SELECT MAX(total) FROM (SELECT SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp)`. `AS total` le pone nombre a la columna para poder usarla fuera. Mete todo eso en un `HAVING`.",
+      "en": "You cannot nest `MAX(SUM(...))`, but a subquery can act as a table in `FROM`: `SELECT MAX(total) FROM (SELECT SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp)`. `AS total` names the column so you can use it outside. Put all of that in a `HAVING`.",
+      "fr": "Impossible d’imbriquer `MAX(SUM(...))`, mais une sous-requête peut servir de table dans le `FROM` : `SELECT MAX(total) FROM (SELECT SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp)`. `AS total` donne un nom à la colonne pour pouvoir l’utiliser à l’extérieur. Place le tout dans un `HAVING`."
+    },
+    {
+      "es": "Casi lo tienes: `SELECT camp, SUM(quantity) FROM supplies WHERE item = 'TNT' GROUP BY camp HAVING SUM(quantity) = (SELECT MAX(total) FROM (...));`",
+      "en": "Almost there: `SELECT camp, SUM(quantity) FROM supplies WHERE item = 'TNT' GROUP BY camp HAVING SUM(quantity) = (SELECT MAX(total) FROM (...));`",
+      "fr": "Tu y es presque : `SELECT camp, SUM(quantity) FROM supplies WHERE item = 'TNT' GROUP BY camp HAVING SUM(quantity) = (SELECT MAX(total) FROM (...));`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "narrator",
+      "text": {
+        "es": "Skull Rock: veintinueve cajas. Allí encuentran a Grubnak, sentado sobre un barril de pólvora y abrazado a un libro de cuentas grasiento.",
+        "en": "Skull Rock: twenty-nine crates. That is where they find Grubnak, sitting on a powder keg, hugging a greasy ledger.",
+        "fr": "Skull Rock : vingt-neuf caisses. C’est là qu’on trouve Grubnak, assis sur un baril de poudre, serrant contre lui un registre de comptes graisseux."
+      }
+    },
+    {
+      "speaker": "grubnak",
+      "text": {
+        "es": "¡Grubnak no ladrón! ¡A Grubnak le PAGARON! Hombre brillante con sello rojo paga, Grubnak quema. Todo apuntado. Grubnak muy ordenado.",
+        "en": "Grubnak no thief! Grubnak was PAID! Shiny man with red seal pays, Grubnak burns. All written down. Grubnak very organised.",
+        "fr": "Grubnak pas voleur ! Grubnak été PAYÉ ! Homme brillant avec sceau rouge paie, Grubnak brûle. Tout noté. Grubnak très organisé."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE supplies (id INTEGER PRIMARY KEY, camp TEXT NOT NULL, item TEXT NOT NULL, quantity INTEGER NOT NULL);\nINSERT INTO supplies (camp, item, quantity) VALUES\n  ('Ashpit', 'TNT', 12),\n  ('Ashpit', 'torches', 40),\n  ('Mudhollow', 'TNT', 25),\n  ('Skull Rock', 'TNT', 15),\n  ('Mudhollow', 'barrels', 18),\n  ('Ashpit', 'TNT', 8),\n  ('Skull Rock', 'torches', 22),\n  ('Skull Rock', 'TNT', 14),\n  ('Mudhollow', 'torches', 30),\n  ('Skull Rock', 'very normal hats', 6);",
+  "solution": "SELECT camp, SUM(quantity) FROM supplies WHERE item = 'TNT' GROUP BY camp HAVING SUM(quantity) = (SELECT MAX(total) FROM (SELECT SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp));",
+  "check": { "mode": "result", "ignoreColumnNames": true },
+  "examples": {
+    "accepted": [
+      "SELECT camp, SUM(quantity) AS tnt FROM supplies WHERE item = 'TNT' GROUP BY camp ORDER BY tnt DESC LIMIT 1",
+      "SELECT camp, total FROM (SELECT camp, SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp) WHERE total = (SELECT MAX(t) FROM (SELECT SUM(quantity) AS t FROM supplies WHERE item = 'TNT' GROUP BY camp))"
+    ],
+    "rejected": [
+      "SELECT camp, MAX(quantity) FROM supplies WHERE item = 'TNT'",
+      "SELECT camp, SUM(quantity) FROM supplies WHERE item = 'TNT' GROUP BY camp",
+      "SELECT camp, SUM(quantity) FROM supplies GROUP BY camp ORDER BY SUM(quantity) DESC LIMIT 1",
+      "SELECT camp FROM supplies WHERE item = 'TNT' GROUP BY camp ORDER BY SUM(quantity) DESC LIMIT 1"
+    ]
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "id": "hard-5",
+  "stage": "hard",
+  "order": 5,
+  "concepts": ["JOIN", "WHERE", "GROUP BY", "HAVING", "subquery"],
+  "title": {
+    "es": "El traidor del sello rojo",
+    "en": "The Traitor with the Red Seal",
+    "fr": "Le traître au sceau rouge"
+  },
+  "narrative": [
+    {
+      "speaker": "narrator",
+      "text": {
+        "es": "El consejo de los reinos se reúne en el Castillo Azul. Azules, rojos y amarillos se miran con desconfianza. En el centro de la mesa, el libro de cuentas de Grubnak.",
+        "en": "The council of the kingdoms gathers at the Blue Castle. Blue, Red and Yellow eye each other warily. In the middle of the table lies Grubnak’s ledger.",
+        "fr": "Le conseil des royaumes se réunit au Château Bleu. Bleus, Rouges et Jaunes s’observent avec méfiance. Au centre de la table, le registre de comptes de Grubnak."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Mucha gente pagó a los goblins: peajes, rescates… Eso no prueba nada. Pero alguien les pagó antes del asalto, y más que nadie. Señala al traidor, escriba.",
+        "en": "Plenty of people paid the goblins: tolls, ransoms… that proves nothing. But someone paid them before the raid, and more than anyone else. Name the traitor, scribe.",
+        "fr": "Beaucoup de gens ont payé les gobelins : péages, rançons… cela ne prouve rien. Mais quelqu’un les a payés avant l’attaque, et plus que tout autre. Désigne le traître, scribe."
+      }
+    },
+    {
+      "speaker": "corvin",
+      "text": {
+        "es": "Qué teatro tan conmovedor. Adelante, escriba de aldea, enséñanos tu magia de pergamino.",
+        "en": "Such touching theatre. Go on, little scribe, show us your parchment magic.",
+        "fr": "Quel théâtre touchant. Vas-y, scribe de village, montre-nous ta magie de parchemin."
+      }
+    }
+  ],
+  "task": {
+    "es": "Teniendo en cuenta solo los pagos anteriores al asalto (`paid_on < '1247-03-14'`), muestra el nombre (`name`), el cargo (`title`), el reino (`kingdom`) y el total pagado del cargo público (`officials`) que más pagó en total a los goblins.",
+    "en": "Counting only payments made before the raid (`paid_on < '1247-03-14'`), show the `name`, `title`, `kingdom` and total paid of the official (`officials`) who paid the goblins the most in total.",
+    "fr": "En ne comptant que les paiements antérieurs à l’attaque (`paid_on < '1247-03-14'`), affiche le nom (`name`), la fonction (`title`), le royaume (`kingdom`) et le total payé du dignitaire (`officials`) qui a le plus payé les gobelins au total."
+  },
+  "hints": [
+    {
+      "es": "Este conjuro reúne todo lo que sabes. Ve por pasos: une `officials` con `payments`, quédate con los pagos anteriores al asalto, suma por persona… y busca el mayor total.",
+      "en": "This spell brings together everything you know. Go step by step: join `officials` with `payments`, keep the payments before the raid, add them up per person… and find the largest total.",
+      "fr": "Ce sort réunit tout ce que tu sais. Procède par étapes : relie `officials` à `payments`, garde les paiements antérieurs à l’attaque, additionne par personne… et trouve le plus grand total."
+    },
+    {
+      "es": "`payments.payer_id` apunta a `officials.id`. Las fechas son texto con formato año-mes-día, así que `<` funciona para «antes de». Para el mayor total, reutiliza el truco de la subconsulta en el `FROM` dentro de un `HAVING`.",
+      "en": "`payments.payer_id` points to `officials.id`. Dates are text in year-month-day format, so `<` works for “before”. For the largest total, reuse the subquery-in-`FROM` trick inside a `HAVING`.",
+      "fr": "`payments.payer_id` désigne `officials.id`. Les dates sont du texte au format année-mois-jour, donc `<` fonctionne pour « avant ». Pour le plus grand total, réutilise l’astuce de la sous-requête dans le `FROM` à l’intérieur d’un `HAVING`."
+    },
+    {
+      "es": "Casi lo tienes: `SELECT o.name, o.title, o.kingdom, SUM(p.amount) FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on < '1247-03-14' GROUP BY o.id HAVING SUM(p.amount) = (SELECT MAX(total) FROM (SELECT SUM(amount) AS total FROM payments WHERE ... GROUP BY payer_id));`",
+      "en": "Almost there: `SELECT o.name, o.title, o.kingdom, SUM(p.amount) FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on < '1247-03-14' GROUP BY o.id HAVING SUM(p.amount) = (SELECT MAX(total) FROM (SELECT SUM(amount) AS total FROM payments WHERE ... GROUP BY payer_id));`",
+      "fr": "Tu y es presque : `SELECT o.name, o.title, o.kingdom, SUM(p.amount) FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on < '1247-03-14' GROUP BY o.id HAVING SUM(p.amount) = (SELECT MAX(total) FROM (SELECT SUM(amount) AS total FROM payments WHERE ... GROUP BY payer_id));`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "scribe",
+      "text": {
+        "es": "Corvin, Tesorero del Reino Rojo: trescientas monedas a Grubnak y los suyos. «Mapa del almacén real», «Riverwatch estará vacía»… Las notas están en el libro.",
+        "en": "Corvin, Treasurer of the Red Kingdom: three hundred coins to Grubnak and his crew. “Map of the royal storehouse”, “Riverwatch will be empty”… The memos are all in the ledger.",
+        "fr": "Corvin, Trésorier du Royaume Rouge : trois cents pièces à Grubnak et sa bande. « Plan de l’entrepôt royal », « Riverwatch sera vide »… Les notes sont dans le registre."
+      }
+    },
+    {
+      "speaker": "corvin",
+      "text": {
+        "es": "Un Reino Azul débil necesitaría un amigo fuerte… y un tesorero generoso. Era un buen plan. Hasta que alguien de una aldea aprendió a leer.",
+        "en": "A weak Blue Kingdom would have needed a strong friend… and a generous treasurer. It was a good plan. Until a pawn learned to read.",
+        "fr": "Un Royaume Bleu affaibli aurait eu besoin d’un ami puissant… et d’un trésorier généreux. C’était un bon plan. Jusqu’à ce que quelqu’un d’un village apprenne à lire."
+      }
+    },
+    {
+      "speaker": "narrator",
+      "text": {
+        "es": "Las trescientas monedas del almacén real aparecen en los cofres de Corvin. Lancelot y Lanolin, en su jardín, comiéndose sus rosas. El Gran Registro, por fin, queda restaurado.",
+        "en": "The three hundred coins from the royal storehouse turn up in Corvin’s coffers. Lancelot and Lanolin turn up in his garden, eating his roses. At last, the Great Registry is restored.",
+        "fr": "Les trois cents pièces de l’entrepôt royal réapparaissent dans les coffres de Corvin. Lancelot et Lanolin, dans son jardin, en train de manger ses roses. Le Grand Registre est enfin restauré."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "El reino te debe su memoria, escriba. Y yo te debo una disculpa: nunca pensé que la mejor arma sería un libro.",
+        "en": "The kingdom owes you its memory, scribe. And I owe you an apology: I never thought the finest weapon would be a book.",
+        "fr": "Le royaume te doit sa mémoire, scribe. Et moi, je te dois des excuses : je n’aurais jamais cru que la meilleure arme serait un livre."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE officials (id INTEGER PRIMARY KEY, name TEXT NOT NULL, title TEXT NOT NULL, kingdom TEXT NOT NULL);\nINSERT INTO officials (name, title, kingdom) VALUES\n  ('Sir Aldric', 'Captain of the Guard', 'Blue Kingdom'),\n  ('Lady Maud', 'Royal Steward', 'Blue Kingdom'),\n  ('Corvin', 'Treasurer', 'Red Kingdom'),\n  ('Sir Garrick', 'Knight', 'Red Kingdom'),\n  ('Brother Fen', 'Chaplain', 'Blue Kingdom'),\n  ('Dame Rowena', 'Envoy', 'Yellow Kingdom');\nCREATE TABLE payments (id INTEGER PRIMARY KEY, payer_id INTEGER NOT NULL REFERENCES officials(id), goblin TEXT NOT NULL, amount INTEGER NOT NULL, paid_on TEXT NOT NULL, memo TEXT NOT NULL);\nINSERT INTO payments (payer_id, goblin, amount, paid_on, memo) VALUES\n  (3, 'Grubnak', 100, '1247-02-20', 'first half, as agreed'),\n  (6, 'Snik', 30, '1247-03-01', 'safe passage for the silk caravan'),\n  (3, 'Grubnak', 150, '1247-03-05', 'map of the royal storehouse'),\n  (2, 'Gorb', 40, '1247-03-08', 'toll on the marsh road'),\n  (3, 'Kragg', 50, '1247-03-12', 'Riverwatch will be empty on the night'),\n  (6, 'Mogg', 20, '1247-03-13', 'toll on the marsh road'),\n  (2, 'Grubnak', 280, '1247-03-15', 'ransom for twelve sheep'),\n  (5, 'Nub', 20, '1247-03-16', 'ransom for the chapel bell'),\n  (2, 'Snik', 150, '1247-03-18', 'ransom for the mill horses');",
+  "solution": "SELECT o.name, o.title, o.kingdom, SUM(p.amount) FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on < '1247-03-14' GROUP BY o.id HAVING SUM(p.amount) = (SELECT MAX(total) FROM (SELECT SUM(amount) AS total FROM payments WHERE paid_on < '1247-03-14' GROUP BY payer_id));",
+  "check": { "mode": "result", "ignoreColumnNames": true },
+  "examples": {
+    "accepted": [
+      "SELECT o.name, o.title, o.kingdom, SUM(p.amount) AS total FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on < '1247-03-14' GROUP BY o.id ORDER BY total DESC LIMIT 1",
+      "SELECT officials.name, officials.title, officials.kingdom, SUM(payments.amount) FROM payments JOIN officials ON officials.id = payments.payer_id WHERE payments.paid_on < '1247-03-14' GROUP BY officials.name, officials.title, officials.kingdom HAVING SUM(payments.amount) >= (SELECT MAX(t) FROM (SELECT SUM(amount) AS t FROM payments WHERE paid_on < '1247-03-14' GROUP BY payer_id))"
+    ],
+    "rejected": [
+      "SELECT o.name, o.title, o.kingdom, SUM(p.amount) AS total FROM officials o JOIN payments p ON p.payer_id = o.id GROUP BY o.id ORDER BY total DESC LIMIT 1",
+      "SELECT o.name, o.title, o.kingdom, MAX(p.amount) FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on < '1247-03-14'",
+      "SELECT o.name, o.title, o.kingdom, SUM(p.amount) FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on < '1247-03-14' GROUP BY o.id",
+      "SELECT o.name, o.title, o.kingdom, SUM(p.amount) FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on <= '1247-03-15' GROUP BY o.id ORDER BY SUM(p.amount) DESC LIMIT 1"
+    ]
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "id": "hard-2",
+  "stage": "hard",
+  "order": 2,
+  "concepts": ["LEFT JOIN", "IS NULL"],
+  "title": {
+    "es": "Lo que nunca volvió",
+    "en": "What Never Came Back",
+    "fr": "Ce qui n’est jamais revenu"
+  },
+  "narrative": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Tenemos dos listas: todo lo que robaron (`stolen_goods`) y todo lo que hemos recuperado asaltando sus campamentos (`recoveries`).",
+        "en": "We have two lists: everything they stole (`stolen_goods`) and everything we have recovered by raiding their camps (`recoveries`).",
+        "fr": "Nous avons deux listes : tout ce qu’ils ont volé (`stolen_goods`) et tout ce que nous avons récupéré en attaquant leurs camps (`recoveries`)."
+      }
+    },
+    {
+      "speaker": "scribe",
+      "text": {
+        "es": "Si las uno con un `JOIN` normal, solo veré lo que sí volvió… Y yo quiero justo lo contrario.",
+        "en": "If I join them with a normal `JOIN`, I will only see what did come back… and I want exactly the opposite.",
+        "fr": "Si je les relie avec un `JOIN` normal, je ne verrai que ce qui est revenu… et je veux exactement l’inverse."
+      }
+    }
+  ],
+  "task": {
+    "es": "Muestra `item`, `quantity` y `stolen_from` de los bienes robados que no aparecen en `recoveries` (ninguna recuperación apunta a ellos con `stolen_id`).",
+    "en": "Show `item`, `quantity` and `stolen_from` of the stolen goods that do not appear in `recoveries` (no recovery points to them through `stolen_id`).",
+    "fr": "Affiche `item`, `quantity` et `stolen_from` des biens volés qui n’apparaissent pas dans `recoveries` (aucune récupération ne pointe vers eux via `stolen_id`)."
+  },
+  "hints": [
+    {
+      "es": "`LEFT JOIN` conserva todas las filas de la tabla de la izquierda, aunque no tengan pareja en la de la derecha.",
+      "en": "`LEFT JOIN` keeps every row of the left-hand table, even when it has no match in the right-hand one.",
+      "fr": "`LEFT JOIN` garde toutes les lignes de la table de gauche, même si elles n’ont pas de correspondance à droite."
+    },
+    {
+      "es": "Cuando no hay pareja, las columnas de la derecha quedan vacías: `NULL`. Y `NULL` no se compara con `=`: se pregunta con `IS NULL`.",
+      "en": "When there is no match, the right-hand columns are empty: `NULL`. And `NULL` is not compared with `=`: you ask with `IS NULL`.",
+      "fr": "Quand il n’y a pas de correspondance, les colonnes de droite sont vides : `NULL`. Et `NULL` ne se compare pas avec `=` : on demande `IS NULL`."
+    },
+    {
+      "es": "Casi lo tienes: `SELECT s.item, s.quantity, s.stolen_from FROM stolen_goods s LEFT JOIN recoveries r ON r.stolen_id = s.id WHERE ...;`",
+      "en": "Almost there: `SELECT s.item, s.quantity, s.stolen_from FROM stolen_goods s LEFT JOIN recoveries r ON r.stolen_id = s.id WHERE ...;`",
+      "fr": "Tu y es presque : `SELECT s.item, s.quantity, s.stolen_from FROM stolen_goods s LEFT JOIN recoveries r ON r.stolen_id = s.id WHERE ...;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "scribe",
+      "text": {
+        "es": "Lancelot y Lanolin siguen sin aparecer… y las trescientas monedas del almacén real tampoco.",
+        "en": "Lancelot and Lanolin are still missing… and so are the three hundred coins from the royal storehouse.",
+        "fr": "Lancelot et Lanolin sont toujours introuvables… et les trois cents pièces de l’entrepôt royal aussi."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Hemos registrado los tres campamentos y nuestro oro no está en ninguno. O un goblin lo esconde muy bien… o el oro nunca llegó a la frontera.",
+        "en": "We have searched all three camps and our gold is in none of them. Either a goblin hides it very well… or the gold never reached the frontier.",
+        "fr": "Nous avons fouillé les trois camps et notre or n’est dans aucun. Soit un gobelin le cache très bien… soit l’or n’est jamais arrivé à la frontière."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE stolen_goods (id INTEGER PRIMARY KEY, item TEXT NOT NULL, quantity INTEGER NOT NULL, stolen_from TEXT NOT NULL);\nINSERT INTO stolen_goods (item, quantity, stolen_from) VALUES\n  ('gold coins', 300, 'Royal storehouse'),\n  ('gold coins', 40, 'River barn'),\n  ('sheep: Lancelot', 1, 'Riverwatch bridge'),\n  ('sheep: Lanky', 1, 'Riverwatch road'),\n  ('sheep: Lanolin', 1, 'Riverwatch road'),\n  ('royal spoons', 12, 'Castle kitchen'),\n  ('smoked ham', 15, 'Hunters'' lodge'),\n  ('firewood', 30, 'Mill loft'),\n  ('chapel bell', 1, 'Chapel');\nCREATE TABLE recoveries (id INTEGER PRIMARY KEY, stolen_id INTEGER NOT NULL REFERENCES stolen_goods(id), recovered_on TEXT NOT NULL, recovered_at TEXT NOT NULL);\nINSERT INTO recoveries (stolen_id, recovered_on, recovered_at) VALUES\n  (2, '1247-03-20', 'Ashpit'),\n  (4, '1247-03-20', 'Ashpit'),\n  (7, '1247-03-20', 'Ashpit'),\n  (6, '1247-03-21', 'Skull Rock'),\n  (8, '1247-03-22', 'Mudhollow'),\n  (9, '1247-03-22', 'Mudhollow');",
+  "solution": "SELECT s.item, s.quantity, s.stolen_from FROM stolen_goods s LEFT JOIN recoveries r ON r.stolen_id = s.id WHERE r.id IS NULL;",
+  "check": { "mode": "result" },
+  "examples": {
+    "accepted": [
+      "SELECT stolen_goods.item, stolen_goods.quantity, stolen_goods.stolen_from FROM stolen_goods LEFT JOIN recoveries ON recoveries.stolen_id = stolen_goods.id WHERE recoveries.stolen_id IS NULL",
+      "SELECT item, quantity, stolen_from FROM stolen_goods WHERE id NOT IN (SELECT stolen_id FROM recoveries)"
+    ],
+    "rejected": [
+      "SELECT s.item, s.quantity, s.stolen_from FROM stolen_goods s JOIN recoveries r ON r.stolen_id = s.id",
+      "SELECT s.item, s.quantity, s.stolen_from FROM stolen_goods s LEFT JOIN recoveries r ON r.stolen_id = s.id",
+      "SELECT s.item, s.quantity, s.stolen_from FROM stolen_goods s LEFT JOIN recoveries r ON r.stolen_id = s.id WHERE r.id = NULL",
+      "SELECT item, quantity, stolen_from FROM stolen_goods"
+    ]
+  }
+}

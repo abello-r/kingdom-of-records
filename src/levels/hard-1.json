@@ -1,0 +1,83 @@
+{
+  "id": "hard-1",
+  "stage": "hard",
+  "order": 1,
+  "concepts": ["JOIN (multiple)"],
+  "title": {
+    "es": "El botín de la frontera",
+    "en": "Loot of the Frontier",
+    "fr": "Le butin de la frontière"
+  },
+  "narrative": [
+    {
+      "speaker": "narrator",
+      "text": {
+        "es": "Al anochecer, la frontera huele a brea y a pólvora. Una patrulla ha requisado los registros de los campamentos goblin: garabatos, manchas de grasa… y tres tablas.",
+        "en": "At dusk the frontier smells of tar and gunpowder. A patrol has seized the goblin camps’ records: scribbles, grease stains… and three tables.",
+        "fr": "Au crépuscule, la frontière sent la poix et la poudre. Une patrouille a saisi les registres des camps gobelins : des gribouillis, des taches de graisse… et trois tables."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Los goblins en una, los campamentos en otra, el botín en la tercera. Quiero saberlo todo de un vistazo: quién robó qué y dónde lo esconde.",
+        "en": "Goblins in one, camps in another, loot in the third. I want it all at a glance: who stole what, and where they keep it.",
+        "fr": "Les gobelins dans l’une, les camps dans une autre, le butin dans la troisième. Je veux tout voir d’un coup d’œil : qui a volé quoi, et où il le cache."
+      }
+    }
+  ],
+  "task": {
+    "es": "Para cada fila de `loot`, muestra el nombre del goblin, el nombre de su campamento, el objeto (`item`) y la cantidad (`quantity`), en ese orden.",
+    "en": "For every row in `loot`, show the goblin’s name, the name of their camp, the `item` and the `quantity`, in that order.",
+    "fr": "Pour chaque ligne de `loot`, affiche le nom du gobelin, le nom de son camp, l’objet (`item`) et la quantité (`quantity`), dans cet ordre."
+  },
+  "hints": [
+    {
+      "es": "Un `JOIN` une dos tablas; para tres, encadena otro `JOIN` detrás del primero, cada uno con su `ON`.",
+      "en": "One `JOIN` links two tables; for three, chain another `JOIN` after the first, each with its own `ON`.",
+      "fr": "Un `JOIN` relie deux tables ; pour trois, enchaîne un autre `JOIN` après le premier, chacun avec son `ON`."
+    },
+    {
+      "es": "`loot.goblin_id` apunta a `goblins.id`, y `goblins.camp_id` apunta a `camps.id`. Puedes dar apodos cortos a las tablas: `FROM loot l JOIN goblins g ON ...`.",
+      "en": "`loot.goblin_id` points to `goblins.id`, and `goblins.camp_id` points to `camps.id`. You can give tables short nicknames: `FROM loot l JOIN goblins g ON ...`.",
+      "fr": "`loot.goblin_id` désigne `goblins.id`, et `goblins.camp_id` désigne `camps.id`. Tu peux donner des surnoms courts aux tables : `FROM loot l JOIN goblins g ON ...`."
+    },
+    {
+      "es": "Casi lo tienes: `SELECT g.name, c.name, l.item, l.quantity FROM loot l JOIN goblins g ON l.goblin_id = g.id JOIN camps c ON ...;`",
+      "en": "Almost there: `SELECT g.name, c.name, l.item, l.quantity FROM loot l JOIN goblins g ON l.goblin_id = g.id JOIN camps c ON ...;`",
+      "fr": "Tu y es presque : `SELECT g.name, c.name, l.item, l.quantity FROM loot l JOIN goblins g ON l.goblin_id = g.id JOIN camps c ON ...;`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "scribe",
+      "text": {
+        "es": "¡Snik! El de las «ovejas poco usadas»… y ahí está la campana de Lanky. Y Grubnak, en Skull Rock, con cucharas del rey.",
+        "en": "Snik! The one selling “slightly used sheep”… and there is Lanky’s bell. And Grubnak, at Skull Rock, with the king’s spoons.",
+        "fr": "Snik ! Celui des « moutons peu servis »… et voilà la clochette de Lanky. Et Grubnak, à Skull Rock, avec les cuillères du roi."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Doscientas sesenta monedas entre todos los campamentos. Mucho oro para unos goblins… pero no el nuestro. Hay que repasar qué falta todavía.",
+        "en": "Two hundred and sixty coins across all the camps. A lot of gold for goblins… but not ours. We must check what is still missing.",
+        "fr": "Deux cent soixante pièces dans tous les camps. Beaucoup d’or pour des gobelins… mais pas le nôtre. Il faut vérifier ce qui manque encore."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE camps (id INTEGER PRIMARY KEY, name TEXT NOT NULL, region TEXT NOT NULL);\nINSERT INTO camps (name, region) VALUES\n  ('Ashpit', 'Burnt Hills'),\n  ('Mudhollow', 'Black Marsh'),\n  ('Skull Rock', 'Frontier Cliffs');\nCREATE TABLE goblins (id INTEGER PRIMARY KEY, name TEXT NOT NULL, kind TEXT NOT NULL, camp_id INTEGER NOT NULL REFERENCES camps(id));\nINSERT INTO goblins (name, kind, camp_id) VALUES\n  ('Grubnak', 'torch', 3),\n  ('Snik', 'torch', 1),\n  ('Mogg', 'tnt', 2),\n  ('Zib', 'barrel', 1),\n  ('Kragg', 'tnt', 3),\n  ('Nub', 'barrel', 2),\n  ('Fizzwick', 'torch', 1),\n  ('Gorb', 'tnt', 3);\nCREATE TABLE loot (id INTEGER PRIMARY KEY, goblin_id INTEGER NOT NULL REFERENCES goblins(id), item TEXT NOT NULL, quantity INTEGER NOT NULL);\nINSERT INTO loot (goblin_id, item, quantity) VALUES\n  (1, 'gold coins', 120),\n  (1, 'royal spoons', 12),\n  (2, 'sheep', 2),\n  (3, 'firewood', 30),\n  (4, 'smoked ham', 15),\n  (5, 'gold coins', 80),\n  (6, 'sheep bell (Lanky)', 1),\n  (8, 'gold coins', 50),\n  (2, 'very normal hats', 3),\n  (3, 'gold coins', 10);",
+  "solution": "SELECT goblins.name, camps.name, loot.item, loot.quantity FROM loot JOIN goblins ON loot.goblin_id = goblins.id JOIN camps ON goblins.camp_id = camps.id;",
+  "check": { "mode": "result", "ignoreColumnNames": true },
+  "examples": {
+    "accepted": [
+      "SELECT g.name AS goblin, c.name AS camp, l.item, l.quantity FROM loot l JOIN goblins g ON l.goblin_id = g.id JOIN camps c ON g.camp_id = c.id",
+      "SELECT g.name, c.name, l.item, l.quantity FROM camps c JOIN goblins g ON g.camp_id = c.id JOIN loot l ON l.goblin_id = g.id ORDER BY l.id"
+    ],
+    "rejected": [
+      "SELECT g.name, l.item, l.quantity FROM loot l JOIN goblins g ON l.goblin_id = g.id",
+      "SELECT g.name, c.name, l.item, l.quantity FROM loot l JOIN goblins g ON l.goblin_id = g.id JOIN camps c ON g.id = c.id",
+      "SELECT g.name, c.name, l.item, l.quantity FROM loot l JOIN goblins g ON l.id = g.id JOIN camps c ON g.camp_id = c.id"
+    ]
+  }
+}

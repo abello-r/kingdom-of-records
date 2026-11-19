@@ -1,0 +1,81 @@
+{
+  "id": "hard-3",
+  "stage": "hard",
+  "order": 3,
+  "concepts": ["subquery in WHERE", "AVG"],
+  "title": {
+    "es": "Los que más se llevaron",
+    "en": "The Greediest of Them All",
+    "fr": "Les plus gourmands"
+  },
+  "narrative": [
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Los goblins rasos roban un jamón y se van a dormir. Los jefes se llevan mucho más que el goblin medio. Quiero a esos.",
+        "en": "Common goblins steal a ham and go to sleep. The bosses take far more than the average goblin. Those are the ones I want.",
+        "fr": "Les gobelins ordinaires volent un jambon et vont dormir. Les chefs prennent bien plus que le gobelin moyen. Ce sont eux que je veux."
+      }
+    },
+    {
+      "speaker": "scribe",
+      "text": {
+        "es": "Podría calcular la media a mano y copiarla… pero si mañana cambian los datos, mi conjuro dejaría de servir.",
+        "en": "I could work out the average by hand and copy it in… but if the data changes tomorrow, my spell would stop working.",
+        "fr": "Je pourrais calculer la moyenne à la main et la recopier… mais si les données changent demain, mon sort ne marcherait plus."
+      }
+    }
+  ],
+  "task": {
+    "es": "Muestra `name` y `loot_value` de los goblins cuyo `loot_value` es mayor que la media de `loot_value` de todos los goblins. Calcula la media dentro de la propia consulta.",
+    "en": "Show `name` and `loot_value` of the goblins whose `loot_value` is greater than the average `loot_value` of all goblins. Work out the average inside the query itself.",
+    "fr": "Affiche `name` et `loot_value` des gobelins dont le `loot_value` dépasse la moyenne des `loot_value` de tous les gobelins. Calcule la moyenne dans la requête elle-même."
+  },
+  "hints": [
+    {
+      "es": "Una consulta puede llevar otra consulta dentro, entre paréntesis: es una subconsulta, y su resultado se usa como un valor más.",
+      "en": "A query can contain another query, in brackets: it is a subquery, and its result is used like any other value.",
+      "fr": "Une requête peut en contenir une autre, entre parenthèses : c’est une sous-requête, et son résultat s’utilise comme n’importe quelle valeur."
+    },
+    {
+      "es": "`AVG(loot_value)` calcula la media, igual que `SUM` suma. `(SELECT AVG(loot_value) FROM goblins)` devuelve un único número que puedes poner a la derecha de `>`.",
+      "en": "`AVG(loot_value)` computes the average, just as `SUM` adds up. `(SELECT AVG(loot_value) FROM goblins)` returns a single number you can put to the right of `>`.",
+      "fr": "`AVG(loot_value)` calcule la moyenne, comme `SUM` additionne. `(SELECT AVG(loot_value) FROM goblins)` renvoie un seul nombre que tu peux placer à droite de `>`."
+    },
+    {
+      "es": "Casi lo tienes: `SELECT name, loot_value FROM goblins WHERE loot_value > (SELECT ... FROM goblins);`",
+      "en": "Almost there: `SELECT name, loot_value FROM goblins WHERE loot_value > (SELECT ... FROM goblins);`",
+      "fr": "Tu y es presque : `SELECT name, loot_value FROM goblins WHERE loot_value > (SELECT ... FROM goblins);`"
+    }
+  ],
+  "success": [
+    {
+      "speaker": "narrator",
+      "text": {
+        "es": "Kragg y Gorb caen en una red antes del amanecer. Grubnak, no. Kragg suelta una risita: «El jefe está donde hay más bum-bum».",
+        "en": "Kragg and Gorb are caught in a net before dawn. Grubnak is not. Kragg giggles: “Boss is where the most boom-boom is.”",
+        "fr": "Kragg et Gorb tombent dans un filet avant l’aube. Grubnak, non. Kragg ricane : « Le chef est là où il y a le plus de boum-boum. »"
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Bum-bum. Pólvora. Busquemos el campamento con más TNT.",
+        "en": "Boom-boom. Gunpowder. Let us find the camp with the most TNT.",
+        "fr": "Boum-boum. De la poudre. Trouvons le camp qui a le plus de TNT."
+      }
+    }
+  ],
+  "setup": "CREATE TABLE goblins (id INTEGER PRIMARY KEY, name TEXT NOT NULL, kind TEXT NOT NULL, camp TEXT NOT NULL, loot_value INTEGER NOT NULL);\nINSERT INTO goblins (name, kind, camp, loot_value) VALUES\n  ('Grubnak', 'torch', 'Skull Rock', 420),\n  ('Snik', 'torch', 'Ashpit', 35),\n  ('Mogg', 'tnt', 'Mudhollow', 60),\n  ('Zib', 'barrel', 'Ashpit', 25),\n  ('Kragg', 'tnt', 'Skull Rock', 180),\n  ('Nub', 'barrel', 'Mudhollow', 40),\n  ('Fizzwick', 'torch', 'Ashpit', 10),\n  ('Gorb', 'tnt', 'Skull Rock', 150);",
+  "solution": "SELECT name, loot_value FROM goblins WHERE loot_value > (SELECT AVG(loot_value) FROM goblins);",
+  "check": { "mode": "result" },
+  "examples": {
+    "accepted": ["SELECT name, loot_value FROM goblins WHERE (SELECT AVG(loot_value) FROM goblins) < loot_value ORDER BY loot_value DESC"],
+    "rejected": [
+      "SELECT name, loot_value FROM goblins WHERE loot_value > 50",
+      "SELECT name, loot_value FROM goblins WHERE loot_value >= (SELECT MIN(loot_value) FROM goblins)",
+      "SELECT name, loot_value FROM goblins WHERE loot_value = (SELECT MAX(loot_value) FROM goblins)",
+      "SELECT name, AVG(loot_value) FROM goblins"
+    ]
+  }
+}
