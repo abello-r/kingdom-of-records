@@ -60,6 +60,7 @@
     "rowCount": "Le nombre de lignes n’est pas correct. Attendues : {expected} · les tiennes : {actual}.",
     "rows": "Le nombre de lignes est bon, mais certaines ne sont pas les bonnes (incorrectes : {unexpected}).",
     "order": "Les lignes sont bonnes, mais pas dans l’ordre demandé.",
+    "hiddenData": "Ça marche avec ces données… mais le Registre a essayé ton sort sur d’autres pages et il a échoué. Ne recopie pas les valeurs des résultats : laisse la requête les calculer.",
     "missingTable": "La table {table} a disparu !",
     "tableColumns": "Les colonnes de {table} ont changé. Modifie seulement ses données.",
     "tableRows": "La table {table} n’est pas encore comme prévu (lignes manquantes : {missing} · lignes en trop : {unexpected})."

@@ -60,6 +60,7 @@
     "rowCount": "Wrong number of rows. Expected: {expected} · yours: {actual}.",
     "rows": "Same number of rows, but some are not the right ones (wrong: {unexpected}).",
     "order": "The rows are right, but not in the requested order.",
+    "hiddenData": "It works with these records… but the Registry tested your spell on other pages and it failed. Don’t copy values from the results: let the query work them out.",
     "missingTable": "The table {table} has disappeared!",
     "tableColumns": "The columns of {table} have changed. Only change its data.",
     "tableRows": "The table {table} is not as expected yet (rows missing: {missing} · rows that should not be there: {unexpected})."

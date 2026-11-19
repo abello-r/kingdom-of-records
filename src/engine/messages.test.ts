@@ -11,6 +11,7 @@ const MISMATCHES: Mismatch[] = [
   { reason: 'rowCount', expected: 2, actual: 5 },
   { reason: 'rows', missing: 1, unexpected: 1 },
   { reason: 'order' },
+  { reason: 'hiddenData' },
   { reason: 'missingTable', table: 'houses' },
   { reason: 'tableColumns', table: 'houses' },
   { reason: 'tableRows', table: 'houses', missing: 1, unexpected: 2 },

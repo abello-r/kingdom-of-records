@@ -115,6 +115,46 @@ describe('validateAttempt — state levels', () => {
   });
 });
 
+describe('validateAttempt — hidden data variants', () => {
+  const variant = `
+CREATE TABLE villagers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, role TEXT NOT NULL, age INTEGER);
+INSERT INTO villagers (name, role, age) VALUES ('Rosa', 'archer', 22), ('Tobin', 'pawn', 40), ('Ivo', 'archer', 27);
+CREATE TABLE houses (id INTEGER PRIMARY KEY, owner TEXT, status TEXT);
+INSERT INTO houses (owner, status) VALUES ('Rosa', 'burnt'), ('Tobin', 'burnt'), ('Ivo', 'burnt'), ('Pip', 'rebuilding');`;
+
+  it('accepts honest queries on every data set', () => {
+    const level = makeLevel({ variants: [variant] });
+    expect(validateAttempt(SQL, level, "SELECT name, role FROM villagers WHERE role = 'archer'").correct).toBe(true);
+  });
+
+  it('rejects answers that copy values from the visible results', () => {
+    const level = makeLevel({ variants: [variant] });
+    const hardcoded = "SELECT name, role FROM villagers WHERE name IN ('Wren', 'Bram')";
+    const result = validateAttempt(SQL, level, hardcoded);
+    expect(result.correct).toBe(false);
+    expect(result.mismatch).toEqual({ reason: 'hiddenData' });
+    // The player still sees the (correct-looking) result of the visible data.
+    expect(result.statements[0]).toMatchObject({ kind: 'rows', result: { rows: [['Wren', 'archer'], ['Bram', 'archer']] } });
+  });
+
+  it('reports the visible mismatch first when the answer is already wrong', () => {
+    const level = makeLevel({ variants: [variant] });
+    expect(validateAttempt(SQL, level, 'SELECT name, role FROM villagers').mismatch?.reason).toBe('rowCount');
+  });
+
+  it('applies to state levels too', () => {
+    const level = makeLevel({
+      solution: "UPDATE houses SET status = 'rebuilt' WHERE owner = 'Pip'",
+      check: { mode: 'state', tables: ['houses'] },
+      variants: [variant],
+    });
+    expect(validateAttempt(SQL, level, "UPDATE houses SET status = 'rebuilt' WHERE owner = 'Pip'").correct).toBe(true);
+    expect(validateAttempt(SQL, level, "UPDATE houses SET status = 'rebuilt' WHERE id = 1").mismatch).toEqual({
+      reason: 'hiddenData',
+    });
+  });
+});
+
 describe('runner helpers', () => {
   it('counts changes per statement, not including DDL', () => {
     const db = createDatabase(SQL, 'CREATE TABLE t (x)');

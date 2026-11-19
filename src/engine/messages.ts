@@ -13,6 +13,7 @@ export function mismatchMessage(m: Mismatch): Message {
       return { key, params: { expected: m.expected.join(', '), actual: m.actual.join(', ') } };
     case 'noResult':
     case 'order':
+    case 'hiddenData':
       return { key, params: {} };
     default: {
       const { reason: _reason, ...params } = m;

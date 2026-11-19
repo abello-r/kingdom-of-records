@@ -47,6 +47,13 @@ export interface Level {
   /** Reference solution. */
   solution: string;
   check: CheckSpec;
+  /**
+   * Hidden data sets: full setup scripts with the same tables but different values. An attempt is only
+   * correct if it also matches the solution on every variant, which catches answers that copy values
+   * from the visible results (e.g. `WHERE loot_value > 100` instead of comparing with the average).
+   * The player never sees these databases.
+   */
+  variants?: string[];
   /** Test-only: other queries that must be accepted and common mistakes that must be rejected. */
   examples?: { accepted?: string[]; rejected?: string[] };
 }
@@ -87,6 +94,8 @@ export type Mismatch =
   | { reason: 'rowCount'; expected: number; actual: number }
   | { reason: 'rows'; missing: number; unexpected: number }
   | { reason: 'order' }
+  /** Correct on the visible data but not on a hidden variant: the query depends on specific values. */
+  | { reason: 'hiddenData' }
   | { reason: 'missingTable'; table: string }
   | { reason: 'tableColumns'; table: string }
   | { reason: 'tableRows'; table: string; missing: number; unexpected: number };

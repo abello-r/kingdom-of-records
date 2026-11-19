@@ -60,6 +60,7 @@
     "rowCount": "El número de filas no es correcto. Esperadas: {expected} · tuyas: {actual}.",
     "rows": "Tienes el número de filas correcto, pero algunas no son las buenas (incorrectas: {unexpected}).",
     "order": "Las filas son correctas, pero no están en el orden pedido.",
+    "hiddenData": "Funciona con estos registros… pero el Registro ha probado tu conjuro en otras páginas y ha fallado. No copies valores de los resultados: deja que la consulta los calcule.",
     "missingTable": "¡La tabla {table} ha desaparecido!",
     "tableColumns": "Las columnas de {table} han cambiado. Cambia solo sus datos.",
     "tableRows": "La tabla {table} todavía no está como debería (filas que faltan: {missing} · filas que sobran: {unexpected})."

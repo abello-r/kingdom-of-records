@@ -60,6 +60,10 @@ export function parseLevel(raw: unknown, source = 'level'): Level {
     }
   } else problems.push('check.mode: must be "result" or "state"');
 
+  if (r.variants !== undefined && (!Array.isArray(r.variants) || !r.variants.every(nonEmpty))) {
+    problems.push('variants: expected an array of setup SQL scripts');
+  }
+
   if (r.examples !== undefined) {
     if (!isObj(r.examples)) problems.push('examples: expected { accepted?, rejected? }');
     else {

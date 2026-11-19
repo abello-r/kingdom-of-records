@@ -1,8 +1,8 @@
-import type { SqlJsStatic } from 'sql.js';
+import type { Database, SqlJsStatic } from 'sql.js';
 import { compareResults, compareTables } from './compare';
 import { describeSqlError, emptyQueryError } from './errors';
-import { createDatabase, describeSchema, lastResult, runSql, snapshotTable } from './runner';
-import type { AttemptResult, Level, ResultSet, TableSnapshot } from './types';
+import { createDatabase, describeSchema, lastResult, runSql, snapshotTable, type RunOutput } from './runner';
+import type { AttemptResult, Level, Mismatch, ResultSet, TableSnapshot } from './types';
 
 /** True when the SQL has nothing to execute (only whitespace, comments or semicolons). */
 export function isEffectivelyEmpty(sql: string): boolean {
@@ -13,16 +13,21 @@ export function isEffectivelyEmpty(sql: string): boolean {
   return stripped.length === 0;
 }
 
-type Expected = { mode: 'result'; result: ResultSet } | { mode: 'state'; tables: (TableSnapshot | null)[] };
+export type Expected = { mode: 'result'; result: ResultSet } | { mode: 'state'; tables: (TableSnapshot | null)[] };
 
-const expectedCache = new WeakMap<Level, Expected>();
+const expectedCache = new WeakMap<Level, Map<string, Expected>>();
 
-/** Runs the reference solution once per level. A failing solution is a bug in the level file. */
-export function expectedFor(SQL: SqlJsStatic, level: Level): Expected {
-  const cached = expectedCache.get(level);
+/**
+ * Runs the reference solution on a data set (the visible setup by default, or a hidden variant).
+ * Cached per level and data set. A failing solution is a bug in the level file.
+ */
+export function expectedFor(SQL: SqlJsStatic, level: Level, setup: string = level.setup): Expected {
+  let perSetup = expectedCache.get(level);
+  if (!perSetup) expectedCache.set(level, (perSetup = new Map()));
+  const cached = perSetup.get(setup);
   if (cached) return cached;
 
-  const db = createDatabase(SQL, level.setup);
+  const db = createDatabase(SQL, setup);
   try {
     const run = runSql(db, level.solution);
     if (run.error) throw new Error(`Level ${level.id}: solution fails: ${run.error}`);
@@ -34,8 +39,35 @@ export function expectedFor(SQL: SqlJsStatic, level: Level): Expected {
     } else {
       expected = { mode: 'state', tables: level.check.tables.map((t) => snapshotTable(db, t)) };
     }
-    expectedCache.set(level, expected);
+    perSetup.set(setup, expected);
     return expected;
+  } finally {
+    db.close();
+  }
+}
+
+/** Compares a finished run with the expected outcome for the same data set. */
+function compareRun(level: Level, expected: Expected, db: Database, run: RunOutput): Mismatch | null {
+  if (expected.mode === 'result' && level.check.mode === 'result') {
+    return compareResults(expected.result, lastResult(run.statements), {
+      orderMatters: level.check.orderMatters,
+      ignoreColumnNames: level.check.ignoreColumnNames,
+    });
+  }
+  if (expected.mode === 'state' && level.check.mode === 'state') {
+    const actual = level.check.tables.map((t) => snapshotTable(db, t));
+    return compareTables(level.check.tables, expected.tables, actual);
+  }
+  throw new Error(`Level ${level.id}: check mode mismatch`);
+}
+
+/** True when the attempt also gives the expected outcome on a hidden data set. */
+function passesVariant(SQL: SqlJsStatic, level: Level, setup: string, playerSql: string): boolean {
+  const expected = expectedFor(SQL, level, setup);
+  const db = createDatabase(SQL, setup);
+  try {
+    const run = runSql(db, playerSql);
+    return !run.error && compareRun(level, expected, db, run) === null;
   } finally {
     db.close();
   }
@@ -43,7 +75,8 @@ export function expectedFor(SQL: SqlJsStatic, level: Level): Expected {
 
 /**
  * Checks a player's attempt. The database is rebuilt from the level setup on every attempt, so the
- * player's SQL always starts from the same data and results are reproducible.
+ * player's SQL always starts from the same data and results are reproducible. An attempt that is right
+ * on the visible data must also be right on every hidden variant.
  */
 export function validateAttempt(SQL: SqlJsStatic, level: Level, playerSql: string): AttemptResult {
   if (isEffectivelyEmpty(playerSql)) {
@@ -59,33 +92,17 @@ export function validateAttempt(SQL: SqlJsStatic, level: Level, playerSql: strin
       level.check.mode === 'state'
         ? level.check.tables.map((t) => snapshotTable(db, t)).filter((t): t is TableSnapshot => t !== null)
         : undefined;
+    const base = { statements: run.statements, ...(tables && { tables }) };
 
     if (run.error) {
-      return {
-        correct: false,
-        error: describeSqlError(run.error, { knownColumns }),
-        statements: run.statements,
-        ...(tables && { tables }),
-      };
+      return { correct: false, error: describeSqlError(run.error, { knownColumns }), ...base };
     }
 
-    let mismatch;
-    if (expected.mode === 'result' && level.check.mode === 'result') {
-      mismatch = compareResults(expected.result, lastResult(run.statements), {
-        orderMatters: level.check.orderMatters,
-        ignoreColumnNames: level.check.ignoreColumnNames,
-      });
-    } else if (expected.mode === 'state' && level.check.mode === 'state') {
-      const actual = level.check.tables.map((t) => snapshotTable(db, t));
-      mismatch = compareTables(level.check.tables, expected.tables, actual);
+    let mismatch = compareRun(level, expected, db, run);
+    if (!mismatch && level.variants?.some((setup) => !passesVariant(SQL, level, setup, playerSql))) {
+      mismatch = { reason: 'hiddenData' };
     }
-
-    return {
-      correct: !mismatch,
-      ...(mismatch && { mismatch }),
-      statements: run.statements,
-      ...(tables && { tables }),
-    };
+    return { correct: !mismatch, ...(mismatch && { mismatch }), ...base };
   } finally {
     db.close();
   }
