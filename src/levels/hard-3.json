@@ -69,9 +69,15 @@
   "setup": "CREATE TABLE goblins (id INTEGER PRIMARY KEY, name TEXT NOT NULL, kind TEXT NOT NULL, camp TEXT NOT NULL, loot_value INTEGER NOT NULL);\nINSERT INTO goblins (name, kind, camp, loot_value) VALUES\n  ('Grubnak', 'torch', 'Skull Rock', 420),\n  ('Snik', 'torch', 'Ashpit', 35),\n  ('Mogg', 'tnt', 'Mudhollow', 60),\n  ('Zib', 'barrel', 'Ashpit', 25),\n  ('Kragg', 'tnt', 'Skull Rock', 180),\n  ('Nub', 'barrel', 'Mudhollow', 40),\n  ('Fizzwick', 'torch', 'Ashpit', 10),\n  ('Gorb', 'tnt', 'Skull Rock', 150);",
   "solution": "SELECT name, loot_value FROM goblins WHERE loot_value > (SELECT AVG(loot_value) FROM goblins);",
   "check": { "mode": "result" },
+  "variants": [
+    "CREATE TABLE goblins (id INTEGER PRIMARY KEY, name TEXT NOT NULL, kind TEXT NOT NULL, camp TEXT NOT NULL, loot_value INTEGER NOT NULL);\nINSERT INTO goblins (name, kind, camp, loot_value) VALUES\n  ('Grubnak', 'torch', 'Skull Rock', 90),\n  ('Snik', 'torch', 'Ashpit', 70),\n  ('Mogg', 'tnt', 'Mudhollow', 20),\n  ('Zib', 'barrel', 'Ashpit', 15),\n  ('Kragg', 'tnt', 'Skull Rock', 110),\n  ('Nub', 'barrel', 'Mudhollow', 30),\n  ('Fizzwick', 'torch', 'Ashpit', 5),\n  ('Gorb', 'tnt', 'Skull Rock', 60);"
+  ],
   "examples": {
     "accepted": ["SELECT name, loot_value FROM goblins WHERE (SELECT AVG(loot_value) FROM goblins) < loot_value ORDER BY loot_value DESC"],
     "rejected": [
+      "SELECT name, loot_value FROM goblins WHERE loot_value > 100",
+      "SELECT name, loot_value FROM goblins WHERE loot_value > 115",
+      "SELECT name, loot_value FROM goblins WHERE name IN ('Grubnak', 'Kragg', 'Gorb')",
       "SELECT name, loot_value FROM goblins WHERE loot_value > 50",
       "SELECT name, loot_value FROM goblins WHERE loot_value >= (SELECT MIN(loot_value) FROM goblins)",
       "SELECT name, loot_value FROM goblins WHERE loot_value = (SELECT MAX(loot_value) FROM goblins)",

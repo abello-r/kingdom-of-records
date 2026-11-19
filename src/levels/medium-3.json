@@ -69,12 +69,16 @@
   "setup": "CREATE TABLE harvests (id INTEGER PRIMARY KEY, village TEXT NOT NULL, season TEXT NOT NULL, meat INTEGER NOT NULL, wood INTEGER NOT NULL);\nINSERT INTO harvests (village, season, meat, wood) VALUES\n  ('Bluebrook', 'spring', 40, 30),\n  ('Bluebrook', 'summer', 55, 45),\n  ('Bluebrook', 'autumn', 50, 60),\n  ('Bluebrook', 'winter', 15, 20),\n  ('Millford', 'spring', 20, 50),\n  ('Millford', 'summer', 30, 55),\n  ('Millford', 'autumn', 35, 40),\n  ('Millford', 'winter', 10, 25),\n  ('Oakhollow', 'spring', 60, 90),\n  ('Oakhollow', 'summer', 70, 110),\n  ('Oakhollow', 'autumn', 65, 95),\n  ('Oakhollow', 'winter', 30, 40),\n  ('Fernvale', 'spring', 25, 35),\n  ('Fernvale', 'summer', 35, 30),\n  ('Fernvale', 'autumn', 130, 45),\n  ('Fernvale', 'winter', 5, 15),\n  ('Stonewatch', 'spring', 10, 20),\n  ('Stonewatch', 'summer', 20, 25),\n  ('Stonewatch', 'autumn', 25, 30),\n  ('Stonewatch', 'winter', 90, 10);",
   "solution": "SELECT village, SUM(meat) FROM harvests GROUP BY village HAVING SUM(meat) > 150;",
   "check": { "mode": "result", "ignoreColumnNames": true },
+  "variants": [
+    "CREATE TABLE harvests (id INTEGER PRIMARY KEY, village TEXT NOT NULL, season TEXT NOT NULL, meat INTEGER NOT NULL, wood INTEGER NOT NULL);\nINSERT INTO harvests (village, season, meat, wood) VALUES\n  ('Bluebrook', 'spring', 20, 30),\n  ('Bluebrook', 'summer', 30, 45),\n  ('Bluebrook', 'autumn', 40, 60),\n  ('Bluebrook', 'winter', 10, 20),\n  ('Millford', 'spring', 60, 50),\n  ('Millford', 'summer', 50, 55),\n  ('Millford', 'autumn', 40, 40),\n  ('Millford', 'winter', 20, 25),\n  ('Oakhollow', 'spring', 30, 90),\n  ('Oakhollow', 'summer', 40, 110),\n  ('Oakhollow', 'autumn', 50, 95),\n  ('Oakhollow', 'winter', 35, 40),\n  ('Fernvale', 'spring', 10, 35),\n  ('Fernvale', 'summer', 20, 30),\n  ('Fernvale', 'autumn', 30, 45),\n  ('Fernvale', 'winter', 5, 15),\n  ('Stonewatch', 'spring', 70, 20),\n  ('Stonewatch', 'summer', 40, 25),\n  ('Stonewatch', 'autumn', 30, 30),\n  ('Stonewatch', 'winter', 20, 10);"
+  ],
   "examples": {
     "accepted": [
       "SELECT village, SUM(meat) AS total_meat FROM harvests GROUP BY village HAVING total_meat > 150",
       "SELECT village, SUM(meat) FROM harvests GROUP BY village HAVING SUM(meat) >= 151"
     ],
     "rejected": [
+      "SELECT village, SUM(meat) FROM harvests WHERE village IN ('Bluebrook', 'Oakhollow', 'Fernvale') GROUP BY village",
       "SELECT village, SUM(meat) FROM harvests WHERE meat > 150 GROUP BY village",
       "SELECT village, SUM(meat) FROM harvests WHERE meat > 50 GROUP BY village",
       "SELECT village, SUM(meat) FROM harvests GROUP BY village",

@@ -46,6 +46,20 @@ the same data. All statements in the editor run in order.
 | `{ "mode": "result", "ignoreColumnNames": true }` | Columns by position only | For aggregates when the task does not ask for an alias. |
 | `{ "mode": "state", "tables": ["houses"] }` | Final rows of the listed tables after the player's SQL vs. after the solution | For `INSERT` / `UPDATE` / `DELETE`. Row order ignored; table columns must not change. |
 
+### Hidden data (`variants`)
+
+`"variants": ["CREATE TABLE …; INSERT …;"]` lists extra setup scripts with **the same tables and
+columns** but different values. The player never sees them. An attempt that is right on the visible
+data is run again on every variant and must also match the solution there; otherwise it is rejected
+with `mismatch.hiddenData` ("don't copy values from the results"). This catches hardcoded answers such
+as `WHERE loot_value > 100` instead of comparing with `AVG`, `WHERE name IN (...)` copied from the
+results, or `UPDATE … WHERE id IN (1, 4, 6, 8)`.
+
+Rules (enforced by `src/levels/levels.test.ts`): every level has at least one variant unless it is
+listed in `NO_VARIANTS` with a reason (only `easy-1`, which returns every row unfiltered); each variant
+has exactly the same schema as the visible data; its expected answer differs from the visible one and is
+not empty. For `orderMatters` levels and "top 1" levels, variants must have no ties.
+
 Numbers are compared by value (`5` equals `5.0`, floats with 12 significant digits); a number is
 never equal to a text (`5` ≠ `'5'`).
 

@@ -61,9 +61,13 @@
   "setup": "CREATE TABLE villagers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, role TEXT NOT NULL, age INTEGER);\nINSERT INTO villagers (name, role, age) VALUES\n  ('Sir Aldric', 'warrior', 63),\n  ('Pip', 'pawn', 16),\n  ('Wren', 'archer', 24),\n  ('Bram', 'archer', 31),\n  ('Tilda', 'monk', 58),\n  ('Hob', 'pawn', 42),\n  ('Marta', 'pawn', 35),\n  ('Osric', 'lancer', 29),\n  ('Elsie', 'archer', 19),\n  ('Brother Fen', 'monk', 71),\n  ('Ivo', 'archer', 27);",
   "solution": "SELECT name FROM villagers WHERE role = 'archer';",
   "check": { "mode": "result" },
+  "variants": [
+    "CREATE TABLE villagers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, role TEXT NOT NULL, age INTEGER);\nINSERT INTO villagers (name, role, age) VALUES\n  ('Rosa', 'archer', 22),\n  ('Tobin', 'pawn', 40),\n  ('Sir Aldric', 'warrior', 63),\n  ('Mabel', 'archer', 33),\n  ('Gus', 'lancer', 28),\n  ('Wren', 'pawn', 24);"
+  ],
   "examples": {
     "accepted": ["SELECT name FROM villagers WHERE 'archer' = role", "select name from villagers where role='archer';"],
     "rejected": [
+      "SELECT name FROM villagers WHERE name IN ('Wren', 'Bram', 'Elsie', 'Ivo')",
       "SELECT name FROM villagers",
       "SELECT name, role FROM villagers WHERE role = 'archer'",
       "SELECT name FROM villagers WHERE role = 'Archer'",

@@ -69,12 +69,16 @@
   "setup": "CREATE TABLE stolen_goods (id INTEGER PRIMARY KEY, item TEXT NOT NULL, quantity INTEGER NOT NULL, stolen_from TEXT NOT NULL);\nINSERT INTO stolen_goods (item, quantity, stolen_from) VALUES\n  ('gold coins', 300, 'Royal storehouse'),\n  ('gold coins', 40, 'River barn'),\n  ('sheep: Lancelot', 1, 'Riverwatch bridge'),\n  ('sheep: Lanky', 1, 'Riverwatch road'),\n  ('sheep: Lanolin', 1, 'Riverwatch road'),\n  ('royal spoons', 12, 'Castle kitchen'),\n  ('smoked ham', 15, 'Hunters'' lodge'),\n  ('firewood', 30, 'Mill loft'),\n  ('chapel bell', 1, 'Chapel');\nCREATE TABLE recoveries (id INTEGER PRIMARY KEY, stolen_id INTEGER NOT NULL REFERENCES stolen_goods(id), recovered_on TEXT NOT NULL, recovered_at TEXT NOT NULL);\nINSERT INTO recoveries (stolen_id, recovered_on, recovered_at) VALUES\n  (2, '1247-03-20', 'Ashpit'),\n  (4, '1247-03-20', 'Ashpit'),\n  (7, '1247-03-20', 'Ashpit'),\n  (6, '1247-03-21', 'Skull Rock'),\n  (8, '1247-03-22', 'Mudhollow'),\n  (9, '1247-03-22', 'Mudhollow');",
   "solution": "SELECT s.item, s.quantity, s.stolen_from FROM stolen_goods s LEFT JOIN recoveries r ON r.stolen_id = s.id WHERE r.id IS NULL;",
   "check": { "mode": "result" },
+  "variants": [
+    "CREATE TABLE stolen_goods (id INTEGER PRIMARY KEY, item TEXT NOT NULL, quantity INTEGER NOT NULL, stolen_from TEXT NOT NULL);\nINSERT INTO stolen_goods (item, quantity, stolen_from) VALUES\n  ('gold coins', 50, 'Mill loft'),\n  ('sheep: Lanky', 1, 'Northfield'),\n  ('firewood', 20, 'Chapel'),\n  ('royal spoons', 6, 'Castle kitchen');\nCREATE TABLE recoveries (id INTEGER PRIMARY KEY, stolen_id INTEGER NOT NULL REFERENCES stolen_goods(id), recovered_on TEXT NOT NULL, recovered_at TEXT NOT NULL);\nINSERT INTO recoveries (stolen_id, recovered_on, recovered_at) VALUES\n  (1, '1247-03-19', 'Ashpit'),\n  (4, '1247-03-21', 'Skull Rock');"
+  ],
   "examples": {
     "accepted": [
       "SELECT stolen_goods.item, stolen_goods.quantity, stolen_goods.stolen_from FROM stolen_goods LEFT JOIN recoveries ON recoveries.stolen_id = stolen_goods.id WHERE recoveries.stolen_id IS NULL",
       "SELECT item, quantity, stolen_from FROM stolen_goods WHERE id NOT IN (SELECT stolen_id FROM recoveries)"
     ],
     "rejected": [
+      "SELECT item, quantity, stolen_from FROM stolen_goods WHERE id IN (1, 3, 5)",
       "SELECT s.item, s.quantity, s.stolen_from FROM stolen_goods s JOIN recoveries r ON r.stolen_id = s.id",
       "SELECT s.item, s.quantity, s.stolen_from FROM stolen_goods s LEFT JOIN recoveries r ON r.stolen_id = s.id",
       "SELECT s.item, s.quantity, s.stolen_from FROM stolen_goods s LEFT JOIN recoveries r ON r.stolen_id = s.id WHERE r.id = NULL",

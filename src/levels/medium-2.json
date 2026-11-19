@@ -2,7 +2,9 @@
   "id": "medium-2",
   "stage": "medium",
   "order": 2,
-  "concepts": ["GROUP BY"],
+  "concepts": [
+    "GROUP BY"
+  ],
   "title": {
     "es": "Aldea por aldea",
     "en": "Village by Village",
@@ -48,11 +50,33 @@
         "en": "Stonewatch has three hundred and five coins and Bluebrook… thirty-five. Our village was the richest, and they took it all from one single place.",
         "fr": "Stonewatch a trois cent cinq pièces et Bluebrook… trente-cinq. Notre village était le plus riche, et ils ont tout pris à un seul endroit."
       }
+    },
+    {
+      "speaker": "scribe",
+      "text": {
+        "es": "El almacén real… su encargada es Lady Maud, la Senescal. Y es el único que han dejado vacío.",
+        "en": "The royal storehouse… its keeper is Lady Maud, the Royal Steward. And it is the only one they emptied.",
+        "fr": "L’entrepôt royal… sa gardienne est Dame Maud, l’Intendante royale. Et c’est le seul qu’ils ont vidé."
+      }
+    },
+    {
+      "speaker": "aldric",
+      "text": {
+        "es": "Cuidado con lo que insinúas, escriba. Maud lleva treinta años sirviendo a la corona. Una acusación necesita pruebas, no casualidades.",
+        "en": "Careful what you imply, scribe. Maud has served the crown for thirty years. An accusation needs proof, not coincidences.",
+        "fr": "Attention à ce que tu insinues, scribe. Maud sert la couronne depuis trente ans. Une accusation exige des preuves, pas des coïncidences."
+      }
     }
   ],
-  "setup": "CREATE TABLE storehouses (id INTEGER PRIMARY KEY, name TEXT NOT NULL, village TEXT NOT NULL, gold INTEGER NOT NULL, wood INTEGER NOT NULL, meat INTEGER NOT NULL);\nINSERT INTO storehouses (name, village, gold, wood, meat) VALUES\n  ('Royal storehouse', 'Bluebrook', 0, 40, 25),\n  ('Mill loft', 'Bluebrook', 35, 60, 40),\n  ('Old granary', 'Millford', 120, 80, 90),\n  ('River barn', 'Millford', 60, 45, 30),\n  ('Oak cellar', 'Oakhollow', 80, 150, 60),\n  ('Hunters'' lodge', 'Oakhollow', 20, 30, 110),\n  ('Fern hall', 'Fernvale', 95, 70, 75),\n  ('Stone vault', 'Stonewatch', 210, 20, 35),\n  ('Quarry shed', 'Stonewatch', 40, 90, 15),\n  ('Watch keep', 'Stonewatch', 55, 25, 45);",
+  "setup": "CREATE TABLE storehouses (id INTEGER PRIMARY KEY, name TEXT NOT NULL, village TEXT NOT NULL, keeper TEXT NOT NULL, gold INTEGER NOT NULL, wood INTEGER NOT NULL, meat INTEGER NOT NULL);\nINSERT INTO storehouses (name, village, keeper, gold, wood, meat) VALUES\n  ('Royal storehouse', 'Bluebrook', 'Lady Maud', 0, 40, 25),\n  ('Mill loft', 'Bluebrook', 'Dunstan', 35, 60, 40),\n  ('Old granary', 'Millford', 'Odo', 120, 80, 90),\n  ('River barn', 'Millford', 'Agnes', 60, 45, 30),\n  ('Oak cellar', 'Oakhollow', 'Bertha', 80, 150, 60),\n  ('Hunters'' lodge', 'Oakhollow', 'Garth', 20, 30, 110),\n  ('Fern hall', 'Fernvale', 'Linnet', 95, 70, 75),\n  ('Stone vault', 'Stonewatch', 'Hamund', 210, 20, 35),\n  ('Quarry shed', 'Stonewatch', 'Rolf', 40, 90, 15),\n  ('Watch keep', 'Stonewatch', 'Joss', 55, 25, 45);",
   "solution": "SELECT village, SUM(gold), SUM(wood), SUM(meat) FROM storehouses GROUP BY village;",
-  "check": { "mode": "result", "ignoreColumnNames": true },
+  "check": {
+    "mode": "result",
+    "ignoreColumnNames": true
+  },
+  "variants": [
+    "CREATE TABLE storehouses (id INTEGER PRIMARY KEY, name TEXT NOT NULL, village TEXT NOT NULL, keeper TEXT NOT NULL, gold INTEGER NOT NULL, wood INTEGER NOT NULL, meat INTEGER NOT NULL);\nINSERT INTO storehouses (name, village, keeper, gold, wood, meat) VALUES\n  ('Royal storehouse', 'Bluebrook', 'Lady Maud', 150, 20, 10),\n  ('Mill loft', 'Bluebrook', 'Dunstan', 10, 35, 60),\n  ('Old granary', 'Millford', 'Odo', 40, 95, 20),\n  ('Oak cellar', 'Oakhollow', 'Bertha', 70, 10, 80),\n  ('Stone vault', 'Stonewatch', 'Hamund', 25, 60, 15),\n  ('Fern hall', 'Fernvale', 'Linnet', 5, 40, 55);"
+  ],
   "examples": {
     "accepted": [
       "SELECT village, SUM(gold) AS gold, SUM(wood) AS wood, SUM(meat) AS meat FROM storehouses GROUP BY village ORDER BY village"

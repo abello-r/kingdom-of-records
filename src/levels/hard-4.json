@@ -2,7 +2,7 @@
   "id": "hard-4",
   "stage": "hard",
   "order": 4,
-  "concepts": ["subquery in FROM", "MAX of an aggregate"],
+  "concepts": ["subquery in FROM", "MAX of an aggregate", "LIMIT"],
   "title": {
     "es": "Donde más retumba",
     "en": "Where the Booms Are",
@@ -30,9 +30,9 @@
       "fr": "Découpe en deux étapes : d’abord le total de TNT de chaque camp (`WHERE` + `GROUP BY`) ; ensuite, garde le plus grand de ces totaux."
     },
     {
-      "es": "No puedes anidar `MAX(SUM(...))`, pero una subconsulta puede hacer de tabla en el `FROM`: `SELECT MAX(total) FROM (SELECT SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp)`. `AS total` le pone nombre a la columna para poder usarla fuera. Mete todo eso en un `HAVING`.",
-      "en": "You cannot nest `MAX(SUM(...))`, but a subquery can act as a table in `FROM`: `SELECT MAX(total) FROM (SELECT SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp)`. `AS total` names the column so you can use it outside. Put all of that in a `HAVING`.",
-      "fr": "Impossible d’imbriquer `MAX(SUM(...))`, mais une sous-requête peut servir de table dans le `FROM` : `SELECT MAX(total) FROM (SELECT SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp)`. `AS total` donne un nom à la colonne pour pouvoir l’utiliser à l’extérieur. Place le tout dans un `HAVING`."
+      "es": "No puedes anidar `MAX(SUM(...))`, pero una subconsulta puede hacer de tabla en el `FROM`: `SELECT MAX(total) FROM (SELECT SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp)`. `AS total` le pone nombre a la columna para poder usarla fuera. Mete todo eso en un `HAVING`. Otra forma válida: ordena los totales con `ORDER BY ... DESC` y quédate solo con la primera fila con `LIMIT 1` (`LIMIT n` devuelve únicamente las n primeras filas).",
+      "en": "You cannot nest `MAX(SUM(...))`, but a subquery can act as a table in `FROM`: `SELECT MAX(total) FROM (SELECT SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp)`. `AS total` names the column so you can use it outside. Put all of that in a `HAVING`. Another valid way: sort the totals with `ORDER BY ... DESC` and keep just the first row with `LIMIT 1` (`LIMIT n` returns only the first n rows).",
+      "fr": "Impossible d’imbriquer `MAX(SUM(...))`, mais une sous-requête peut servir de table dans le `FROM` : `SELECT MAX(total) FROM (SELECT SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp)`. `AS total` donne un nom à la colonne pour pouvoir l’utiliser à l’extérieur. Place le tout dans un `HAVING`. Autre méthode valable : trie les totaux avec `ORDER BY ... DESC` et ne garde que la première ligne avec `LIMIT 1` (`LIMIT n` ne renvoie que les n premières lignes)."
     },
     {
       "es": "Casi lo tienes: `SELECT camp, SUM(quantity) FROM supplies WHERE item = 'TNT' GROUP BY camp HAVING SUM(quantity) = (SELECT MAX(total) FROM (...));`",
@@ -52,21 +52,27 @@
     {
       "speaker": "grubnak",
       "text": {
-        "es": "¡Grubnak no ladrón! ¡A Grubnak le PAGARON! Hombre brillante con sello rojo paga, Grubnak quema. Todo apuntado. Grubnak muy ordenado.",
-        "en": "Grubnak no thief! Grubnak was PAID! Shiny man with red seal pays, Grubnak burns. All written down. Grubnak very organised.",
-        "fr": "Grubnak pas voleur ! Grubnak été PAYÉ ! Homme brillant avec sceau rouge paie, Grubnak brûle. Tout noté. Grubnak très organisé."
+        "es": "¡Grubnak no ladrón! ¡A Grubnak le PAGARON! Humano elegante paga: manos suaves, muchos anillos. Grubnak quema. Todo apuntado. Grubnak muy ordenado.",
+        "en": "Grubnak no thief! Grubnak was PAID! Fancy human pays: soft hands, many rings. Grubnak burns. All written down. Grubnak very organised.",
+        "fr": "Grubnak pas voleur ! Grubnak été PAYÉ ! Humain chic paie : mains douces, plein de bagues. Grubnak brûle. Tout noté. Grubnak très organisé."
       }
     }
   ],
   "setup": "CREATE TABLE supplies (id INTEGER PRIMARY KEY, camp TEXT NOT NULL, item TEXT NOT NULL, quantity INTEGER NOT NULL);\nINSERT INTO supplies (camp, item, quantity) VALUES\n  ('Ashpit', 'TNT', 12),\n  ('Ashpit', 'torches', 40),\n  ('Mudhollow', 'TNT', 25),\n  ('Skull Rock', 'TNT', 15),\n  ('Mudhollow', 'barrels', 18),\n  ('Ashpit', 'TNT', 8),\n  ('Skull Rock', 'torches', 22),\n  ('Skull Rock', 'TNT', 14),\n  ('Mudhollow', 'torches', 30),\n  ('Skull Rock', 'very normal hats', 6);",
   "solution": "SELECT camp, SUM(quantity) FROM supplies WHERE item = 'TNT' GROUP BY camp HAVING SUM(quantity) = (SELECT MAX(total) FROM (SELECT SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp));",
   "check": { "mode": "result", "ignoreColumnNames": true },
+  "variants": [
+    "CREATE TABLE supplies (id INTEGER PRIMARY KEY, camp TEXT NOT NULL, item TEXT NOT NULL, quantity INTEGER NOT NULL);\nINSERT INTO supplies (camp, item, quantity) VALUES\n  ('Ashpit', 'TNT', 10),\n  ('Mudhollow', 'TNT', 30),\n  ('Ashpit', 'TNT', 15),\n  ('Skull Rock', 'TNT', 12),\n  ('Mudhollow', 'torches', 20),\n  ('Ashpit', 'TNT', 9),\n  ('Skull Rock', 'TNT', 6);"
+  ],
   "examples": {
     "accepted": [
+      "SELECT camp, SUM(quantity) FROM supplies WHERE item = 'TNT' GROUP BY camp ORDER BY SUM(quantity) DESC LIMIT 1",
       "SELECT camp, SUM(quantity) AS tnt FROM supplies WHERE item = 'TNT' GROUP BY camp ORDER BY tnt DESC LIMIT 1",
       "SELECT camp, total FROM (SELECT camp, SUM(quantity) AS total FROM supplies WHERE item = 'TNT' GROUP BY camp) WHERE total = (SELECT MAX(t) FROM (SELECT SUM(quantity) AS t FROM supplies WHERE item = 'TNT' GROUP BY camp))"
     ],
     "rejected": [
+      "SELECT camp, SUM(quantity) FROM supplies WHERE item = 'TNT' AND camp = 'Skull Rock' GROUP BY camp",
+      "SELECT camp, SUM(quantity) FROM supplies WHERE item = 'TNT' GROUP BY camp HAVING SUM(quantity) = 29",
       "SELECT camp, MAX(quantity) FROM supplies WHERE item = 'TNT'",
       "SELECT camp, SUM(quantity) FROM supplies WHERE item = 'TNT' GROUP BY camp",
       "SELECT camp, SUM(quantity) FROM supplies GROUP BY camp ORDER BY SUM(quantity) DESC LIMIT 1",

@@ -12,9 +12,9 @@
     {
       "speaker": "narrator",
       "text": {
-        "es": "El consejo de los reinos se reúne en el Castillo Azul. Azules, rojos y amarillos se miran con desconfianza. En el centro de la mesa, el libro de cuentas de Grubnak.",
-        "en": "The council of the kingdoms gathers at the Blue Castle. Blue, Red and Yellow eye each other warily. In the middle of the table lies Grubnak’s ledger.",
-        "fr": "Le conseil des royaumes se réunit au Château Bleu. Bleus, Rouges et Jaunes s’observent avec méfiance. Au centre de la table, le registre de comptes de Grubnak."
+        "es": "El consejo de los reinos se reúne en el Castillo Azul. Azules, rojos y amarillos se miran con desconfianza. En el centro de la mesa, el libro de cuentas de Grubnak. Lady Maud, la Senescal, da vueltas a sus anillos y no mira a nadie a los ojos.",
+        "en": "The council of the kingdoms gathers at the Blue Castle. Blue, Red and Yellow eye each other warily. In the middle of the table lies Grubnak’s ledger. Lady Maud, the Royal Steward, twists her rings and meets no one’s eye.",
+        "fr": "Le conseil des royaumes se réunit au Château Bleu. Bleus, Rouges et Jaunes s’observent avec méfiance. Au centre de la table, le registre de comptes de Grubnak. Dame Maud, l’Intendante royale, fait tourner ses bagues et ne regarde personne en face."
       }
     },
     {
@@ -28,9 +28,9 @@
     {
       "speaker": "corvin",
       "text": {
-        "es": "Qué teatro tan conmovedor. Adelante, escriba de aldea, enséñanos tu magia de pergamino.",
-        "en": "Such touching theatre. Go on, little scribe, show us your parchment magic.",
-        "fr": "Quel théâtre touchant. Vas-y, scribe de village, montre-nous ta magie de parchemin."
+        "es": "¿Hace falta tanto teatro? Leed el libro: nadie pagó a esos goblins más que Lady Maud. Adelante, escriba de aldea, compruébalo con tu magia de pergamino.",
+        "en": "Must we have all this theatre? Read the ledger: no one paid those goblins more than Lady Maud. Go on, little scribe, check it with your parchment magic.",
+        "fr": "Faut-il tout ce théâtre ? Lisez le registre : personne n’a payé ces gobelins plus que Dame Maud. Vas-y, scribe de village, vérifie-le avec ta magie de parchemin."
       }
     }
   ],
@@ -66,6 +66,14 @@
       }
     },
     {
+      "speaker": "aldric",
+      "text": {
+        "es": "Maud pagó, sí: después del asalto, rescates para devolvernos las ovejas y los caballos. Avaló a esos «mercaderes» porque traían permisos de tu Tesorería. Y la orden que alejó a Garrick llevaba su nombre… escrito con tu mano, tesorero.",
+        "en": "Maud paid, yes: after the raid, ransoms to bring back our sheep and horses. She vouched for those “merchants” because they carried permits from your Treasury. And the order that sent Garrick away bore her name… written by your hand, treasurer.",
+        "fr": "Maud a payé, oui : après l’attaque, des rançons pour nous rendre nos moutons et nos chevaux. Elle a recommandé ces « marchands » parce qu’ils avaient des permis de ta Trésorerie. Et l’ordre qui a éloigné Garrick portait son nom… écrit de ta main, trésorier."
+      }
+    },
+    {
       "speaker": "corvin",
       "text": {
         "es": "Un Reino Azul débil necesitaría un amigo fuerte… y un tesorero generoso. Era un buen plan. Hasta que alguien de una aldea aprendió a leer.",
@@ -76,9 +84,9 @@
     {
       "speaker": "narrator",
       "text": {
-        "es": "Las trescientas monedas del almacén real aparecen en los cofres de Corvin. Lancelot y Lanolin, en su jardín, comiéndose sus rosas. El Gran Registro, por fin, queda restaurado.",
-        "en": "The three hundred coins from the royal storehouse turn up in Corvin’s coffers. Lancelot and Lanolin turn up in his garden, eating his roses. At last, the Great Registry is restored.",
-        "fr": "Les trois cents pièces de l’entrepôt royal réapparaissent dans les coffres de Corvin. Lancelot et Lanolin, dans son jardin, en train de manger ses roses. Le Grand Registre est enfin restauré."
+        "es": "Las trescientas monedas del almacén real aparecen en los cofres de Corvin. Lancelot y Lanolin, en su jardín, comiéndose sus rosas. Lady Maud, por primera vez en toda la tarde, deja quietos sus anillos. El Gran Registro, por fin, queda restaurado.",
+        "en": "The three hundred coins from the royal storehouse turn up in Corvin’s coffers. Lancelot and Lanolin turn up in his garden, eating his roses. Lady Maud, for the first time all afternoon, leaves her rings alone. At last, the Great Registry is restored.",
+        "fr": "Les trois cents pièces de l’entrepôt royal réapparaissent dans les coffres de Corvin. Lancelot et Lanolin, dans son jardin, en train de manger ses roses. Dame Maud, pour la première fois de l’après-midi, laisse ses bagues tranquilles. Le Grand Registre est enfin restauré."
       }
     },
     {
@@ -93,12 +101,16 @@
   "setup": "CREATE TABLE officials (id INTEGER PRIMARY KEY, name TEXT NOT NULL, title TEXT NOT NULL, kingdom TEXT NOT NULL);\nINSERT INTO officials (name, title, kingdom) VALUES\n  ('Sir Aldric', 'Captain of the Guard', 'Blue Kingdom'),\n  ('Lady Maud', 'Royal Steward', 'Blue Kingdom'),\n  ('Corvin', 'Treasurer', 'Red Kingdom'),\n  ('Sir Garrick', 'Knight', 'Red Kingdom'),\n  ('Brother Fen', 'Chaplain', 'Blue Kingdom'),\n  ('Dame Rowena', 'Envoy', 'Yellow Kingdom');\nCREATE TABLE payments (id INTEGER PRIMARY KEY, payer_id INTEGER NOT NULL REFERENCES officials(id), goblin TEXT NOT NULL, amount INTEGER NOT NULL, paid_on TEXT NOT NULL, memo TEXT NOT NULL);\nINSERT INTO payments (payer_id, goblin, amount, paid_on, memo) VALUES\n  (3, 'Grubnak', 100, '1247-02-20', 'first half, as agreed'),\n  (6, 'Snik', 30, '1247-03-01', 'safe passage for the silk caravan'),\n  (3, 'Grubnak', 150, '1247-03-05', 'map of the royal storehouse'),\n  (2, 'Gorb', 40, '1247-03-08', 'toll on the marsh road'),\n  (3, 'Kragg', 50, '1247-03-12', 'Riverwatch will be empty on the night'),\n  (6, 'Mogg', 20, '1247-03-13', 'toll on the marsh road'),\n  (2, 'Grubnak', 280, '1247-03-15', 'ransom for twelve sheep'),\n  (5, 'Nub', 20, '1247-03-16', 'ransom for the chapel bell'),\n  (2, 'Snik', 150, '1247-03-18', 'ransom for the mill horses');",
   "solution": "SELECT o.name, o.title, o.kingdom, SUM(p.amount) FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on < '1247-03-14' GROUP BY o.id HAVING SUM(p.amount) = (SELECT MAX(total) FROM (SELECT SUM(amount) AS total FROM payments WHERE paid_on < '1247-03-14' GROUP BY payer_id));",
   "check": { "mode": "result", "ignoreColumnNames": true },
+  "variants": [
+    "CREATE TABLE officials (id INTEGER PRIMARY KEY, name TEXT NOT NULL, title TEXT NOT NULL, kingdom TEXT NOT NULL);\nINSERT INTO officials (name, title, kingdom) VALUES\n  ('Sir Aldric', 'Captain of the Guard', 'Blue Kingdom'),\n  ('Lady Maud', 'Royal Steward', 'Blue Kingdom'),\n  ('Corvin', 'Treasurer', 'Red Kingdom'),\n  ('Sir Garrick', 'Knight', 'Red Kingdom'),\n  ('Brother Fen', 'Chaplain', 'Blue Kingdom'),\n  ('Dame Rowena', 'Envoy', 'Yellow Kingdom');\nCREATE TABLE payments (id INTEGER PRIMARY KEY, payer_id INTEGER NOT NULL REFERENCES officials(id), goblin TEXT NOT NULL, amount INTEGER NOT NULL, paid_on TEXT NOT NULL, memo TEXT NOT NULL);\nINSERT INTO payments (payer_id, goblin, amount, paid_on, memo) VALUES\n  (6, 'Snik', 120, '1247-02-25', 'toll on the marsh road'),\n  (3, 'Grubnak', 50, '1247-03-02', 'first half'),\n  (6, 'Mogg', 90, '1247-03-10', 'toll on the marsh road'),\n  (2, 'Gorb', 60, '1247-03-11', 'toll on the marsh road'),\n  (3, 'Kragg', 300, '1247-03-20', 'late payment');"
+  ],
   "examples": {
     "accepted": [
       "SELECT o.name, o.title, o.kingdom, SUM(p.amount) AS total FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on < '1247-03-14' GROUP BY o.id ORDER BY total DESC LIMIT 1",
       "SELECT officials.name, officials.title, officials.kingdom, SUM(payments.amount) FROM payments JOIN officials ON officials.id = payments.payer_id WHERE payments.paid_on < '1247-03-14' GROUP BY officials.name, officials.title, officials.kingdom HAVING SUM(payments.amount) >= (SELECT MAX(t) FROM (SELECT SUM(amount) AS t FROM payments WHERE paid_on < '1247-03-14' GROUP BY payer_id))"
     ],
     "rejected": [
+      "SELECT o.name, o.title, o.kingdom, SUM(p.amount) FROM officials o JOIN payments p ON p.payer_id = o.id WHERE o.name = 'Corvin' AND p.paid_on < '1247-03-14' GROUP BY o.id",
       "SELECT o.name, o.title, o.kingdom, SUM(p.amount) AS total FROM officials o JOIN payments p ON p.payer_id = o.id GROUP BY o.id ORDER BY total DESC LIMIT 1",
       "SELECT o.name, o.title, o.kingdom, MAX(p.amount) FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on < '1247-03-14'",
       "SELECT o.name, o.title, o.kingdom, SUM(p.amount) FROM officials o JOIN payments p ON p.payer_id = o.id WHERE p.paid_on < '1247-03-14' GROUP BY o.id",

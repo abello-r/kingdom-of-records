@@ -69,11 +69,15 @@
   "setup": "CREATE TABLE sheep (id INTEGER PRIMARY KEY, name TEXT NOT NULL, wool TEXT, status TEXT NOT NULL, last_seen_at TEXT NOT NULL, last_seen_place TEXT NOT NULL);\nINSERT INTO sheep (name, wool, status, last_seen_at, last_seen_place) VALUES\n  ('Lanky', 'white', 'lost', '1247-03-14 23:40', 'Riverwatch road'),\n  ('Lancelot', 'black', 'lost', '1247-03-14 23:55', 'Riverwatch bridge'),\n  ('Lana', 'white', 'lost', '1247-03-14 21:15', 'Millpond'),\n  ('Landry', 'grey', 'lost', '1247-03-13 18:30', 'Northfield'),\n  ('Lanzo', 'grey', 'home', '1247-03-15 08:00', 'Barnstead'),\n  ('Alana', 'white', 'lost', '1247-03-14 22:05', 'Applegarth'),\n  ('Blanche', 'white', 'lost', '1247-03-14 22:30', 'Riverwatch road'),\n  ('Lena', 'white', 'lost', '1247-03-14 20:50', 'Northfield'),\n  ('Mrs Fluff', 'cream', 'lost', '1247-03-14 23:20', 'Applegarth'),\n  ('Lanolin', 'cream', 'lost', '1247-03-14 23:10', 'Riverwatch road'),\n  ('Cloud', 'white', 'home', '1247-03-15 07:45', 'Barnstead'),\n  ('Wooly', 'black', 'home', '1247-03-15 09:10', 'Barnstead');",
   "solution": "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE status = 'lost' AND name LIKE 'Lan%' ORDER BY last_seen_at DESC;",
   "check": { "mode": "result", "orderMatters": true },
+  "variants": [
+    "CREATE TABLE sheep (id INTEGER PRIMARY KEY, name TEXT NOT NULL, wool TEXT, status TEXT NOT NULL, last_seen_at TEXT NOT NULL, last_seen_place TEXT NOT NULL);\nINSERT INTO sheep (name, wool, status, last_seen_at, last_seen_place) VALUES\n  ('Lanky', 'white', 'home', '1247-03-15 07:00', 'Barnstead'),\n  ('Lancelot', 'black', 'lost', '1247-03-14 20:05', 'Northfield'),\n  ('Lanzo', 'grey', 'lost', '1247-03-14 23:50', 'Millpond'),\n  ('Lantern', 'white', 'lost', '1247-03-14 22:15', 'Applegarth'),\n  ('Elana', 'white', 'lost', '1247-03-14 23:59', 'Riverwatch road'),\n  ('Lanolin', 'cream', 'lost', '1247-03-13 09:00', 'Northfield');"
+  ],
   "examples": {
     "accepted": [
       "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE name LIKE 'lan%' AND status = 'lost' ORDER BY last_seen_at DESC"
     ],
     "rejected": [
+      "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE name IN ('Lancelot', 'Lanky', 'Lanolin', 'Lana', 'Landry') ORDER BY last_seen_at DESC",
       "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE status = 'lost' AND name LIKE 'Lan%'",
       "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE status = 'lost' AND name LIKE 'Lan%' ORDER BY last_seen_at",
       "SELECT name, last_seen_at, last_seen_place FROM sheep WHERE status = 'lost' AND name LIKE '%lan%' ORDER BY last_seen_at DESC",

@@ -69,12 +69,16 @@
   "setup": "CREATE TABLE scribes (id INTEGER PRIMARY KEY, name TEXT NOT NULL, sworn_on TEXT NOT NULL);\nINSERT INTO scribes (name, sworn_on) VALUES ('Master Ambrose', '1207-09-01');\nCREATE TABLE houses (id INTEGER PRIMARY KEY, building TEXT NOT NULL, owner TEXT NOT NULL, status TEXT NOT NULL);\nINSERT INTO houses (building, owner, status) VALUES\n  ('Hob''s cottage', 'Hob', 'rebuilding'),\n  ('Bakery', 'Marta', 'burnt'),\n  ('Mill', 'Dunstan', 'rebuilt'),\n  ('Chapel', 'Brother Fen', 'rebuilding'),\n  ('Nell''s cottage', 'Nell', 'burnt'),\n  ('Archery', 'Wren', 'rebuilding'),\n  ('Royal storehouse', 'The Crown', 'looted'),\n  ('Pip''s hut', 'Pip', 'rebuilding'),\n  ('Herb garden shed', 'Tilda', 'rebuilt');",
   "solution": "INSERT INTO scribes (name, sworn_on) VALUES ('Pip', '1247-03-16');\nUPDATE houses SET status = 'rebuilt' WHERE status = 'rebuilding';",
   "check": { "mode": "state", "tables": ["scribes", "houses"] },
+  "variants": [
+    "CREATE TABLE scribes (id INTEGER PRIMARY KEY, name TEXT NOT NULL, sworn_on TEXT NOT NULL);\nINSERT INTO scribes (name, sworn_on) VALUES ('Master Ambrose', '1207-09-01');\nCREATE TABLE houses (id INTEGER PRIMARY KEY, building TEXT NOT NULL, owner TEXT NOT NULL, status TEXT NOT NULL);\nINSERT INTO houses (building, owner, status) VALUES\n  ('Bakery', 'Marta', 'rebuilding'),\n  ('Mill', 'Dunstan', 'burnt'),\n  ('Chapel', 'Brother Fen', 'rebuilt'),\n  ('Forge', 'Rolf', 'rebuilding'),\n  ('Royal storehouse', 'The Crown', 'looted'),\n  ('Hob''s cottage', 'Hob', 'burnt');"
+  ],
   "examples": {
     "accepted": [
       "UPDATE houses SET status = 'rebuilt' WHERE status = 'rebuilding'; INSERT INTO scribes VALUES (2, 'Pip', '1247-03-16');",
-      "INSERT INTO scribes (sworn_on, name) VALUES ('1247-03-16', 'Pip'); UPDATE houses SET status = 'rebuilt' WHERE id IN (1, 4, 6, 8);"
+      "INSERT INTO scribes (sworn_on, name) VALUES ('1247-03-16', 'Pip'); UPDATE houses SET status = 'rebuilt' WHERE status IN ('rebuilding');"
     ],
     "rejected": [
+      "INSERT INTO scribes (name, sworn_on) VALUES ('Pip', '1247-03-16'); UPDATE houses SET status = 'rebuilt' WHERE id IN (1, 4, 6, 8);",
       "INSERT INTO scribes (name, sworn_on) VALUES ('Pip', '1247-03-16');",
       "INSERT INTO scribes (name, sworn_on) VALUES ('Pip', '1247-03-16'); UPDATE houses SET status = 'rebuilt';",
       "INSERT INTO scribes (name, sworn_on) VALUES ('pip', '1247-03-16'); UPDATE houses SET status = 'rebuilt' WHERE status = 'rebuilding';",

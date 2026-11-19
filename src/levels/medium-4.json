@@ -52,29 +52,33 @@
     {
       "speaker": "scribe",
       "text": {
-        "es": "Sir Aldric… los tres goblins traían permisos de la Tesorería Roja. Falsos, ¿verdad?",
-        "en": "Sir Aldric… all three goblins carried permits from the Red Treasury. Forged, surely?",
-        "fr": "Sire Aldric… les trois gobelins avaient des permis de la Trésorerie Rouge. Des faux, sûrement ?"
+        "es": "Sir Aldric, mire esto: los tres goblins entraron avalados por Lady Maud. Los tres.",
+        "en": "Sir Aldric, look at this: all three goblins were vouched for by Lady Maud. All three.",
+        "fr": "Sire Aldric, regardez : les trois gobelins ont été recommandés par Dame Maud. Tous les trois."
       }
     },
     {
       "speaker": "aldric",
       "text": {
-        "es": "El Reino Rojo es nuestro aliado desde hace veinte años. Seguro que son falsos. Seguro.",
-        "en": "The Red Kingdom has been our ally for twenty years. They must be forged. They must.",
-        "fr": "Le Royaume Rouge est notre allié depuis vingt ans. Ce sont forcément des faux. Forcément."
+        "es": "Maud… Traían permisos de la Tesorería Roja, y el Reino Rojo es nuestro aliado; quizá eso la convenció. O quizá no. Sigue leyendo, escriba, y no le digas nada a nadie.",
+        "en": "Maud… They carried permits from the Red Treasury, and the Red Kingdom is our ally; perhaps that convinced her. Or perhaps not. Keep reading, scribe, and say nothing to anyone.",
+        "fr": "Maud… Ils avaient des permis de la Trésorerie Rouge, et le Royaume Rouge est notre allié ; c’est peut-être ce qui l’a convaincue. Ou peut-être pas. Continue de lire, scribe, et n’en parle à personne."
       }
     }
   ],
-  "setup": "CREATE TABLE merchants (id INTEGER PRIMARY KEY, name TEXT NOT NULL, goods TEXT NOT NULL, permit_from TEXT NOT NULL, seal TEXT NOT NULL);\nINSERT INTO merchants (name, goods, permit_from, seal) VALUES\n  ('Hilda Brightwool', 'wool', 'Blue Castle', 'royal'),\n  ('Odo the Salter', 'salt', 'Blue Castle', 'royal'),\n  ('Mira of Redmoor', 'spices', 'Red Treasury', 'royal'),\n  ('Totally Human Bob', 'very normal hats', 'Red Treasury', 'none'),\n  ('Snik Honestman', 'sheep (slightly used)', 'Red Treasury', 'none'),\n  ('Pell the Tinker', 'pots and pans', 'Blue Castle', 'royal'),\n  ('Gubbins & Sons', 'barrels (do not shake)', 'Red Treasury', 'none'),\n  ('Ysolde', 'silk', 'Red Treasury', 'royal');\nCREATE TABLE guards (id INTEGER PRIMARY KEY, name TEXT NOT NULL, post TEXT NOT NULL);\nINSERT INTO guards (name, post) VALUES\n  ('Bertram', 'Market'),\n  ('Joss', 'Northwatch'),\n  ('Hilde', 'Market'),\n  ('Rolf', 'East gate'),\n  ('Wilm', 'Market'),\n  ('Cedric', 'Castle gate');",
+  "setup": "CREATE TABLE merchants (id INTEGER PRIMARY KEY, name TEXT NOT NULL, goods TEXT NOT NULL, permit_from TEXT NOT NULL, seal TEXT NOT NULL, vouched_by TEXT NOT NULL);\nINSERT INTO merchants (name, goods, permit_from, seal, vouched_by) VALUES\n  ('Hilda Brightwool', 'wool', 'Blue Castle', 'royal', 'Brother Fen'),\n  ('Odo the Salter', 'salt', 'Blue Castle', 'royal', 'Sir Aldric'),\n  ('Mira of Redmoor', 'spices', 'Red Treasury', 'royal', 'Lady Maud'),\n  ('Totally Human Bob', 'very normal hats', 'Red Treasury', 'none', 'Lady Maud'),\n  ('Snik Honestman', 'sheep (slightly used)', 'Red Treasury', 'none', 'Lady Maud'),\n  ('Pell the Tinker', 'pots and pans', 'Blue Castle', 'royal', 'Brother Fen'),\n  ('Gubbins & Sons', 'barrels (do not shake)', 'Red Treasury', 'none', 'Lady Maud'),\n  ('Ysolde', 'silk', 'Red Treasury', 'royal', 'Dame Rowena');\nCREATE TABLE guards (id INTEGER PRIMARY KEY, name TEXT NOT NULL, post TEXT NOT NULL);\nINSERT INTO guards (name, post) VALUES\n  ('Bertram', 'Market'),\n  ('Joss', 'Northwatch'),\n  ('Hilde', 'Market'),\n  ('Rolf', 'East gate'),\n  ('Wilm', 'Market'),\n  ('Cedric', 'Castle gate');",
   "solution": "DELETE FROM merchants WHERE seal = 'none';\nUPDATE guards SET post = 'Storehouse' WHERE post = 'Market';",
   "check": { "mode": "state", "tables": ["merchants", "guards"] },
+  "variants": [
+    "CREATE TABLE merchants (id INTEGER PRIMARY KEY, name TEXT NOT NULL, goods TEXT NOT NULL, permit_from TEXT NOT NULL, seal TEXT NOT NULL, vouched_by TEXT NOT NULL);\nINSERT INTO merchants (name, goods, permit_from, seal, vouched_by) VALUES\n  ('Grizz the Grocer', 'turnips (wiggly)', 'Red Treasury', 'none', 'Lady Maud'),\n  ('Hilda Brightwool', 'wool', 'Blue Castle', 'royal', 'Brother Fen'),\n  ('Mira of Redmoor', 'spices', 'Red Treasury', 'royal', 'Lady Maud'),\n  ('Nobbin', 'firewood', 'Blue Castle', 'none', 'Sir Aldric'),\n  ('Ysolde', 'silk', 'Red Treasury', 'royal', 'Dame Rowena');\nCREATE TABLE guards (id INTEGER PRIMARY KEY, name TEXT NOT NULL, post TEXT NOT NULL);\nINSERT INTO guards (name, post) VALUES\n  ('Bertram', 'East gate'),\n  ('Joss', 'Market'),\n  ('Hilde', 'Castle gate'),\n  ('Tamsin', 'Market');"
+  ],
   "examples": {
     "accepted": [
-      "UPDATE guards SET post = 'Storehouse' WHERE post = 'Market'; DELETE FROM merchants WHERE seal <> 'royal';",
-      "DELETE FROM merchants WHERE id IN (4, 5, 7); UPDATE guards SET post = 'Storehouse' WHERE name IN ('Bertram', 'Hilde', 'Wilm');"
+      "UPDATE guards SET post = 'Storehouse' WHERE post = 'Market'; DELETE FROM merchants WHERE seal <> 'royal';"
     ],
     "rejected": [
+      "DELETE FROM merchants WHERE id IN (4, 5, 7); UPDATE guards SET post = 'Storehouse' WHERE name IN ('Bertram', 'Hilde', 'Wilm');",
+      "DELETE FROM merchants WHERE vouched_by = 'Lady Maud'; UPDATE guards SET post = 'Storehouse' WHERE post = 'Market';",
       "DELETE FROM merchants WHERE permit_from = 'Red Treasury'; UPDATE guards SET post = 'Storehouse' WHERE post = 'Market';",
       "DELETE FROM merchants WHERE seal = 'none'; UPDATE guards SET post = 'Storehouse';",
       "DELETE FROM merchants; UPDATE guards SET post = 'Storehouse' WHERE post = 'Market';",

@@ -49,6 +49,7 @@ Each stage plants clues that pay off in the final level.
 | **Snik** | Medium 4 ("Snik Honestman", fake merchant) | Hard 1 (in the loot list) |
 | **Grubnak** | Hard 1 (loot at Skull Rock) | Hard 3 (one of the bosses), Hard 4 (found at Skull Rock with the ledger), Hard 5 |
 | **Lancelot and Lanolin** | Easy 4 (lost near Riverwatch) | Hard 2 (never recovered), Hard 5 (found in Corvin's garden) |
+| **Lady Maud — red herring** | Medium 2 (keeper of the emptied royal storehouse), Medium 4 (vouched for the three goblin "merchants"), Medium 5 (Garrick's order was signed in her name), Hard 4 (Grubnak: "soft hands, many rings"), Hard 5 (twists her rings; Corvin accuses her) | Hard 5: she paid the most *overall* — ransoms **after** the raid. Forgetting the date filter gives her as the answer, which is exactly Corvin's misdirection. She vouched for the merchants because of their Red Treasury permits, and Corvin forged the order in her name. |
 
 ## Stage 1 — Easy: The Village in Ashes
 
@@ -71,13 +72,14 @@ Scene: autumn fields (`Tilemap_color4`), castle, resources, soldiers.
 
 | Level | Concept | Story beat | Tables |
 |---|---|---|---|
-| Medium 1 | Aggregates (`SUM`; `COUNT`, `AVG`, `MIN`, `MAX` introduced) | Report to the king: total gold, wood, meat. | `storehouses(id, name, village, gold, wood, meat)` |
-| Medium 2 | `GROUP BY` | Resources per village: Bluebrook has almost no gold left. | same |
+| Medium 1 | Aggregates (`SUM`; `COUNT`, `AVG`, `MIN`, `MAX` introduced) | Report to the king: total gold, wood, meat. | `storehouses(id, name, village, keeper, gold, wood, meat)` |
+| Medium 2 | `GROUP BY` | Resources per village: Bluebrook has almost no gold left; the empty royal storehouse is kept by Lady Maud. | same |
 | Medium 3 | `HAVING` | Garrison only villages with more than 150 meat a year. | `harvests(id, village, season, meat, wood)` |
-| Medium 4 | `DELETE` + `UPDATE … WHERE` | Strike the goblin "merchants" (no seal) and move the market guards. | `merchants(id, name, goods, permit_from, seal)`, `guards(id, name, post)` |
+| Medium 4 | `DELETE` + `UPDATE … WHERE` | Strike the goblin "merchants" (no seal, Red Treasury permits, vouched for by Lady Maud) and move the market guards. | `merchants(id, name, goods, permit_from, seal, vouched_by)`, `guards(id, name, post)` |
 | Medium 5 | First `JOIN` | Unguarded towers on the raid night: Riverwatch, last guard Sir Garrick (Red Kingdom). | `soldiers(id, name, kingdom, rank)`, `towers(id, name, last_guard_id, guarded_on_raid_night)` |
 
-**Stage ending:** Garrick was ordered home that night by a letter sealed by the Red Treasury.
+**Stage ending:** Garrick was relieved that night by a written order signed in Lady Maud's name.
+Aldric notes that a signature can be forged.
 
 ## Stage 3 — Hard: The Goblin Frontier
 
@@ -88,11 +90,12 @@ Scene: dusk (`Tilemap_color5`), goblin camps, towers, fire and TNT.
 | Hard 1 | Multiple `JOIN`, table aliases | Goblins → camps → loot. 260 coins in the camps, but not the royal gold. | `camps(id, name, region)`, `goblins(id, name, kind, camp_id)`, `loot(id, goblin_id, item, quantity)` |
 | Hard 2 | `LEFT JOIN` + `IS NULL` | Never recovered: Lancelot, Lanolin and the 300 royal coins. | `stolen_goods(id, item, quantity, stolen_from)`, `recoveries(id, stolen_id, recovered_on, recovered_at)` |
 | Hard 3 | Subquery in `WHERE`, `AVG` | Goblins above the average loot: Grubnak, Kragg, Gorb. | `goblins(id, name, kind, camp, loot_value)` |
-| Hard 4 | Subquery in `FROM`, `MAX` of a total, column alias `AS` | Camp with the most TNT: Skull Rock. Grubnak is caught with his ledger. | `supplies(id, camp, item, quantity)` |
-| Hard 5 | Final challenge: `JOIN` + `WHERE` + `GROUP BY` + `HAVING` + subquery | Before the raid, Corvin paid the goblins more than anyone (300). Exposed before the council. | `officials(id, name, title, kingdom)`, `payments(id, payer_id, goblin, amount, paid_on, memo)` |
+| Hard 4 | Subquery in `FROM`, `MAX` of a total, column alias `AS`, `LIMIT` (alternative) | Camp with the most TNT: Skull Rock. Grubnak is caught with his ledger: "a fancy human with soft hands and many rings paid". | `supplies(id, camp, item, quantity)` |
+| Hard 5 | Final challenge: `JOIN` + `WHERE` + `GROUP BY` + `HAVING` + subquery | Corvin accuses Lady Maud (top payer overall). Counting only payments **before** the raid, the top payer is Corvin (300). | `officials(id, name, title, kingdom)`, `payments(id, payer_id, goblin, amount, paid_on, memo)` |
 
-**Ending:** the 300 royal coins are found in Corvin's coffers, Lancelot and Lanolin in his garden; the
-Great Registry is restored.
+**Ending:** Maud's payments were ransoms after the raid; Corvin forged the order in her name. The 300
+royal coins are found in Corvin's coffers, Lancelot and Lanolin in his garden; the Great Registry is
+restored.
 
 ## Asset adaptations
 

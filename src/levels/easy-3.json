@@ -61,12 +61,16 @@
   "setup": "CREATE TABLE villagers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, role TEXT NOT NULL, trade TEXT NOT NULL, available INTEGER NOT NULL);\nINSERT INTO villagers (name, role, trade, available) VALUES\n  ('Pip', 'pawn', 'shepherd', 1),\n  ('Hob', 'pawn', 'woodcutter', 1),\n  ('Marta', 'pawn', 'miner', 1),\n  ('Nell', 'pawn', 'woodcutter', 0),\n  ('Dunstan', 'pawn', 'miner', 1),\n  ('Greta', 'pawn', 'builder', 1),\n  ('Ulric', 'pawn', 'miner', 0),\n  ('Tam', 'pawn', 'woodcutter', 1),\n  ('Agnes', 'pawn', 'butcher', 1),\n  ('Osric', 'lancer', 'miner', 1),\n  ('Wren', 'archer', 'woodcutter', 1),\n  ('Tilda', 'monk', 'herbalist', 1);",
   "solution": "SELECT name, trade FROM villagers WHERE role = 'pawn' AND trade IN ('woodcutter', 'miner') AND available = 1;",
   "check": { "mode": "result" },
+  "variants": [
+    "CREATE TABLE villagers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, role TEXT NOT NULL, trade TEXT NOT NULL, available INTEGER NOT NULL);\nINSERT INTO villagers (name, role, trade, available) VALUES\n  ('Hob', 'pawn', 'woodcutter', 0),\n  ('Marta', 'pawn', 'builder', 1),\n  ('Rudi', 'pawn', 'miner', 1),\n  ('Sela', 'pawn', 'woodcutter', 1),\n  ('Tam', 'pawn', 'miner', 0),\n  ('Osric', 'lancer', 'woodcutter', 1),\n  ('Dunstan', 'pawn', 'butcher', 1);"
+  ],
   "examples": {
     "accepted": [
       "SELECT name, trade FROM villagers WHERE role = 'pawn' AND (trade = 'woodcutter' OR trade = 'miner') AND available = 1",
       "SELECT name, trade FROM villagers WHERE available = 1 AND trade IN ('miner', 'woodcutter') AND role = 'pawn'"
     ],
     "rejected": [
+      "SELECT name, trade FROM villagers WHERE name IN ('Hob', 'Marta', 'Dunstan', 'Tam')",
       "SELECT name, trade FROM villagers WHERE role = 'pawn' AND trade = 'woodcutter' OR trade = 'miner' AND available = 1",
       "SELECT name, trade FROM villagers WHERE role = 'pawn' AND trade IN ('woodcutter', 'miner')",
       "SELECT name, trade FROM villagers WHERE trade IN ('woodcutter', 'miner') AND available = 1",

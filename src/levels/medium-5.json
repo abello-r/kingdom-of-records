@@ -60,29 +60,33 @@
     {
       "speaker": "garrick",
       "text": {
-        "es": "¡No abandoné mi puesto por cobardía! Esa tarde me llegó una orden sellada por la Tesorería Roja: volver a casa de inmediato. Yo solo obedecí.",
-        "en": "I did not leave my post out of cowardice! That afternoon I received an order sealed by the Red Treasury: return home at once. I only obeyed.",
-        "fr": "Je n’ai pas quitté mon poste par lâcheté ! Cet après-midi-là, j’ai reçu un ordre scellé par la Trésorerie Rouge : rentrer immédiatement. Je n’ai fait qu’obéir."
+        "es": "¡No abandoné mi puesto por cobardía! Esa tarde me llegó una orden por escrito, firmada por la Senescal en persona, Lady Maud: relevo inmediato. Yo solo obedecí.",
+        "en": "I did not leave my post out of cowardice! That afternoon I received a written order, signed by the Royal Steward herself, Lady Maud: relieved at once. I only obeyed.",
+        "fr": "Je n’ai pas quitté mon poste par lâcheté ! Cet après-midi-là, j’ai reçu un ordre écrit, signé par l’Intendante royale en personne, Dame Maud : relève immédiate. Je n’ai fait qu’obéir."
       }
     },
     {
       "speaker": "aldric",
       "text": {
-        "es": "Otra vez la Tesorería Roja. Las respuestas están al otro lado de la frontera, escriba. En los campamentos goblin.",
-        "en": "The Red Treasury again. The answers lie beyond the border, scribe. In the goblin camps.",
-        "fr": "Encore la Trésorerie Rouge. Les réponses sont de l’autre côté de la frontière, scribe. Dans les camps gobelins."
+        "es": "Maud otra vez. Primero los mercaderes, ahora esto… Pero una firma se puede falsificar. Las pruebas están al otro lado de la frontera, escriba. En los campamentos goblin.",
+        "en": "Maud again. First the merchants, now this… But a signature can be forged. The proof lies beyond the border, scribe. In the goblin camps.",
+        "fr": "Encore Maud. D’abord les marchands, maintenant ça… Mais une signature, ça se falsifie. Les preuves sont de l’autre côté de la frontière, scribe. Dans les camps gobelins."
       }
     }
   ],
   "setup": "CREATE TABLE soldiers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, kingdom TEXT NOT NULL, rank TEXT NOT NULL);\nINSERT INTO soldiers (name, kingdom, rank) VALUES\n  ('Joss', 'Blue Kingdom', 'guard'),\n  ('Bram', 'Blue Kingdom', 'archer'),\n  ('Sir Garrick', 'Red Kingdom', 'knight'),\n  ('Old Tom', 'Blue Kingdom', 'veteran'),\n  ('Osric', 'Blue Kingdom', 'lancer'),\n  ('Dame Rowena', 'Yellow Kingdom', 'knight'),\n  ('Wren', 'Blue Kingdom', 'archer');\nCREATE TABLE towers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, last_guard_id INTEGER REFERENCES soldiers(id), guarded_on_raid_night INTEGER NOT NULL);\nINSERT INTO towers (name, last_guard_id, guarded_on_raid_night) VALUES\n  ('Northwatch', 1, 1),\n  ('Eastwatch', 7, 1),\n  ('Riverwatch', 3, 0),\n  ('Westwatch', 2, 1),\n  ('Oldwatch', 4, 0),\n  ('Castle keep', 6, 1);",
   "solution": "SELECT towers.name, soldiers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.last_guard_id = soldiers.id WHERE towers.guarded_on_raid_night = 0;",
   "check": { "mode": "result", "ignoreColumnNames": true },
+  "variants": [
+    "CREATE TABLE soldiers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, kingdom TEXT NOT NULL, rank TEXT NOT NULL);\nINSERT INTO soldiers (name, kingdom, rank) VALUES\n  ('Joss', 'Blue Kingdom', 'guard'),\n  ('Dame Rowena', 'Yellow Kingdom', 'knight'),\n  ('Sir Garrick', 'Red Kingdom', 'knight'),\n  ('Wren', 'Blue Kingdom', 'archer');\nCREATE TABLE towers (id INTEGER PRIMARY KEY, name TEXT NOT NULL, last_guard_id INTEGER REFERENCES soldiers(id), guarded_on_raid_night INTEGER NOT NULL);\nINSERT INTO towers (name, last_guard_id, guarded_on_raid_night) VALUES\n  ('Northwatch', 1, 0),\n  ('Riverwatch', 3, 1),\n  ('Eastwatch', 2, 0),\n  ('Westwatch', 4, 1);"
+  ],
   "examples": {
     "accepted": [
       "SELECT t.name AS tower, s.name AS guard, s.kingdom FROM towers t JOIN soldiers s ON s.id = t.last_guard_id WHERE t.guarded_on_raid_night = 0",
       "SELECT towers.name, soldiers.name, kingdom FROM soldiers INNER JOIN towers ON towers.last_guard_id = soldiers.id WHERE guarded_on_raid_night = 0"
     ],
     "rejected": [
+      "SELECT towers.name, soldiers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.last_guard_id = soldiers.id WHERE towers.name IN ('Riverwatch', 'Oldwatch')",
       "SELECT towers.name, soldiers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.last_guard_id = soldiers.id",
       "SELECT towers.name, soldiers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.id = soldiers.id WHERE towers.guarded_on_raid_night = 0",
       "SELECT soldiers.name, towers.name, soldiers.kingdom FROM towers JOIN soldiers ON towers.last_guard_id = soldiers.id WHERE towers.guarded_on_raid_night = 0",

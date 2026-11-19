@@ -5,7 +5,8 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import type { SqlJsStatic } from 'sql.js';
 import { loadSqlEngine } from '../db/engine';
-import { validateAttempt } from '../engine/validate';
+import { createDatabase, describeSchema } from '../engine/runner';
+import { expectedFor, validateAttempt } from '../engine/validate';
 import { loadLevels } from './index';
 
 const levels = loadLevels();
@@ -36,12 +37,44 @@ it('contains all 15 levels', () => {
   expect(levels.size).toBe(15);
 });
 
+/**
+ * Levels without hidden data, and why. Every other level must have at least one variant so that
+ * answers copying values from the visible results are rejected.
+ */
+const NO_VARIANTS: Record<string, string> = {
+  'easy-1': 'returns every row unfiltered: there is no value to copy',
+};
+
+it('has hidden variants wherever an answer could be hardcoded', () => {
+  const missing = [...levels.values()].filter((l) => !l.variants?.length && !(l.id in NO_VARIANTS)).map((l) => l.id);
+  expect(missing).toEqual([]);
+});
+
 for (const level of levels.values()) {
   describe(`level ${level.id}`, () => {
     it('has balanced `code` marks in every text', () => {
       for (const [label, text] of texts(level)) {
         expect((text.match(/`/g) ?? []).length % 2, label).toBe(0);
       }
+    });
+
+    (level.variants ?? []).forEach((variant, i) => {
+      it(`hidden variant ${i + 1} has the same schema and a different, non-empty answer`, () => {
+        const schema = (setup: string) => {
+          const db = createDatabase(SQL, setup);
+          try {
+            return describeSchema(db);
+          } finally {
+            db.close();
+          }
+        };
+        expect(schema(variant)).toEqual(schema(level.setup));
+
+        const visible = expectedFor(SQL, level);
+        const hidden = expectedFor(SQL, level, variant);
+        expect(JSON.stringify(hidden)).not.toBe(JSON.stringify(visible));
+        if (hidden.mode === 'result') expect(hidden.result.rows.length).toBeGreaterThan(0);
+      });
     });
 
     it('solution passes its own validation', () => {

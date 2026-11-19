@@ -2,7 +2,10 @@
   "id": "medium-1",
   "stage": "medium",
   "order": 1,
-  "concepts": ["SUM", "aggregate functions"],
+  "concepts": [
+    "SUM",
+    "aggregate functions"
+  ],
   "title": {
     "es": "El informe del rey",
     "en": "A Report for the King",
@@ -58,12 +61,21 @@
       }
     }
   ],
-  "setup": "CREATE TABLE storehouses (id INTEGER PRIMARY KEY, name TEXT NOT NULL, village TEXT NOT NULL, gold INTEGER NOT NULL, wood INTEGER NOT NULL, meat INTEGER NOT NULL);\nINSERT INTO storehouses (name, village, gold, wood, meat) VALUES\n  ('Royal storehouse', 'Bluebrook', 0, 40, 25),\n  ('Mill loft', 'Bluebrook', 35, 60, 40),\n  ('Old granary', 'Millford', 120, 80, 90),\n  ('River barn', 'Millford', 60, 45, 30),\n  ('Oak cellar', 'Oakhollow', 80, 150, 60),\n  ('Hunters'' lodge', 'Oakhollow', 20, 30, 110),\n  ('Fern hall', 'Fernvale', 95, 70, 75),\n  ('Stone vault', 'Stonewatch', 210, 20, 35),\n  ('Quarry shed', 'Stonewatch', 40, 90, 15),\n  ('Watch keep', 'Stonewatch', 55, 25, 45);",
+  "setup": "CREATE TABLE storehouses (id INTEGER PRIMARY KEY, name TEXT NOT NULL, village TEXT NOT NULL, keeper TEXT NOT NULL, gold INTEGER NOT NULL, wood INTEGER NOT NULL, meat INTEGER NOT NULL);\nINSERT INTO storehouses (name, village, keeper, gold, wood, meat) VALUES\n  ('Royal storehouse', 'Bluebrook', 'Lady Maud', 0, 40, 25),\n  ('Mill loft', 'Bluebrook', 'Dunstan', 35, 60, 40),\n  ('Old granary', 'Millford', 'Odo', 120, 80, 90),\n  ('River barn', 'Millford', 'Agnes', 60, 45, 30),\n  ('Oak cellar', 'Oakhollow', 'Bertha', 80, 150, 60),\n  ('Hunters'' lodge', 'Oakhollow', 'Garth', 20, 30, 110),\n  ('Fern hall', 'Fernvale', 'Linnet', 95, 70, 75),\n  ('Stone vault', 'Stonewatch', 'Hamund', 210, 20, 35),\n  ('Quarry shed', 'Stonewatch', 'Rolf', 40, 90, 15),\n  ('Watch keep', 'Stonewatch', 'Joss', 55, 25, 45);",
   "solution": "SELECT SUM(gold), SUM(wood), SUM(meat) FROM storehouses;",
-  "check": { "mode": "result", "ignoreColumnNames": true },
+  "check": {
+    "mode": "result",
+    "ignoreColumnNames": true
+  },
+  "variants": [
+    "CREATE TABLE storehouses (id INTEGER PRIMARY KEY, name TEXT NOT NULL, village TEXT NOT NULL, keeper TEXT NOT NULL, gold INTEGER NOT NULL, wood INTEGER NOT NULL, meat INTEGER NOT NULL);\nINSERT INTO storehouses (name, village, keeper, gold, wood, meat) VALUES\n  ('Royal storehouse', 'Bluebrook', 'Lady Maud', 150, 20, 10),\n  ('Mill loft', 'Bluebrook', 'Dunstan', 10, 35, 60),\n  ('Old granary', 'Millford', 'Odo', 40, 95, 20),\n  ('Oak cellar', 'Oakhollow', 'Bertha', 70, 10, 80),\n  ('Stone vault', 'Stonewatch', 'Hamund', 25, 60, 15),\n  ('Fern hall', 'Fernvale', 'Linnet', 5, 40, 55);"
+  ],
   "examples": {
-    "accepted": ["SELECT SUM(gold) AS gold, SUM(wood) AS wood, SUM(meat) AS meat FROM storehouses"],
+    "accepted": [
+      "SELECT SUM(gold) AS gold, SUM(wood) AS wood, SUM(meat) AS meat FROM storehouses"
+    ],
     "rejected": [
+      "SELECT 715, 610, 525",
       "SELECT gold, wood, meat FROM storehouses",
       "SELECT SUM(gold) FROM storehouses",
       "SELECT COUNT(gold), COUNT(wood), COUNT(meat) FROM storehouses",
