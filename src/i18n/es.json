@@ -23,6 +23,47 @@
     "medium": { "difficulty": "Medio", "name": "El Castillo Azul" },
     "hard": { "difficulty": "Difícil", "name": "La Frontera Goblin" }
   },
+  "sqlErrors": {
+    "noSuchTable": "No existe ninguna tabla llamada «{table}». Revisa el nombre en la lista de tablas.",
+    "noSuchColumn": "No existe ninguna columna llamada «{column}». Revisa cómo se escribe y a qué tabla pertenece.",
+    "syntaxNear": "El Registro no ha entendido el conjuro cerca de «{token}».",
+    "incomplete": "La consulta termina antes de tiempo. Falta algo al final (una condición, una columna, un paréntesis…).",
+    "unrecognizedToken": "Símbolo desconocido: {token}",
+    "ambiguousColumn": "«{column}» existe en más de una tabla. Indica cuál, por ejemplo tabla.{column}.",
+    "aggregateMisuse": "{fn}() no se puede usar aquí. Para filtrar por un agregado, usa HAVING después de GROUP BY.",
+    "havingWithoutGroupBy": "HAVING necesita un GROUP BY antes.",
+    "unique": "Ese valor ya existe en {column} y no se puede repetir.",
+    "notNull": "{column} no puede quedar vacío: dale un valor.",
+    "check": "Alguno de los valores incumple una regla de la tabla.",
+    "foreignKey": "Esta fila apunta a algo que no existe en otra tabla.",
+    "valuesForTable": "La tabla {table} tiene {columns} columnas, pero has dado {values} valores.",
+    "valuesForColumns": "Has dado {values} valores para {columns} columnas: tienen que coincidir.",
+    "functionArgs": "{fn}() ha recibido un número de argumentos incorrecto.",
+    "noSuchFunction": "La función {fn}() no existe.",
+    "subqueryColumns": "La subconsulta devuelve {count} columnas, pero aquí solo se espera una.",
+    "rowValueMisused": "Una subconsulta usada como un único valor debe devolver exactamente una columna.",
+    "tableExists": "La tabla {table} ya existe.",
+    "noTables": "Indica qué tabla leer, con FROM.",
+    "empty": "La página está en blanco. Escribe una consulta antes de lanzarla.",
+    "timeout": "La consulta tardó más de {seconds} segundos y se ha detenido. ¿Hay un bucle infinito?",
+    "generic": "SQLite dice: {message}",
+    "tips": {
+      "didYouMean": "¿Querías decir {keyword}?",
+      "quoteText": "Si te referías al texto {value}, escríbelo entre comillas simples: '{value}'.",
+      "closeQuote": "A un texto le falta la comilla simple (') de cierre."
+    }
+  },
+  "mismatch": {
+    "noResult": "Tu conjuro no muestra nada: la tarea pide un SELECT que devuelva filas.",
+    "columnCount": "El número de columnas no es correcto. Esperadas: {expected} · tuyas: {actual}.",
+    "columnNames": "Las columnas no son las esperadas. Esperadas: {expected}.",
+    "rowCount": "El número de filas no es correcto. Esperadas: {expected} · tuyas: {actual}.",
+    "rows": "Tienes el número de filas correcto, pero algunas no son las buenas (incorrectas: {unexpected}).",
+    "order": "Las filas son correctas, pero no están en el orden pedido.",
+    "missingTable": "¡La tabla {table} ha desaparecido!",
+    "tableColumns": "Las columnas de {table} han cambiado. Cambia solo sus datos.",
+    "tableRows": "La tabla {table} todavía no está como debería (filas que faltan: {missing} · filas que sobran: {unexpected})."
+  },
   "footer": {
     "credits": "Pixel art: Tiny Swords de Pixel Frog · Efectos: Will Tice / unTied Games"
   }

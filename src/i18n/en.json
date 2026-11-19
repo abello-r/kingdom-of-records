@@ -23,6 +23,47 @@
     "medium": { "difficulty": "Medium", "name": "The Blue Castle" },
     "hard": { "difficulty": "Hard", "name": "The Goblin Frontier" }
   },
+  "sqlErrors": {
+    "noSuchTable": "There is no table called \"{table}\". Check the name in the list of tables.",
+    "noSuchColumn": "There is no column called \"{column}\". Check its spelling and which table it belongs to.",
+    "syntaxNear": "The Registry did not understand the spell near \"{token}\".",
+    "incomplete": "The query ends too soon. Something is missing at the end (a condition, a column, a closing bracket…).",
+    "unrecognizedToken": "Unknown symbol: {token}",
+    "ambiguousColumn": "\"{column}\" exists in more than one table. Say which one, e.g. table.{column}.",
+    "aggregateMisuse": "{fn}() cannot be used here. To filter by an aggregate, use HAVING after GROUP BY.",
+    "havingWithoutGroupBy": "HAVING needs a GROUP BY before it.",
+    "unique": "That value already exists in {column}, and it must be unique.",
+    "notNull": "{column} cannot be empty: give it a value.",
+    "check": "One of the values breaks a rule of the table.",
+    "foreignKey": "This row points to something that does not exist in another table.",
+    "valuesForTable": "The table {table} has {columns} columns, but you gave {values} values.",
+    "valuesForColumns": "You gave {values} values for {columns} columns: the counts must match.",
+    "functionArgs": "{fn}() received the wrong number of arguments.",
+    "noSuchFunction": "The function {fn}() does not exist.",
+    "subqueryColumns": "The subquery returns {count} columns, but only one is expected here.",
+    "rowValueMisused": "A subquery used as a single value must return exactly one column.",
+    "tableExists": "The table {table} already exists.",
+    "noTables": "Say which table to read, with FROM.",
+    "empty": "The page is blank. Write a query before casting it.",
+    "timeout": "The query took more than {seconds} seconds and was stopped. Is there an endless loop?",
+    "generic": "SQLite says: {message}",
+    "tips": {
+      "didYouMean": "Did you mean {keyword}?",
+      "quoteText": "If you meant the text {value}, write it in single quotes: '{value}'.",
+      "closeQuote": "A text is missing its closing single quote (')."
+    }
+  },
+  "mismatch": {
+    "noResult": "Your spell changed nothing visible: the task asks for a SELECT that shows rows.",
+    "columnCount": "Wrong number of columns. Expected: {expected} · yours: {actual}.",
+    "columnNames": "The columns are not the expected ones. Expected: {expected}.",
+    "rowCount": "Wrong number of rows. Expected: {expected} · yours: {actual}.",
+    "rows": "Same number of rows, but some are not the right ones (wrong: {unexpected}).",
+    "order": "The rows are right, but not in the requested order.",
+    "missingTable": "The table {table} has disappeared!",
+    "tableColumns": "The columns of {table} have changed. Only change its data.",
+    "tableRows": "The table {table} is not as expected yet (rows missing: {missing} · rows that should not be there: {unexpected})."
+  },
   "footer": {
     "credits": "Pixel art: Tiny Swords by Pixel Frog · Effects: Will Tice / unTied Games"
   }

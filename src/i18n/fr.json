@@ -23,6 +23,47 @@
     "medium": { "difficulty": "Moyen", "name": "Le Château Bleu" },
     "hard": { "difficulty": "Difficile", "name": "La Frontière Gobeline" }
   },
+  "sqlErrors": {
+    "noSuchTable": "Aucune table ne s’appelle « {table} ». Vérifie le nom dans la liste des tables.",
+    "noSuchColumn": "Aucune colonne ne s’appelle « {column} ». Vérifie l’orthographe et sa table.",
+    "syntaxNear": "Le Registre n’a pas compris le sort près de « {token} ».",
+    "incomplete": "La requête s’arrête trop tôt. Il manque quelque chose à la fin (une condition, une colonne, une parenthèse…).",
+    "unrecognizedToken": "Symbole inconnu : {token}",
+    "ambiguousColumn": "« {column} » existe dans plusieurs tables. Précise laquelle, par exemple table.{column}.",
+    "aggregateMisuse": "{fn}() ne peut pas être utilisée ici. Pour filtrer sur un agrégat, utilise HAVING après GROUP BY.",
+    "havingWithoutGroupBy": "HAVING a besoin d’un GROUP BY avant.",
+    "unique": "Cette valeur existe déjà dans {column} et ne peut pas être répétée.",
+    "notNull": "{column} ne peut pas rester vide : donne-lui une valeur.",
+    "check": "Une des valeurs ne respecte pas une règle de la table.",
+    "foreignKey": "Cette ligne fait référence à quelque chose qui n’existe pas dans une autre table.",
+    "valuesForTable": "La table {table} a {columns} colonnes, mais tu as donné {values} valeurs.",
+    "valuesForColumns": "Tu as donné {values} valeurs pour {columns} colonnes : les nombres doivent correspondre.",
+    "functionArgs": "{fn}() a reçu un mauvais nombre d’arguments.",
+    "noSuchFunction": "La fonction {fn}() n’existe pas.",
+    "subqueryColumns": "La sous-requête renvoie {count} colonnes, mais une seule est attendue ici.",
+    "rowValueMisused": "Une sous-requête utilisée comme valeur unique doit renvoyer exactement une colonne.",
+    "tableExists": "La table {table} existe déjà.",
+    "noTables": "Indique quelle table lire, avec FROM.",
+    "empty": "La page est blanche. Écris une requête avant de la lancer.",
+    "timeout": "La requête a duré plus de {seconds} secondes et a été arrêtée. Y a-t-il une boucle sans fin ?",
+    "generic": "SQLite dit : {message}",
+    "tips": {
+      "didYouMean": "Voulais-tu dire {keyword} ?",
+      "quoteText": "Si tu parlais du texte {value}, écris-le entre apostrophes : '{value}'.",
+      "closeQuote": "Il manque l’apostrophe (') de fermeture d’un texte."
+    }
+  },
+  "mismatch": {
+    "noResult": "Ton sort n’affiche rien : la tâche demande un SELECT qui renvoie des lignes.",
+    "columnCount": "Le nombre de colonnes n’est pas correct. Attendues : {expected} · les tiennes : {actual}.",
+    "columnNames": "Les colonnes ne sont pas celles attendues. Attendues : {expected}.",
+    "rowCount": "Le nombre de lignes n’est pas correct. Attendues : {expected} · les tiennes : {actual}.",
+    "rows": "Le nombre de lignes est bon, mais certaines ne sont pas les bonnes (incorrectes : {unexpected}).",
+    "order": "Les lignes sont bonnes, mais pas dans l’ordre demandé.",
+    "missingTable": "La table {table} a disparu !",
+    "tableColumns": "Les colonnes de {table} ont changé. Modifie seulement ses données.",
+    "tableRows": "La table {table} n’est pas encore comme prévu (lignes manquantes : {missing} · lignes en trop : {unexpected})."
+  },
   "footer": {
     "credits": "Pixel art : Tiny Swords par Pixel Frog · Effets : Will Tice / unTied Games"
   }
