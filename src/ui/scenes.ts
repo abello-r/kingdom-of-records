@@ -1,72 +1,51 @@
+import type { Level } from '../engine/types';
 import type { Stage } from '../state/levels';
-import type { Terrain, World } from './world';
+import { LEVEL_SCENES, type Kit, type Solve } from './reactions';
+import type { PutOptions, Terrain, World } from './world';
 
 export const STAGE_TERRAIN: Record<Stage, Terrain> = { easy: 'spring', medium: 'autumn', hard: 'dusk' };
 
-/** Mobile layouts use smaller sprites; sprites are never cut by the screen edge. */
+/** Phone layouts use smaller sprites and skip `wide` scene items; sprites are never cut by the screen edge. */
 export function isCompact(width: number): boolean {
   return width < 761;
 }
 
 /**
- * The strip above the open Registry: one region per stage. Positions are fractions of the width so the
- * scene adapts to any screen; anything that would not fit is simply not placed.
+ * The strip above the open Registry: the stage's land, trees at its edges and the level's own scene.
+ * Returns the level's reaction, to run when the spell is right (or instantly when redrawing a solved page).
  */
-export function levelStrip(world: World, stage: Stage, width: number, height: number): void {
+export function levelStrip(world: World, level: Level, width: number, height: number): Solve {
   const compact = isCompact(width);
-  const k = compact ? 0.62 : 0.82;
+  const k = compact ? 0.6 : 0.82;
   const ground = height - (compact ? 14 : 22);
-  world.island(-64, 36, Math.ceil(width / 64) + 2, Math.ceil(height / 64) + 1, STAGE_TERRAIN[stage]);
-  const at = (f: number) => f * width;
-  const fits = (x: number, half = 40) => x - half > 0 && x + half < width;
-  const put = (path: string, f: number, dy: number, opts: Parameters<World['put']>[3] = {}) => {
-    const x = at(f);
-    if (fits(x)) world.put(path, x, ground + dy, { scale: k, ...opts });
-  };
-  const people = (fs: [string, string, number][]) =>
-    fs.forEach(([idle, cheer, f], i) => put(idle, f, 4 + (i % 2) * 6, { cheer, flip: i % 2 === 1 }));
+  // Every level has a scene (tested); the fallback keeps an unknown id from breaking the page.
+  const scene = LEVEL_SCENES[level.id] ?? { build: () => () => undefined };
+  const land = scene.land ?? 1;
+  const cols = land >= 1 ? Math.ceil(width / 64) + 2 : Math.max(3, Math.round((width * land) / 64) + 1);
+  world.island(-64, 36, cols, Math.ceil(height / 64) + 1, STAGE_TERRAIN[level.stage]);
 
-  if (stage === 'easy') {
-    put('props/tree-1', 0.04, 0, { scale: k * 0.95 });
-    put('buildings/tower', 0.14, -14);
-    put('buildings/house-1', 0.27, -12);
-    put('buildings/tower', 0.37, -6);
-    put('buildings/house-ruin', 0.49, -4);
-    put('fx/fire', 0.49, 4, { above: true });
-    put('buildings/tower', 0.63, -10);
-    put('buildings/house-2', 0.74, -12);
-    put('buildings/tower', 0.86, -6);
-    put('props/tree-2', 0.96, 0, { scale: k * 0.95 });
-    people([
-      ['units/pawn-blue', 'units/pawn-blue-cheer', compact ? 0.3 : 0.42],
-      ['units/warrior-blue', 'units/warrior-blue-cheer', compact ? 0.55 : 0.55],
-      ['units/sheep', 'units/sheep-cheer', compact ? 0.78 : 0.58],
-    ]);
-  } else if (stage === 'medium') {
-    put('props/tree-4', 0.04, 0);
-    put('buildings/archery', 0.16, -12);
-    put('buildings/castle', 0.42, -10);
-    put('buildings/barracks', 0.7, -12);
-    put('props/gold-stone', 0.84, -4);
-    put('buildings/tower', 0.94, -10);
-    people([
-      ['units/warrior-blue', 'units/warrior-blue-cheer', compact ? 0.25 : 0.27],
-      ['units/archer-blue', 'units/archer-blue-cheer', compact ? 0.75 : 0.58],
-      ['units/pawn-blue', 'units/pawn-blue-cheer', compact ? 0.5 : 0.62],
-    ]);
-  } else {
-    put('props/tree-3', 0.04, 0);
-    put('buildings/goblin-tower', 0.2, -10);
-    put('buildings/goblin-house', 0.42, -12);
-    put('fx/fire', 0.5, 2, { above: true });
-    put('buildings/goblin-house', 0.66, -8);
-    put('units/goblin-torch', 0.78, 4);
-    put('units/goblin-tnt', 0.9, 8, { flip: true });
-    people([
-      ['units/warrior-blue', 'units/warrior-blue-cheer', compact ? 0.3 : 0.32],
-      ['units/pawn-blue', 'units/pawn-blue-cheer', compact ? 0.55 : 0.36],
-    ]);
+  const x = (f: number) => Math.round(f * width);
+  const y = (dy = 0) => Math.round(ground + dy * k);
+  const kit: Kit = {
+    world,
+    compact,
+    k,
+    ground,
+    x,
+    y,
+    towerTop: 137,
+    put(name, f, opts: PutOptions & { dy?: number; s?: number; wide?: boolean } = {}) {
+      if (opts.wide && compact) return null;
+      return world.put(name, x(f), y(opts.dy), { ...opts, scale: k * (opts.s ?? 1) });
+    },
+  };
+  const edge = level.stage === 'easy' ? 'props/tree-1' : level.stage === 'medium' ? 'props/tree-4' : 'props/tree-3';
+  // Trees frame the scene on wide screens; on phones they would cover the first and last buildings.
+  if (!compact) {
+    kit.put(edge, 0.035, { dy: 2, s: 0.95 });
+    if (land >= 1) kit.put(edge === 'props/tree-1' ? 'props/tree-2' : edge, 0.965, { dy: 2, s: 0.95 });
   }
+  return scene.build(kit);
 }
 
 /** Title screen: a wide island at the bottom with the village, the castle and an open square. */
@@ -88,8 +67,8 @@ export function homeScene(world: World, width: number, height: number): void {
     world.cloud(3, width - 520, 330, 0.8);
     world.cloud(2, width / 2 + 120, -30, 0.7);
   }
-  const put = (path: string, x: number, y: number, opts: Parameters<World['put']>[3] = {}) =>
-    world.put(path, x, y, { scale: k, ...opts });
+  const put = (name: Parameters<World['put']>[0], x: number, y: number, opts: PutOptions = {}) =>
+    world.put(name, x, y, { ...opts, scale: k * (opts.scale ?? 1) });
   if (compact) {
     put('buildings/house-1', width * 0.18, ground - 10);
     put('buildings/house-ruin', width * 0.42, ground);
@@ -123,8 +102,8 @@ export const MAP_ISLAND = { cols: 6, rows: 5, width: 6 * 64, height: 5 * 64 };
 export function mapIsland(world: World, stage: Stage, locked: boolean): void {
   const pad = 32;
   world.island(pad, pad, MAP_ISLAND.cols, MAP_ISLAND.rows, STAGE_TERRAIN[stage], locked);
-  const put = (path: string, x: number, y: number, opts: Parameters<World['put']>[3] = {}) =>
-    world.put(path, pad + x, pad + y, { dim: locked, ...opts });
+  const put = (name: Parameters<World['put']>[0], x: number, y: number, opts: PutOptions = {}) =>
+    world.put(name, pad + x, pad + y, { dim: locked, ...opts });
   if (stage === 'easy') {
     put('buildings/house-1', 80, 130);
     put('buildings/house-ruin', 200, 120);
