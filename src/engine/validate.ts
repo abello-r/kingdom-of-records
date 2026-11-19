@@ -1,8 +1,9 @@
 import type { Database, SqlJsStatic } from 'sql.js';
 import { compareResults, compareTables } from './compare';
 import { describeSqlError, emptyQueryError } from './errors';
+import { doubleQuotedValues } from './lint';
 import { createDatabase, describeSchema, lastResult, runSql, snapshotTable, type RunOutput } from './runner';
-import type { AttemptResult, Level, Mismatch, ResultSet, TableSnapshot } from './types';
+import type { AttemptResult, Level, Mismatch, Notice, ResultSet, TableSnapshot } from './types';
 
 /** True when the SQL has nothing to execute (only whitespace, comments or semicolons). */
 export function isEffectivelyEmpty(sql: string): boolean {
@@ -86,13 +87,16 @@ export function validateAttempt(SQL: SqlJsStatic, level: Level, playerSql: strin
   const expected = expectedFor(SQL, level);
   const db = createDatabase(SQL, level.setup);
   try {
-    const knownColumns = describeSchema(db).flatMap((t) => t.columns.map((c) => c.name.toLowerCase()));
+    const schema = describeSchema(db);
+    const knownColumns = schema.flatMap((t) => t.columns.map((c) => c.name.toLowerCase()));
+    const quoted = doubleQuotedValues(playerSql, [...schema.map((t) => t.name), ...knownColumns]);
+    const notices: Notice[] = quoted.map((value) => ({ key: 'doubleQuotes', params: { value } }));
     const run = runSql(db, playerSql);
     const tables =
       level.check.mode === 'state'
         ? level.check.tables.map((t) => snapshotTable(db, t)).filter((t): t is TableSnapshot => t !== null)
         : undefined;
-    const base = { statements: run.statements, ...(tables && { tables }) };
+    const base = { statements: run.statements, ...(tables && { tables }), ...(notices.length > 0 && { notices }) };
 
     if (run.error) {
       return { correct: false, error: describeSqlError(run.error, { knownColumns }), ...base };

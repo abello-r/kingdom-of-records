@@ -57,6 +57,13 @@ describe('validateAttempt — result levels', () => {
     expect(result.error?.tip).toEqual({ key: 'quoteText', params: { value: 'archer' } });
   });
 
+  it('accepts double-quoted text but adds a gentle notice', () => {
+    const result = validateAttempt(SQL, level, 'SELECT "name", role FROM villagers WHERE role = "archer"');
+    expect(result.correct).toBe(true);
+    expect(result.notices).toEqual([{ key: 'doubleQuotes', params: { value: 'archer' } }]);
+    expect(validateAttempt(SQL, level, level.solution).notices).toBeUndefined();
+  });
+
   it('rejects empty attempts without running them', () => {
     expect(validateAttempt(SQL, level, '  -- just a comment\n ; /* nothing */ ').error?.key).toBe('empty');
   });

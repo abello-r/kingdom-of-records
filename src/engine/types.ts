@@ -100,9 +100,17 @@ export type Mismatch =
   | { reason: 'tableColumns'; table: string }
   | { reason: 'tableRows'; table: string; missing: number; unexpected: number };
 
+/** Gentle advice that never blocks an answer (i18n key under `notices.*`). */
+export interface Notice {
+  key: 'doubleQuotes';
+  params: Record<string, string>;
+}
+
 export interface AttemptResult {
   /** True when the attempt solves the level. */
   correct: boolean;
+  /** Non-blocking advice, e.g. text written with double quotes. */
+  notices?: Notice[];
   /** Set when the SQL could not run. */
   error?: SqlErrorInfo;
   /** Set when the SQL ran but the answer is not right. */
