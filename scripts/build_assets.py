@@ -8,6 +8,7 @@ portraits cropped to their content). Usage, from the project root (requires Pill
 
 Run it again whenever this list changes; the output is committed.
 """
+import json
 import os
 import shutil
 import sys
@@ -106,56 +107,89 @@ def main():
     torch = load(TS1, 'Factions', 'Goblins', 'Troops', 'Torch', 'Red', 'Torch_Red.png')
     save(cropped(torch.crop((40, 40, 140, 140))), 'portraits/grubnak.png')
 
-    # --- Terrain ---
+    # --- World sprites: every image placed in a diorama is registered in the sprite manifest ---
+    manifest = {}
+
+    def sprite(img, name, w, h, frames=1, row=0, fps=10):
+        """Saves a horizontal strip of `frames` cells of w x h (from `row` of a grid) and records it."""
+        strip = Image.new('RGBA', (w * frames, h))
+        for i in range(frames):
+            strip.paste(img.crop((i * w, row * h, i * w + w, row * h + h)), (i * w, 0))
+        save(strip, f'{name}.png')
+        manifest[name] = {'w': w, 'h': h, 'frames': frames, 'fps': fps}
+
+    def still(img, name):
+        sprite(img, name, img.width, img.height)
+
+    # --- Terrain (tiles are used by CSS, the foam is an animated strip) ---
     for pal, name in [(1, 'spring'), (2, 'meadow'), (4, 'autumn'), (5, 'dusk')]:
         save(load(TS2, 'Terrain', 'Tileset', f'Tilemap_color{pal}.png').crop((0, 0, 192, 192)), f'terrain/island-{name}.png')
-    save(load(TS2, 'Terrain', 'Tileset', 'Water Foam.png').crop((0, 0, 192, 192)), 'terrain/foam.png')
+    save(load(TS2, 'Terrain', 'Tileset', 'Water Foam.png'), 'terrain/foam.png')
 
     # --- Buildings ---
     for b in ['House1', 'House2', 'House3', 'Tower', 'Castle', 'Barracks', 'Archery', 'Monastery']:
-        save(load(TS2, 'Buildings', 'Blue Buildings', f'{b}.png'), f'buildings/{b.lower().replace("house", "house-")}.png')
-    save(load(TS2, 'Buildings', 'Red Buildings', 'Castle.png'), 'buildings/castle-red.png')
-    save(load(TS1, 'Factions', 'Knights', 'Buildings', 'House', 'House_Destroyed.png'), 'buildings/house-ruin.png')
-    save(load(TS1, 'Factions', 'Goblins', 'Buildings', 'Wood_House', 'Goblin_House.png'), 'buildings/goblin-house.png')
-    save(frame(load(TS1, 'Factions', 'Goblins', 'Buildings', 'Wood_Tower', 'Wood_Tower_Red.png'), 256, 192), 'buildings/goblin-tower.png')
+        still(load(TS2, 'Buildings', 'Blue Buildings', f'{b}.png'), f'buildings/{b.lower().replace("house", "house-")}')
+    still(load(TS2, 'Buildings', 'Red Buildings', 'Castle.png'), 'buildings/castle-red')
+    still(load(TS1, 'Factions', 'Knights', 'Buildings', 'House', 'House_Destroyed.png'), 'buildings/house-ruin')
+    still(load(TS1, 'Factions', 'Goblins', 'Buildings', 'Wood_House', 'Goblin_House.png'), 'buildings/goblin-house')
+    sprite(load(TS1, 'Factions', 'Goblins', 'Buildings', 'Wood_Tower', 'Wood_Tower_Red.png'), 'buildings/goblin-tower', 256, 192, 4, fps=6)
 
     # --- Props ---
     for i in (1, 2):
-        save(frame(load(RES, 'Wood', 'Trees', f'Tree{i}.png'), 192, 256), f'props/tree-{i}.png')
+        sprite(load(RES, 'Wood', 'Trees', f'Tree{i}.png'), f'props/tree-{i}', 192, 256, 8, fps=6)
     for i in (3, 4):
-        save(frame(load(RES, 'Wood', 'Trees', f'Tree{i}.png'), 192, 192), f'props/tree-{i}.png')
+        sprite(load(RES, 'Wood', 'Trees', f'Tree{i}.png'), f'props/tree-{i}', 192, 192, 8, fps=6)
     for i in (1, 2, 3, 4):
-        save(frame(load(DECO, 'Bushes', f'Bushe{i}.png'), 128, 128), f'props/bush-{i}.png')
-        save(load(DECO, 'Rocks', f'Rock{i}.png'), f'props/rock-{i}.png')
+        sprite(load(DECO, 'Bushes', f'Bushe{i}.png'), f'props/bush-{i}', 128, 128, 8, fps=6)
+        still(load(DECO, 'Rocks', f'Rock{i}.png'), f'props/rock-{i}')
     for i in (1, 2, 3, 5):
         save(load(DECO, 'Clouds', f'Clouds_{i:02d}.png'), f'props/cloud-{i}.png')
-    save(load(RES, 'Gold', 'Gold Stones', 'Gold Stone 4.png'), 'props/gold-stone.png')
-    save(frame(load(DECO, 'Rocks in the Water', 'Water Rocks_01.png'), 64, 64), 'props/water-rock.png')
-    save(frame(load(DECO, 'Rubber Duck', 'Rubber duck.png'), 32, 32), 'props/duck.png')
+    still(load(RES, 'Gold', 'Gold Stones', 'Gold Stone 4.png'), 'props/gold-stone')
+    still(load(RES, 'Gold', 'Gold Resource', 'Gold_Resource.png'), 'props/gold-pile')
+    still(load(RES, 'Wood', 'Wood Resource', 'Wood Resource.png'), 'props/wood-pile')
+    still(load(RES, 'Meat', 'Meat Resource', 'Meat Resource.png'), 'props/meat')
+    sprite(load(DECO, 'Rocks in the Water', 'Water Rocks_01.png'), 'props/water-rock', 64, 64, 16, fps=8)
+    sprite(load(DECO, 'Rubber Duck', 'Rubber duck.png'), 'props/duck', 32, 32, 3, fps=4)
 
-    # --- Units (single frames; animations arrive in Phase 5) ---
-    for colour in ['Blue', 'Red', 'Black']:
+    # --- Units: idle strips plus the actions used by reactions and celebrations ---
+    pawn = os.path.join(UNITS, 'Blue Units', 'Pawn')
+    for file, name, frames in [('Pawn_Idle.png', 'pawn-blue', 8), ('Pawn_Run.png', 'pawn-blue-run', 6),
+                               ('Pawn_Interact Axe.png', 'pawn-blue-axe', 6), ('Pawn_Interact Pickaxe.png', 'pawn-blue-pickaxe', 6),
+                               ('Pawn_Interact Hammer.png', 'pawn-blue-hammer', 3), ('Pawn_Idle Wood.png', 'pawn-blue-wood', 8),
+                               ('Pawn_Idle Gold.png', 'pawn-blue-gold', 8), ('Pawn_Idle Meat.png', 'pawn-blue-meat', 8),
+                               ('Pawn_Run Wood.png', 'pawn-blue-run-wood', 6), ('Pawn_Run Meat.png', 'pawn-blue-run-meat', 6)]:
+        sprite(load(pawn, file), f'units/{name}', 192, 192, frames)
+    for colour in ['Blue', 'Red']:
         c = colour.lower()
-        save(frame(load(UNITS, f'{colour} Units', 'Pawn', 'Pawn_Idle.png'), 192, 192), f'units/pawn-{c}.png')
-        save(frame(load(UNITS, f'{colour} Units', 'Warrior', 'Warrior_Idle.png'), 192, 192), f'units/warrior-{c}.png')
-        save(frame(load(UNITS, f'{colour} Units', 'Archer', 'Archer_Idle.png'), 192, 192), f'units/archer-{c}.png')
-    save(frame(load(UNITS, 'Blue Units', 'Monk', 'Idle.png'), 192, 192), 'units/monk-blue.png')
-    save(frame(load(UNITS, 'Blue Units', 'Pawn', 'Pawn_Run.png'), 192, 192, 2), 'units/pawn-blue-cheer.png')
-    save(frame(load(UNITS, 'Blue Units', 'Warrior', 'Warrior_Attack1.png'), 192, 192, 1), 'units/warrior-blue-cheer.png')
-    save(frame(load(UNITS, 'Blue Units', 'Archer', 'Archer_Shoot.png'), 192, 192, 1), 'units/archer-blue-cheer.png')
-    save(frame(load(RES, 'Meat', 'Sheep', 'Sheep_Idle.png'), 128, 128), 'units/sheep.png')
-    save(frame(load(RES, 'Meat', 'Sheep', 'Sheep_Grass.png'), 128, 128, 3), 'units/sheep-grazing.png')
-    save(frame(load(RES, 'Meat', 'Sheep', 'Sheep_Move.png'), 128, 128, 1), 'units/sheep-cheer.png')
-    save(torch.crop((0, 0, 192, 192)), 'units/goblin-torch.png')
-    save(load(TS1, 'Factions', 'Goblins', 'Troops', 'TNT', 'Red', 'TNT_Red.png').crop((0, 0, 192, 192)), 'units/goblin-tnt.png')
+        sprite(load(UNITS, f'{colour} Units', 'Warrior', 'Warrior_Idle.png'), f'units/warrior-{c}', 192, 192, 8)
+        sprite(load(UNITS, f'{colour} Units', 'Warrior', 'Warrior_Run.png'), f'units/warrior-{c}-run', 192, 192, 6)
+        sprite(load(UNITS, f'{colour} Units', 'Monk', 'Idle.png'), f'units/monk-{c}', 192, 192, 6)
+    sprite(load(UNITS, 'Blue Units', 'Warrior', 'Warrior_Attack1.png'), 'units/warrior-blue-attack', 192, 192, 4)
+    sprite(load(UNITS, 'Blue Units', 'Archer', 'Archer_Idle.png'), 'units/archer-blue', 192, 192, 6)
+    sprite(load(UNITS, 'Blue Units', 'Archer', 'Archer_Shoot.png'), 'units/archer-blue-shoot', 192, 192, 8, fps=12)
+    sprite(load(UNITS, 'Blue Units', 'Monk', 'Heal.png'), 'units/monk-blue-heal', 192, 192, 11)
+    sheep = os.path.join(RES, 'Meat', 'Sheep')
+    sprite(load(sheep, 'Sheep_Idle.png'), 'units/sheep', 128, 128, 6, fps=8)
+    sprite(load(sheep, 'Sheep_Grass.png'), 'units/sheep-grazing', 128, 128, 12, fps=8)
+    sprite(load(sheep, 'Sheep_Move.png'), 'units/sheep-move', 128, 128, 4)
+    tnt = load(TS1, 'Factions', 'Goblins', 'Troops', 'TNT', 'Red', 'TNT_Red.png')
+    sprite(torch, 'units/goblin-torch', 192, 192, 7)
+    sprite(torch, 'units/goblin-torch-run', 192, 192, 6, row=1)
+    sprite(tnt, 'units/goblin-tnt', 192, 192, 6)
+    sprite(tnt, 'units/goblin-tnt-throw', 192, 192, 7, row=2)
 
-    # --- Effects (TS fire and dust in the world; SPE only for short UI feedback) ---
-    save(frame(load(TS1, 'Effects', 'Fire', 'Fire.png'), 128, 128, 2), 'fx/fire.png')
-    save(frame(load(TS2, 'Particle FX', 'Dust_01.png'), 64, 64, 2), 'fx/dust.png')
+    # --- Effects (TS fire, dust and explosion in the world; SPE only for short UI feedback) ---
+    sprite(load(TS1, 'Effects', 'Fire', 'Fire.png'), 'fx/fire', 128, 128, 7)
+    sprite(load(TS2, 'Particle FX', 'Dust_01.png'), 'fx/dust', 64, 64, 8, fps=14)
+    sprite(load(TS2, 'Particle FX', 'Explosion_01.png'), 'fx/explosion', 192, 192, 8, fps=12)
     save(spe('Symbols', 'symbol_success_001/symbol_success_001_large_green', 40), 'fx/success.png')
     save(spe('Symbols', 'symbol_lightbulb_001/symbol_lightbulb_001_large_yellow', 6), 'fx/hint.png')
     save(spe('Magic Bursts', 'round_sparkle_burst_001/round_sparkle_burst_001_large_blue', 5), 'fx/sparkle.png')
     save(spe('Fantasy Spells', 'status_sparkling_001/status_sparkling_001_large_yellow', 8), 'fx/twinkle.png')
+
+    with open(os.path.join(ROOT, 'src', 'ui', 'sprite-manifest.json'), 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(dict(sorted(manifest.items())), f, indent=2)
+        f.write('\n')
 
     count = sum(len(files) for d in GENERATED_DIRS for _, _, files in os.walk(os.path.join(OUT, d)))
     size = sum(os.path.getsize(os.path.join(p, f)) for d in GENERATED_DIRS for p, _, fs in os.walk(os.path.join(OUT, d)) for f in fs)

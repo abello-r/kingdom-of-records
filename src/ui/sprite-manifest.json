@@ -1,0 +1,362 @@
+{
+  "buildings/archery": {
+    "w": 192,
+    "h": 256,
+    "frames": 1,
+    "fps": 10
+  },
+  "buildings/barracks": {
+    "w": 192,
+    "h": 256,
+    "frames": 1,
+    "fps": 10
+  },
+  "buildings/castle": {
+    "w": 320,
+    "h": 256,
+    "frames": 1,
+    "fps": 10
+  },
+  "buildings/castle-red": {
+    "w": 320,
+    "h": 256,
+    "frames": 1,
+    "fps": 10
+  },
+  "buildings/goblin-house": {
+    "w": 128,
+    "h": 192,
+    "frames": 1,
+    "fps": 10
+  },
+  "buildings/goblin-tower": {
+    "w": 256,
+    "h": 192,
+    "frames": 4,
+    "fps": 6
+  },
+  "buildings/house-1": {
+    "w": 128,
+    "h": 192,
+    "frames": 1,
+    "fps": 10
+  },
+  "buildings/house-2": {
+    "w": 128,
+    "h": 192,
+    "frames": 1,
+    "fps": 10
+  },
+  "buildings/house-3": {
+    "w": 128,
+    "h": 192,
+    "frames": 1,
+    "fps": 10
+  },
+  "buildings/house-ruin": {
+    "w": 128,
+    "h": 192,
+    "frames": 1,
+    "fps": 10
+  },
+  "buildings/monastery": {
+    "w": 192,
+    "h": 320,
+    "frames": 1,
+    "fps": 10
+  },
+  "buildings/tower": {
+    "w": 128,
+    "h": 256,
+    "frames": 1,
+    "fps": 10
+  },
+  "fx/dust": {
+    "w": 64,
+    "h": 64,
+    "frames": 8,
+    "fps": 14
+  },
+  "fx/explosion": {
+    "w": 192,
+    "h": 192,
+    "frames": 8,
+    "fps": 12
+  },
+  "fx/fire": {
+    "w": 128,
+    "h": 128,
+    "frames": 7,
+    "fps": 10
+  },
+  "props/bush-1": {
+    "w": 128,
+    "h": 128,
+    "frames": 8,
+    "fps": 6
+  },
+  "props/bush-2": {
+    "w": 128,
+    "h": 128,
+    "frames": 8,
+    "fps": 6
+  },
+  "props/bush-3": {
+    "w": 128,
+    "h": 128,
+    "frames": 8,
+    "fps": 6
+  },
+  "props/bush-4": {
+    "w": 128,
+    "h": 128,
+    "frames": 8,
+    "fps": 6
+  },
+  "props/duck": {
+    "w": 32,
+    "h": 32,
+    "frames": 3,
+    "fps": 4
+  },
+  "props/gold-pile": {
+    "w": 128,
+    "h": 128,
+    "frames": 1,
+    "fps": 10
+  },
+  "props/gold-stone": {
+    "w": 128,
+    "h": 128,
+    "frames": 1,
+    "fps": 10
+  },
+  "props/meat": {
+    "w": 64,
+    "h": 64,
+    "frames": 1,
+    "fps": 10
+  },
+  "props/rock-1": {
+    "w": 64,
+    "h": 64,
+    "frames": 1,
+    "fps": 10
+  },
+  "props/rock-2": {
+    "w": 64,
+    "h": 64,
+    "frames": 1,
+    "fps": 10
+  },
+  "props/rock-3": {
+    "w": 64,
+    "h": 64,
+    "frames": 1,
+    "fps": 10
+  },
+  "props/rock-4": {
+    "w": 64,
+    "h": 64,
+    "frames": 1,
+    "fps": 10
+  },
+  "props/tree-1": {
+    "w": 192,
+    "h": 256,
+    "frames": 8,
+    "fps": 6
+  },
+  "props/tree-2": {
+    "w": 192,
+    "h": 256,
+    "frames": 8,
+    "fps": 6
+  },
+  "props/tree-3": {
+    "w": 192,
+    "h": 192,
+    "frames": 8,
+    "fps": 6
+  },
+  "props/tree-4": {
+    "w": 192,
+    "h": 192,
+    "frames": 8,
+    "fps": 6
+  },
+  "props/water-rock": {
+    "w": 64,
+    "h": 64,
+    "frames": 16,
+    "fps": 8
+  },
+  "props/wood-pile": {
+    "w": 64,
+    "h": 64,
+    "frames": 1,
+    "fps": 10
+  },
+  "units/archer-blue": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/archer-blue-shoot": {
+    "w": 192,
+    "h": 192,
+    "frames": 8,
+    "fps": 12
+  },
+  "units/goblin-tnt": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/goblin-tnt-throw": {
+    "w": 192,
+    "h": 192,
+    "frames": 7,
+    "fps": 10
+  },
+  "units/goblin-torch": {
+    "w": 192,
+    "h": 192,
+    "frames": 7,
+    "fps": 10
+  },
+  "units/goblin-torch-run": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/monk-blue": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/monk-blue-heal": {
+    "w": 192,
+    "h": 192,
+    "frames": 11,
+    "fps": 10
+  },
+  "units/monk-red": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/pawn-blue": {
+    "w": 192,
+    "h": 192,
+    "frames": 8,
+    "fps": 10
+  },
+  "units/pawn-blue-axe": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/pawn-blue-gold": {
+    "w": 192,
+    "h": 192,
+    "frames": 8,
+    "fps": 10
+  },
+  "units/pawn-blue-hammer": {
+    "w": 192,
+    "h": 192,
+    "frames": 3,
+    "fps": 10
+  },
+  "units/pawn-blue-meat": {
+    "w": 192,
+    "h": 192,
+    "frames": 8,
+    "fps": 10
+  },
+  "units/pawn-blue-pickaxe": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/pawn-blue-run": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/pawn-blue-run-meat": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/pawn-blue-run-wood": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/pawn-blue-wood": {
+    "w": 192,
+    "h": 192,
+    "frames": 8,
+    "fps": 10
+  },
+  "units/sheep": {
+    "w": 128,
+    "h": 128,
+    "frames": 6,
+    "fps": 8
+  },
+  "units/sheep-grazing": {
+    "w": 128,
+    "h": 128,
+    "frames": 12,
+    "fps": 8
+  },
+  "units/sheep-move": {
+    "w": 128,
+    "h": 128,
+    "frames": 4,
+    "fps": 10
+  },
+  "units/warrior-blue": {
+    "w": 192,
+    "h": 192,
+    "frames": 8,
+    "fps": 10
+  },
+  "units/warrior-blue-attack": {
+    "w": 192,
+    "h": 192,
+    "frames": 4,
+    "fps": 10
+  },
+  "units/warrior-blue-run": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/warrior-red": {
+    "w": 192,
+    "h": 192,
+    "frames": 8,
+    "fps": 10
+  },
+  "units/warrior-red-run": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  }
+}
