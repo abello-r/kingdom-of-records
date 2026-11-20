@@ -25,8 +25,8 @@ tested, built and published automatically. GitHub Pages is documented below as a
 3. Open the **Actions** tab and check that **CI** passes.
 4. `REPO_URL` in `src/app/site.ts` holds the repository address
    (https://github.com/abello-r/kingdom-of-records) for the small "star it on GitHub" links: in the
-   title-screen footer, in a one-time message after Easy 3 (remembered in the saved progress) and in
-   the epilogue credits.
+   title-screen footer, in a one-time message after Easy 3 (remembered apart from the progress, so
+   starting over does not bring it back) and in the epilogue credits.
 
 The original asset packs at the repository root are excluded by `.gitignore` and are not pushed; the
 game only needs the copies in `public/assets/`.

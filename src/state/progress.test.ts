@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { levelsOf } from './levels';
-import { PROGRESS_KEY, Progress } from './progress';
+import { PROGRESS_KEY, Progress, STAR_KEY } from './progress';
 import { createMemoryStore } from './storage';
 
 describe('Progress', () => {
@@ -64,17 +64,28 @@ describe('Progress', () => {
     expect(store.get(PROGRESS_KEY)).toBeNull();
   });
 
-  it('remembers that the star message was shown, alongside the completed levels', () => {
+  it('remembers that the star message was shown, apart from the progress, even after starting over', () => {
     const store = createMemoryStore();
     const p = new Progress(store);
     p.complete('easy-1');
     expect(p.shouldAskForStar()).toBe(true);
     p.markStarAsked();
-    expect(JSON.parse(store.get(PROGRESS_KEY)!)).toEqual({ completed: ['easy-1'], starAsked: true });
+    expect(store.get(STAR_KEY)).toBe('1');
+    expect(JSON.parse(store.get(PROGRESS_KEY)!)).toEqual({ completed: ['easy-1'] });
 
-    const again = new Progress(store);
-    expect(again.shouldAskForStar()).toBe(false);
-    again.complete('easy-2');
-    expect(JSON.parse(store.get(PROGRESS_KEY)!).starAsked).toBe(true);
+    p.reset();
+    expect(store.get(PROGRESS_KEY)).toBeNull();
+    expect(p.shouldAskForStar()).toBe(false);
+    expect(new Progress(store).shouldAskForStar()).toBe(false);
+  });
+
+  it('moves the star flag of an earlier version out of the progress', () => {
+    const store = createMemoryStore();
+    store.set(PROGRESS_KEY, JSON.stringify({ completed: ['easy-1'], starAsked: true }));
+    const p = new Progress(store);
+    expect(p.shouldAskForStar()).toBe(false);
+    expect(store.get(STAR_KEY)).toBe('1');
+    expect(JSON.parse(store.get(PROGRESS_KEY)!)).toEqual({ completed: ['easy-1'] });
+    expect(p.isCompleted('easy-1')).toBe(true);
   });
 });

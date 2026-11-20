@@ -92,7 +92,8 @@ instructions: [`docs/DEPLOY.md`](docs/DEPLOY.md).
   silences everything and the note turns the music on or off; both choices are remembered. Files are
   Ogg Vorbis, with MP3 copies for browsers that cannot play Ogg.
 - **Saved data** (`localStorage`): `kor.progress.v1` (completed levels), `kor.settings.v1` (language,
-  sound, music), `kor.hints.v1` (hints revealed), `kor.drafts.v1` (the SQL being written in each level).
+  sound, music), `kor.hints.v1` (hints revealed), `kor.drafts.v1` (the SQL being written in each level),
+  `kor.star.v1` (the one-time "star it on GitHub" message was shown; kept when starting over).
 
 ```
 docs/              Story, asset inventory, level format, deployment, design references

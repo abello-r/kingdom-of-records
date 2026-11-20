@@ -2,10 +2,15 @@ import { ALL_LEVELS, STAGES, levelsOf, parseLevelId, type LevelId, type Stage } 
 import { readJson, type KeyValueStore } from './storage';
 
 export const PROGRESS_KEY = 'kor.progress.v1';
+/**
+ * The "star it on GitHub" message after Easy 3 has been shown. Kept apart from the progress so that
+ * starting over does not bring it back: it appears only once, ever.
+ */
+export const STAR_KEY = 'kor.star.v1';
 
 interface ProgressData {
   completed: LevelId[];
-  /** The "star it on GitHub" message after Easy 3 has been shown (it appears only once). */
+  /** Where an earlier version kept the star flag; read once and moved to STAR_KEY. */
   starAsked?: true;
 }
 
@@ -20,7 +25,12 @@ export class Progress {
 
   constructor(private readonly store: KeyValueStore) {
     this.completed = new Set(Progress.load(store));
-    this.starAsked = (readJson(store, PROGRESS_KEY) as Partial<ProgressData> | null)?.starAsked === true;
+    const legacy = (readJson(store, PROGRESS_KEY) as Partial<ProgressData> | null)?.starAsked === true;
+    this.starAsked = store.get(STAR_KEY) !== null || legacy;
+    if (legacy) {
+      store.set(STAR_KEY, '1');
+      this.save(); // drops the old field
+    }
   }
 
   private static load(store: KeyValueStore): LevelId[] {
@@ -34,7 +44,6 @@ export class Progress {
 
   private save(): void {
     const data: ProgressData = { completed: ALL_LEVELS.filter((id) => this.completed.has(id)) };
-    if (this.starAsked) data.starAsked = true;
     this.store.set(PROGRESS_KEY, JSON.stringify(data));
   }
 
@@ -46,7 +55,7 @@ export class Progress {
   markStarAsked(): void {
     if (this.starAsked) return;
     this.starAsked = true;
-    this.save();
+    this.store.set(STAR_KEY, '1');
   }
 
   isCompleted(id: LevelId): boolean {
@@ -84,8 +93,8 @@ export class Progress {
   }
 
   reset(): void {
+    // The star flag (STAR_KEY) is kept on purpose.
     this.completed.clear();
-    this.starAsked = false;
     this.store.remove(PROGRESS_KEY);
   }
 }
