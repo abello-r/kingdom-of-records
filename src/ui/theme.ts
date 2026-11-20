@@ -13,10 +13,8 @@ export function installTheme(): void {
     wood: 'ui/wood.png',
     foam: 'terrain/foam.png',
   };
-  for (const colour of ['blue', 'red', 'yellow', 'purple', 'black']) {
-    images[`ribbon-${colour}`] = `ui/ribbon-${colour}.png`;
-    images[`ribbon-small-${colour}`] = `ui/ribbon-small-${colour}.png`;
-  }
+  images['ribbon-blue'] = 'ui/ribbon-blue.png';
+  for (const colour of ['blue', 'red', 'purple']) images[`ribbon-small-${colour}`] = `ui/ribbon-small-${colour}.png`;
   for (const [name, path] of Object.entries(images)) root.setProperty(`--img-${name}`, cssUrl(path));
 
   if (typeof FontFace === 'function') {

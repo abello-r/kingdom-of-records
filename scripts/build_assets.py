@@ -140,9 +140,12 @@ def main():
     save(joined(load(UI, 'Wood Table', 'WoodTable.png'), s128, s128), 'ui/wood.png')
     big, small = load(UI, 'Ribbons', 'BigRibbons.png'), load(UI, 'Ribbons', 'SmallRibbons.png')
     for i, colour in enumerate(['blue', 'red', 'yellow', 'purple', 'black']):
-        save(joined(big, s128, [(i * 128, i * 128 + 128)]), f'ui/ribbon-{colour}.png')
+        # Used: the big blue ribbon (title screen), small ribbons for the stages, standards for the map.
+        if colour == 'blue':
+            save(joined(big, s128, [(i * 128, i * 128 + 128)]), f'ui/ribbon-{colour}.png')
         rib = joined(small, s64, [(i * 128, i * 128 + 64)])
-        save(rib, f'ui/ribbon-small-{colour}.png')
+        if colour in ('blue', 'red', 'purple'):
+            save(rib, f'ui/ribbon-small-{colour}.png')
         if colour in ('blue', 'black'):
             # Map node: the small ribbon's body and forked tail, rotated into a hanging standard.
             body = rib.crop((64, 0, 128, 64)).rotate(-90, expand=True)
@@ -181,9 +184,8 @@ def main():
     save(load(TS2, 'Terrain', 'Tileset', 'Water Foam.png'), 'terrain/foam.png')
 
     # --- Buildings ---
-    for b in ['House1', 'House2', 'House3', 'Tower', 'Castle', 'Barracks', 'Archery', 'Monastery']:
+    for b in ['House1', 'House2', 'House3', 'Tower', 'Castle', 'Barracks', 'Archery']:
         still(load(TS2, 'Buildings', 'Blue Buildings', f'{b}.png'), f'buildings/{b.lower().replace("house", "house-")}')
-    still(load(TS2, 'Buildings', 'Red Buildings', 'Castle.png'), 'buildings/castle-red')
     still(load(TS1, 'Factions', 'Knights', 'Buildings', 'House', 'House_Destroyed.png'), 'buildings/house-ruin')
     still(load(TS1, 'Factions', 'Goblins', 'Buildings', 'Wood_House', 'Goblin_House.png'), 'buildings/goblin-house')
     sprite(load(TS1, 'Factions', 'Goblins', 'Buildings', 'Wood_Tower', 'Wood_Tower_Red.png'), 'buildings/goblin-tower', 256, 192, 4, fps=6)
@@ -193,9 +195,9 @@ def main():
         sprite(load(RES, 'Wood', 'Trees', f'Tree{i}.png'), f'props/tree-{i}', 192, 256, 8, fps=6)
     for i in (3, 4):
         sprite(load(RES, 'Wood', 'Trees', f'Tree{i}.png'), f'props/tree-{i}', 192, 192, 8, fps=6)
-    for i in (1, 2, 3, 4):
+    for i in (1, 2):
         sprite(load(DECO, 'Bushes', f'Bushe{i}.png'), f'props/bush-{i}', 128, 128, 8, fps=6)
-        still(load(DECO, 'Rocks', f'Rock{i}.png'), f'props/rock-{i}')
+    still(load(DECO, 'Rocks', 'Rock2.png'), 'props/rock-2')
     for i in (1, 2, 3, 5):
         save(load(DECO, 'Clouds', f'Clouds_{i:02d}.png'), f'props/cloud-{i}.png')
     still(load(RES, 'Gold', 'Gold Stones', 'Gold Stone 4.png'), 'props/gold-stone')
@@ -216,8 +218,8 @@ def main():
     for colour in ['Blue', 'Red']:
         c = colour.lower()
         sprite(load(UNITS, f'{colour} Units', 'Warrior', 'Warrior_Idle.png'), f'units/warrior-{c}', 192, 192, 8)
-        sprite(load(UNITS, f'{colour} Units', 'Warrior', 'Warrior_Run.png'), f'units/warrior-{c}-run', 192, 192, 6)
         sprite(load(UNITS, f'{colour} Units', 'Monk', 'Idle.png'), f'units/monk-{c}', 192, 192, 6)
+    sprite(load(UNITS, 'Blue Units', 'Warrior', 'Warrior_Run.png'), 'units/warrior-blue-run', 192, 192, 6)
     sprite(load(UNITS, 'Blue Units', 'Warrior', 'Warrior_Attack1.png'), 'units/warrior-blue-attack', 192, 192, 4)
     sprite(load(UNITS, 'Blue Units', 'Archer', 'Archer_Idle.png'), 'units/archer-blue', 192, 192, 6)
     sprite(load(UNITS, 'Blue Units', 'Archer', 'Archer_Shoot.png'), 'units/archer-blue-shoot', 192, 192, 8, fps=12)
@@ -233,7 +235,6 @@ def main():
     sprite(torch, 'units/goblin-torch', 192, 192, 7)
     sprite(torch, 'units/goblin-torch-run', 192, 192, 6, row=1)
     sprite(tnt, 'units/goblin-tnt', 192, 192, 6)
-    sprite(tnt, 'units/goblin-tnt-throw', 192, 192, 7, row=2)
 
     # --- Effects (TS fire, dust and explosion in the world; SPE only for short UI feedback) ---
     sprite(load(TS1, 'Effects', 'Fire', 'Fire.png'), 'fx/fire', 128, 128, 7)

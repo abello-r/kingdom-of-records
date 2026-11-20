@@ -17,12 +17,6 @@
     "frames": 1,
     "fps": 10
   },
-  "buildings/castle-red": {
-    "w": 320,
-    "h": 256,
-    "frames": 1,
-    "fps": 10
-  },
   "buildings/goblin-house": {
     "w": 128,
     "h": 192,
@@ -56,12 +50,6 @@
   "buildings/house-ruin": {
     "w": 128,
     "h": 192,
-    "frames": 1,
-    "fps": 10
-  },
-  "buildings/monastery": {
-    "w": 192,
-    "h": 320,
     "frames": 1,
     "fps": 10
   },
@@ -101,18 +89,6 @@
     "frames": 8,
     "fps": 6
   },
-  "props/bush-3": {
-    "w": 128,
-    "h": 128,
-    "frames": 8,
-    "fps": 6
-  },
-  "props/bush-4": {
-    "w": 128,
-    "h": 128,
-    "frames": 8,
-    "fps": 6
-  },
   "props/duck": {
     "w": 32,
     "h": 32,
@@ -137,25 +113,7 @@
     "frames": 1,
     "fps": 10
   },
-  "props/rock-1": {
-    "w": 64,
-    "h": 64,
-    "frames": 1,
-    "fps": 10
-  },
   "props/rock-2": {
-    "w": 64,
-    "h": 64,
-    "frames": 1,
-    "fps": 10
-  },
-  "props/rock-3": {
-    "w": 64,
-    "h": 64,
-    "frames": 1,
-    "fps": 10
-  },
-  "props/rock-4": {
     "w": 64,
     "h": 64,
     "frames": 1,
@@ -213,12 +171,6 @@
     "w": 192,
     "h": 192,
     "frames": 6,
-    "fps": 10
-  },
-  "units/goblin-tnt-throw": {
-    "w": 192,
-    "h": 192,
-    "frames": 7,
     "fps": 10
   },
   "units/goblin-torch": {
@@ -363,12 +315,6 @@
     "w": 192,
     "h": 192,
     "frames": 8,
-    "fps": 10
-  },
-  "units/warrior-red-run": {
-    "w": 192,
-    "h": 192,
-    "frames": 6,
     "fps": 10
   }
 }
