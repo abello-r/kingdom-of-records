@@ -4,6 +4,7 @@
     "subtitle": "Les Chroniques du Registre"
   },
   "a11y": {
+    "newTab": "s’ouvre dans un nouvel onglet",
     "skipLink": "Aller au contenu",
     "languageSelector": "Langue",
     "locked": "Verrouillé",
@@ -178,6 +179,7 @@
     "sound": "Son",
     "fonts": "Polices",
     "tech": "Dans le Registre",
+    "star": "Ça te plaît ? Mets-lui une étoile sur GitHub",
     "thanks": "Merci d’avoir lu le Registre."
   }
 }

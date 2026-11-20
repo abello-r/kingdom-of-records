@@ -96,7 +96,7 @@ export function mapScreen(ctx: AppContext, select?: LevelId): Screen {
       h('div', { class: 'map__stages' }, ...columns),
     ),
   );
-  return { element, title: `${i18n.t('map.title')} — ${i18n.t('app.title')}`, focus: focusTarget };
+  return { element, focus: focusTarget };
 }
 
 /** "Start over" with a confirmation dialog; the safe choice (keep progress) has the focus. */

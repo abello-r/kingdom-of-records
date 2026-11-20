@@ -1,8 +1,8 @@
-import { AUTHOR } from '../../app/author';
+import { AUTHOR, AUTHOR_URL, REPO_URL } from '../../app/site';
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import type { Speaker } from '../../engine/types';
-import { h } from '../dom';
+import { externalLink, h, icon, ICONS } from '../dom';
 import { isCompact } from '../scenes';
 import { dialogue } from '../story';
 import { World } from '../world';
@@ -19,7 +19,6 @@ const LINES: [Speaker, string][] = [
 
 /** People and works credited at the end (names are not translated). */
 const CREDITS: [string, string[]][] = [
-  ['credits.developedBy', [AUTHOR]],
   ['credits.art', ['Tiny Swords — Pixel Frog']],
   ['credits.effects', ['Super Pixel Effects Gigapack — Will Tice / unTied Games']],
   ['credits.music', ['Medieval: The Old Tower Inn — RandomMind (CC0)']],
@@ -45,9 +44,11 @@ export function epilogueScreen(ctx: AppContext): Screen {
     h('div', { class: 'story' }, ...LINES.map(([speaker, key]) => dialogue(i18n, speaker, t(key)))));
   const credits = h('section', { class: 'page paper credits-page', 'aria-labelledby': 'credits-title' },
     h('h2', { id: 'credits-title' }, t('credits.title')),
-    h('dl', { class: 'credits-list' }, ...CREDITS.map(([key, names]) =>
-      h('div', {}, h('dt', {}, t(key)), ...names.map((n) => h('dd', {}, n))))),
+    h('dl', { class: 'credits-list' },
+      h('div', {}, h('dt', {}, t('credits.developedBy')), h('dd', {}, externalLink(AUTHOR_URL, t('a11y.newTab'), {}, AUTHOR))),
+      ...CREDITS.map(([key, names]) => h('div', {}, h('dt', {}, t(key)), ...names.map((n) => h('dd', {}, n))))),
     h('p', { class: 'credits-thanks' }, t('credits.thanks')),
+    REPO_URL ? h('p', { class: 'credits-star' }, externalLink(REPO_URL, t('a11y.newTab'), {}, icon([ICONS.star]), t('credits.star'))) : null,
     h('div', { class: 'credits-actions' },
       h('a', { class: 'btn btn--primary', href: routeHash({ name: 'map' }) }, t('epilogue.back')),
       h('a', { class: 'btn btn--ghost btn--small', href: routeHash({ name: 'home' }) }, t('epilogue.home'))));
@@ -58,7 +59,7 @@ export function epilogueScreen(ctx: AppContext): Screen {
 
   // The kingdom celebrates once the page has been shown.
   window.setTimeout(() => world.celebrate(), 700);
-  return { element, title: `${t('epilogue.name')} — ${t('app.title')}`, destroy: () => world.destroy() };
+  return { element, destroy: () => world.destroy() };
 }
 
 /** The castle court: Corvin under guard beside his coffers, the council, the sheep in his garden. */

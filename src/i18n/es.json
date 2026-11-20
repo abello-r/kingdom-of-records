@@ -4,6 +4,7 @@
     "subtitle": "Las Crónicas del Registro"
   },
   "a11y": {
+    "newTab": "se abre en una pestaña nueva",
     "skipLink": "Saltar al contenido",
     "languageSelector": "Idioma",
     "locked": "Bloqueado",
@@ -178,6 +179,7 @@
     "sound": "Sonido",
     "fonts": "Fuentes",
     "tech": "Dentro del Registro",
+    "star": "¿Te gusta? Dale una estrella en GitHub",
     "thanks": "Gracias por leer el Registro."
   }
 }

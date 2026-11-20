@@ -1,7 +1,7 @@
-import { AUTHOR } from '../../app/author';
+import { AUTHOR, AUTHOR_URL } from '../../app/site';
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
-import { h } from '../dom';
+import { externalLink, h } from '../dom';
 import { homeScene } from '../scenes';
 import { World } from '../world';
 
@@ -48,7 +48,13 @@ export function homeScreen(ctx: AppContext): Screen {
     main,
     h('footer', { class: 'credits' },
       h('span', {}, i18n.t('footer.credits')),
-      h('span', {}, i18n.t('footer.developedBy', { name: AUTHOR }))),
+      h('span', {}, ...developedBy(i18n.raw('footer.developedBy'), externalLink(AUTHOR_URL, i18n.t('a11y.newTab'), {}, AUTHOR)))),
   );
-  return { element, title: `${i18n.t('app.title')} — ${i18n.t('app.subtitle')}`, focus: primary };
+  return { element, focus: primary };
+}
+
+/** "Developed by {name}" with the name as a link, in the word order of each language. */
+function developedBy(template: string, name: HTMLElement): (string | HTMLElement)[] {
+  const [before = '', after = ''] = template.split('{name}');
+  return [before, name, after].filter((part) => part !== '');
 }

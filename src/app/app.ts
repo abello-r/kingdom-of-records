@@ -7,6 +7,7 @@ import type { Progress } from '../state/progress';
 import { saveSettings, type Settings } from '../state/settings';
 import type { KeyValueStore } from '../state/storage';
 import { createChrome } from '../ui/chrome';
+import { APP_NAME } from './site';
 import { homeScreen } from '../ui/screens/home';
 import { mapScreen } from '../ui/screens/map';
 import type { AppContext, LevelSession, Screen } from './context';
@@ -140,7 +141,7 @@ export class App {
     this.screen?.destroy?.();
     this.screen = next;
     document.documentElement.lang = i18n.language;
-    document.title = this.screen.title;
+    document.title = APP_NAME;
     const skip = document.querySelector('.skip-link');
     if (skip) skip.textContent = i18n.t('a11y.skipLink');
     root.replaceChildren(this.screen.element);

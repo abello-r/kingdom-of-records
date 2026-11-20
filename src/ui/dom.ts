@@ -57,9 +57,19 @@ export function icon(paths: string[], viewBox = '0 0 16 16'): SVGSVGElement {
   return svg;
 }
 
+/**
+ * Link that opens another site in a new tab (with rel="noopener noreferrer"); screen readers also hear
+ * `newTab` (e.g. "opens in a new tab").
+ */
+export function externalLink(href: string, newTab: string, attrs: Attrs, ...children: Child[]): HTMLAnchorElement {
+  return h('a', { ...attrs, href, target: '_blank', rel: 'noopener noreferrer' }, ...children, h('span', { class: 'visually-hidden' }, ` (${newTab})`));
+}
+
 /** Pixel-style icons drawn on a 16x16 grid with square shapes only. */
 export const ICONS = {
   lock: 'M5 7V5h1V4h4v1h1v2h1v7H4V7zm2 0h2V5H7z',
+  /** The kit has no star, so it is drawn like the padlock. */
+  star: 'M7 1h2v1h-2zM7 2h2v1h-2zM6 3h4v1h-4zM6 4h4v1h-4zM1 5h14v1h-14zM2 6h12v1h-12zM3 7h10v1h-10zM4 8h8v1h-8zM4 9h8v1h-8zM3 10h10v1h-10zM3 11h4v1h-4zM9 11h4v1h-4zM2 12h4v1h-4zM10 12h4v1h-4zM2 13h3v1h-3zM11 13h3v1h-3z',
 };
 
 /** Removes every child and appends the new ones. */

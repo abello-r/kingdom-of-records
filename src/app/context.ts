@@ -29,8 +29,6 @@ export interface AppContext {
 
 export interface Screen {
   element: HTMLElement;
-  /** Document title for this screen. */
-  title: string;
   /** Element that receives focus after navigation (defaults to the main landmark). */
   focus?: HTMLElement;
   destroy?(): void;

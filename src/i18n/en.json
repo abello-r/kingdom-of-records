@@ -4,6 +4,7 @@
     "subtitle": "The Chronicles of the Registry"
   },
   "a11y": {
+    "newTab": "opens in a new tab",
     "skipLink": "Skip to content",
     "languageSelector": "Language",
     "locked": "Locked",
@@ -178,6 +179,7 @@
     "sound": "Sound",
     "fonts": "Fonts",
     "tech": "Inside the Registry",
+    "star": "Like it? Give it a star on GitHub",
     "thanks": "Thank you for reading the Registry."
   }
 }

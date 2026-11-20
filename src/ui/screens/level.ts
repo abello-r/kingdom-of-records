@@ -278,7 +278,6 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
 
   return {
     element,
-    title: `${level.title[lang]} — ${i18n.t('app.title')}`,
     focus: editor.view.contentDOM,
     destroy: () => {
       editor.destroy();

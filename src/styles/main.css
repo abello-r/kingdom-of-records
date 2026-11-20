@@ -170,6 +170,7 @@ a { color: inherit; }
 .home__subtitle { margin-top: 12px; font-size: 2.5rem; }
 .home__actions { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 22px; }
 .credits { position: absolute; left: 20px; bottom: 6px; z-index: 6000; display: flex; flex-wrap: wrap; color: var(--parchment); font-size: 1.25rem; line-height: 1.15; text-shadow: 2px 2px 0 var(--ink); }
+.credits a { color: inherit; text-decoration-thickness: 2px; text-underline-offset: 3px; }
 .credits span + span::before { content: '·'; margin: 0 .5em; }
 
 /* ---------- map ---------- */
@@ -372,4 +373,10 @@ a { color: inherit; }
 .credits-list dt { color: var(--ink-soft); font-size: 1.3rem; }
 .credits-list dd { margin: 0; font-size: 1.45rem; }
 .credits-thanks { margin: 22px 0 18px; font-size: 1.6rem; }
+/* Quiet invitation to star the project: link text in the page ink, a small pixel star in kit yellow. */
+.credits-star { margin: -8px 0 20px; font-size: 1.35rem; }
+.credits-star a { display: inline-flex; gap: 8px; align-items: center; color: var(--ink-soft); }
+.credits-star a:hover { color: var(--ink); }
+.credits-star .icon { width: 18px; height: 18px; flex: none; fill: var(--kit-yellow); stroke: var(--ink); stroke-width: .9px; paint-order: stroke; shape-rendering: crispEdges; overflow: visible; }
+.credits-list dd a { color: inherit; }
 .credits-actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
