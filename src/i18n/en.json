@@ -146,7 +146,8 @@
     "tableRows": "The table {table} is not as expected yet (rows missing: {missing} · rows that should not be there: {unexpected})."
   },
   "footer": {
-    "credits": "Pixel art: Tiny Swords by Pixel Frog · Effects: Will Tice / unTied Games"
+    "credits": "Pixel art: Tiny Swords by Pixel Frog · Effects: Will Tice / unTied Games",
+    "developedBy": "Developed by {name}"
   },
   "reset": {
     "title": "Start over?",
@@ -168,6 +169,7 @@
   },
   "credits": {
     "title": "Credits",
+    "developedBy": "Developed by",
     "art": "Pixel art",
     "effects": "Visual effects",
     "sound": "Sound",

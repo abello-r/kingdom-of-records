@@ -146,7 +146,8 @@
     "tableRows": "La tabla {table} todavía no está como debería (filas que faltan: {missing} · filas que sobran: {unexpected})."
   },
   "footer": {
-    "credits": "Pixel art: Tiny Swords de Pixel Frog · Efectos: Will Tice / unTied Games"
+    "credits": "Pixel art: Tiny Swords de Pixel Frog · Efectos: Will Tice / unTied Games",
+    "developedBy": "Desarrollado por {name}"
   },
   "reset": {
     "title": "¿Empezar de cero?",
@@ -168,6 +169,7 @@
   },
   "credits": {
     "title": "Créditos",
+    "developedBy": "Desarrollado por",
     "art": "Pixel art",
     "effects": "Efectos visuales",
     "sound": "Sonido",

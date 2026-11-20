@@ -1,3 +1,4 @@
+import { AUTHOR } from '../../app/author';
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import type { Speaker } from '../../engine/types';
@@ -18,6 +19,7 @@ const LINES: [Speaker, string][] = [
 
 /** People and works credited at the end (names are not translated). */
 const CREDITS: [string, string[]][] = [
+  ['credits.developedBy', [AUTHOR]],
   ['credits.art', ['Tiny Swords — Pixel Frog']],
   ['credits.effects', ['Super Pixel Effects Gigapack — Will Tice / unTied Games']],
   ['credits.sound', ['Kenney (kenney.nl) — CC0']],

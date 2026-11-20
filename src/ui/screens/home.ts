@@ -1,3 +1,4 @@
+import { AUTHOR } from '../../app/author';
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import { h } from '../dom';
@@ -45,7 +46,9 @@ export function homeScreen(ctx: AppContext): Screen {
     world.el,
     ctx.chrome(),
     main,
-    h('footer', { class: 'credits' }, i18n.t('footer.credits')),
+    h('footer', { class: 'credits' },
+      h('span', {}, i18n.t('footer.credits')),
+      h('span', {}, i18n.t('footer.developedBy', { name: AUTHOR }))),
   );
   return { element, title: `${i18n.t('app.title')} — ${i18n.t('app.subtitle')}`, focus: primary };
 }
