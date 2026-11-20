@@ -13,4 +13,4 @@ export const AUTHOR_URL = 'https://www.linkedin.com/in/alexanderbello-dev/';
  * Public GitHub repository, for the "star it on GitHub" link in the epilogue credits.
  * Leave it empty and the link is not shown.
  */
-export const REPO_URL = '';
+export const REPO_URL = 'https://github.com/abello-r/kingdom-of-records';
