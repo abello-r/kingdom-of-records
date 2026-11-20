@@ -26,7 +26,7 @@ export const LEVEL: Record<Track, number> = {
   hint: 0.3,
   react: 0.3,
   explosion: 0.3,
-  music: 0.2,
+  music: 0.11,
 };
 const MUSIC_FADE_IN = 2.5;
 const MUSIC_FADE_OUT = 0.4;
