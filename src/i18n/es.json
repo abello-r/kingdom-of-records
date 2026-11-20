@@ -60,6 +60,7 @@
     "grubnak": "Grubnak"
   },
   "level": {
+    "starNudge": "¿Te está gustando? Una estrella en GitHub ayuda mucho",
     "task": "Tu tarea",
     "schema": "Lo que guarda el Registro",
     "schemaTable": "Tabla:",
@@ -147,7 +148,8 @@
   },
   "footer": {
     "credits": "Pixel art: Tiny Swords de Pixel Frog · Efectos: Will Tice / unTied Games",
-    "developedBy": "Desarrollado por {name}"
+    "developedBy": "Desarrollado por {name}",
+    "star": "Dale una estrella en GitHub"
   },
   "reset": {
     "title": "¿Empezar de cero?",

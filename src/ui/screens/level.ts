@@ -1,11 +1,12 @@
 import { playSound } from '../../audio/sound';
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
+import { REPO_URL } from '../../app/site';
 import { feedbackMessages, type Message } from '../../engine/messages';
 import type { SchemaTable } from '../../engine/runner';
 import type { DialogueLine, Level, ResultSet, TableSnapshot } from '../../engine/types';
 import { ALL_LEVELS } from '../../state/levels';
-import { fill, h, img, prefersReducedMotion } from '../dom';
+import { externalLink, fill, h, icon, ICONS, img, prefersReducedMotion } from '../dom';
 import { createSqlEditor, type SqlEditor } from '../editor';
 import { rich } from '../rich';
 import { levelStrip } from '../scenes';
@@ -13,6 +14,9 @@ import { dialogue as storyLine } from '../story';
 import { typeKey } from '../sql-types';
 import { World } from '../world';
 
+/** Level after which the one-time "star it on GitHub" message appears, and when (after its reaction). */
+const STAR_LEVEL = 'easy-3';
+const STAR_DELAY_MS = 2200;
 
 /** A level: the open Great Registry under a diorama of the region. */
 export function levelScreen(ctx: AppContext, level: Level): Screen {
@@ -68,6 +72,9 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     h('div', { class: 'actions' }, runBtns[0], hintBtns[0]),
     h('p', { class: 'shortcut' }, t('level.shortcut'), ' ', h('kbd', {}, 'Ctrl'), ' + ', h('kbd', {}, 'Enter')),
     answerLive,
+    // One-time, quiet invitation to star the project, shown just above "Turn the page".
+    h('p', { class: 'star-nudge', hidden: true },
+      REPO_URL ? externalLink(REPO_URL, t('a11y.newTab'), {}, icon([ICONS.star]), t('level.starNudge')) : null),
     h('div', { class: 'next' }, nextBtns[0]),
   );
   const dock = h('div', { class: 'dock' }, runBtns[1], nextBtns[1], hintBtns[1]);
@@ -99,6 +106,7 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
 
   // ---------- behaviour ----------
   let running = false;
+  let starTimer = 0;
   let schema: SchemaTable[] = [];
   const editor: SqlEditor = createSqlEditor({
     parent: editorHost,
@@ -245,6 +253,21 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     renderButtons();
     renderAnswer();
     if (firstSolve) (compact ? nextBtns[1] : nextBtns[0])!.focus();
+    if (firstSolve && level.id === STAR_LEVEL && REPO_URL && progress.shouldAskForStar()) {
+      // After the diorama has reacted; marked as shown only once it is actually on screen.
+      starTimer = window.setTimeout(() => {
+        progress.markStarAsked();
+        session.starNudge = true;
+        showStarNudge(true);
+      }, prefersReducedMotion() ? 0 : STAR_DELAY_MS);
+    }
+  }
+
+  function showStarNudge(animate: boolean): void {
+    const nudge = spellPage.querySelector<HTMLElement>('.star-nudge');
+    if (!nudge) return;
+    nudge.hidden = false;
+    nudge.classList.toggle('is-new', animate && !prefersReducedMotion());
   }
 
   runBtns.forEach((b) => b.addEventListener('click', () => void run()));
@@ -275,11 +298,13 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
   renderHints();
   renderButtons();
   renderAnswer();
+  if (session.solvedNow && session.starNudge) showStarNudge(false);
 
   return {
     element,
     focus: editor.view.contentDOM,
     destroy: () => {
+      window.clearTimeout(starTimer);
       editor.destroy();
       world.destroy();
     },

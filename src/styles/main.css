@@ -171,7 +171,12 @@ a { color: inherit; }
 .home__actions { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 22px; }
 .credits { position: absolute; left: 20px; bottom: 6px; z-index: 6000; display: flex; flex-wrap: wrap; color: var(--parchment); font-size: 1.25rem; line-height: 1.15; text-shadow: 2px 2px 0 var(--ink); }
 .credits a { color: inherit; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-.credits span + span::before { content: '·'; margin: 0 .5em; }
+/* The pixel star in kit yellow with an ink outline (also in the epilogue credits and after Easy 3). */
+.credits__star a, .star-nudge a { display: inline-flex; gap: 6px; align-items: center; }
+.credits__star .icon, .star-nudge .icon { flex: none; fill: var(--kit-yellow); stroke: var(--ink); stroke-width: .9px; paint-order: stroke; shape-rendering: crispEdges; overflow: visible; }
+.credits__star .icon { width: 14px; height: 14px; }
+.credits__star-short { display: none; }
+.credits > span + span::before { content: '·'; margin: 0 .5em; }
 
 /* ---------- map ---------- */
 .screen--map { position: relative; min-height: 100vh; padding: 96px 20px 60px; overflow-x: clip; }
@@ -290,6 +295,14 @@ a { color: inherit; }
 .result tr:nth-child(even) td { background: rgba(22, 28, 46, .04); }
 .rows-note { margin: 6px 0 0; color: var(--ink-soft); font-size: 1.25rem; }
 .next { display: flex; justify-content: flex-end; margin-top: 18px; }
+/* Quiet, one-time invitation to star the project (after Easy 3): plain text link, no box. */
+.star-nudge { margin: 14px 0 0; text-align: right; font-size: 1.3rem; }
+.star-nudge a { color: var(--ink-soft); }
+.star-nudge a:hover { color: var(--ink); }
+.star-nudge .icon { width: 16px; height: 16px; }
+.star-nudge + .next { margin-top: 8px; }
+.star-nudge.is-new { animation: nudge-in .6s ease-out both; }
+@keyframes nudge-in { from { opacity: 0; translate: 0 4px; } to { opacity: 1; translate: 0 0; } }
 .next:has(> [hidden]) { display: none; }
 
 .note { position: relative; display: grid; grid-template-columns: 44px 1fr; gap: 10px; align-items: start; margin-top: 14px; padding: 10px 14px 12px; border: 3px solid var(--ink); border-radius: 6px; font-size: 1.45rem; }
@@ -308,6 +321,7 @@ a { color: inherit; }
 
 /* ---------- phones ---------- */
 @media (max-width: 760px) {
+  .star-nudge { text-align: left; }
   body { font-size: 1.375rem; }
   /* Controls become a compact solid bar above the scene, so they never cover sprites. */
   .chrome { position: static; padding: 6px 10px; background: var(--wood-dark); border-bottom: 3px solid var(--ink); }
@@ -323,7 +337,13 @@ a { color: inherit; }
   .home__hero { padding-top: 72px; }
   .home__subtitle { transform: scale(.7); margin: 0 -60px; }
   .credits { right: 20px; flex-direction: column; font-size: 1rem; }
-  .credits span + span::before { content: none; }
+  .credits > span + span::before { content: none; }
+  /* Phone: credits on top, then "Developed by ... · ★ GitHub" on one line. */
+  .credits { flex-direction: row; }
+  .credits > span:first-child { flex-basis: 100%; }
+  .credits > .credits__star::before { content: '·'; margin: 0 .5em; }
+  .credits__star-long { display: none; }
+  .credits__star-short { display: inline; }
 
   .screen--map { padding: 0 0 90px; }
   .map__stages { flex-direction: column; align-items: center; gap: 18px; padding-top: 16px; }

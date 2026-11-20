@@ -10,7 +10,8 @@ export const AUTHOR = 'Alexander Bello';
 export const AUTHOR_URL = 'https://www.linkedin.com/in/alexanderbello-dev/';
 
 /**
- * Public GitHub repository, for the "star it on GitHub" link in the epilogue credits.
+ * Public GitHub repository, for the "star it on GitHub" links: title-screen footer, a one-time message
+ * after Easy 3, and the epilogue credits.
  * Leave it empty and the link is not shown.
  */
 export const REPO_URL = 'https://github.com/abello-r/kingdom-of-records';

@@ -63,4 +63,18 @@ describe('Progress', () => {
     expect(p.completedCount()).toBe(0);
     expect(store.get(PROGRESS_KEY)).toBeNull();
   });
+
+  it('remembers that the star message was shown, alongside the completed levels', () => {
+    const store = createMemoryStore();
+    const p = new Progress(store);
+    p.complete('easy-1');
+    expect(p.shouldAskForStar()).toBe(true);
+    p.markStarAsked();
+    expect(JSON.parse(store.get(PROGRESS_KEY)!)).toEqual({ completed: ['easy-1'], starAsked: true });
+
+    const again = new Progress(store);
+    expect(again.shouldAskForStar()).toBe(false);
+    again.complete('easy-2');
+    expect(JSON.parse(store.get(PROGRESS_KEY)!).starAsked).toBe(true);
+  });
 });

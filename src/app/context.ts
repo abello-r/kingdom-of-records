@@ -11,6 +11,8 @@ import type { Route } from './router';
 export interface LevelSession {
   result?: AttemptResult;
   solvedNow?: boolean;
+  /** The one-time "star it on GitHub" message was shown on this page (kept when it is redrawn). */
+  starNudge?: boolean;
 }
 
 /** Shared services handed to every screen. */

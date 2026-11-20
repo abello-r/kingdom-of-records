@@ -60,6 +60,7 @@
     "grubnak": "Grubnak"
   },
   "level": {
+    "starNudge": "Enjoying it? A star on GitHub helps a lot",
     "task": "Your task",
     "schema": "What the Registry holds",
     "schemaTable": "Table:",
@@ -147,7 +148,8 @@
   },
   "footer": {
     "credits": "Pixel art: Tiny Swords by Pixel Frog · Effects: Will Tice / unTied Games",
-    "developedBy": "Developed by {name}"
+    "developedBy": "Developed by {name}",
+    "star": "Star it on GitHub"
   },
   "reset": {
     "title": "Start over?",

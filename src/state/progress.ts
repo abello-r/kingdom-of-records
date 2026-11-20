@@ -5,6 +5,8 @@ export const PROGRESS_KEY = 'kor.progress.v1';
 
 interface ProgressData {
   completed: LevelId[];
+  /** The "star it on GitHub" message after Easy 3 has been shown (it appears only once). */
+  starAsked?: true;
 }
 
 /**
@@ -14,9 +16,11 @@ interface ProgressData {
  */
 export class Progress {
   private completed: Set<LevelId>;
+  private starAsked: boolean;
 
   constructor(private readonly store: KeyValueStore) {
     this.completed = new Set(Progress.load(store));
+    this.starAsked = (readJson(store, PROGRESS_KEY) as Partial<ProgressData> | null)?.starAsked === true;
   }
 
   private static load(store: KeyValueStore): LevelId[] {
@@ -30,7 +34,19 @@ export class Progress {
 
   private save(): void {
     const data: ProgressData = { completed: ALL_LEVELS.filter((id) => this.completed.has(id)) };
+    if (this.starAsked) data.starAsked = true;
     this.store.set(PROGRESS_KEY, JSON.stringify(data));
+  }
+
+  /** Whether the one-time "star it on GitHub" message is still to be shown. */
+  shouldAskForStar(): boolean {
+    return !this.starAsked;
+  }
+
+  markStarAsked(): void {
+    if (this.starAsked) return;
+    this.starAsked = true;
+    this.save();
   }
 
   isCompleted(id: LevelId): boolean {
@@ -69,6 +85,7 @@ export class Progress {
 
   reset(): void {
     this.completed.clear();
+    this.starAsked = false;
     this.store.remove(PROGRESS_KEY);
   }
 }

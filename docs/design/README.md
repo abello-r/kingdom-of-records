@@ -135,3 +135,8 @@ the credits. Screens: `screens/epilogue-*.png`, `screens/reset-dialog-desktop.pn
 - **Sound:** the speaker silences everything; the note turns the music off or on (it is dimmed while
   everything is silenced). Sources and how the files were made: `public/assets/CREDITS.md`.
 - **Hints:** whole queries are shown one clause per line (see `src/ui/sql-layout.ts`).
+- **Star it on GitHub:** a pixel star (drawn like the padlock, as the kit has none) with a short link,
+  in three quiet places: the title-screen footer ("GitHub" only on phones, to keep the footer below
+  the island), a one-time line above "Turn the page" about 2 s after solving Easy 3 (after the
+  diorama's reaction; no pop-up) and the epilogue credits.
+- **Music level:** 0.11 (55% of the first level, 0.2); effects unchanged.

@@ -1,7 +1,7 @@
-import { AUTHOR, AUTHOR_URL } from '../../app/site';
+import { AUTHOR, AUTHOR_URL, REPO_URL } from '../../app/site';
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
-import { externalLink, h } from '../dom';
+import { externalLink, h, icon, ICONS } from '../dom';
 import { homeScene } from '../scenes';
 import { World } from '../world';
 
@@ -48,7 +48,13 @@ export function homeScreen(ctx: AppContext): Screen {
     main,
     h('footer', { class: 'credits' },
       h('span', {}, i18n.t('footer.credits')),
-      h('span', {}, ...developedBy(i18n.raw('footer.developedBy'), externalLink(AUTHOR_URL, i18n.t('a11y.newTab'), {}, AUTHOR)))),
+      h('span', {}, ...developedBy(i18n.raw('footer.developedBy'), externalLink(AUTHOR_URL, i18n.t('a11y.newTab'), {}, AUTHOR))),
+      // On phones the text shrinks to "GitHub" so the footer keeps to three lines, below the island.
+      REPO_URL
+        ? h('span', { class: 'credits__star' }, externalLink(REPO_URL, i18n.t('a11y.newTab'), {}, icon([ICONS.star]),
+          h('span', { class: 'credits__star-long' }, i18n.t('footer.star')),
+          h('span', { class: 'credits__star-short', lang: 'en' }, 'GitHub')))
+        : null),
   );
   return { element, focus: primary };
 }
