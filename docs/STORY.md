@@ -23,7 +23,7 @@ The player's gender is never stated: texts address them neutrally in ES and FR.
 
 ## Cast
 
-Portraits come from TS-2 `Human Avatars` unless stated otherwise (see `/docs/ASSETS.md`).
+Portraits come from TS-2 `Human Avatars` unless stated otherwise (see `scripts/build_assets.py`).
 
 | Character | Role | Sprite / portrait |
 |---|---|---|

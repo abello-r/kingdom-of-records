@@ -1,7 +1,7 @@
 # Design — The Kingdom of Records
 
-Status: **mock-ups validated; implemented in Phase 4** with the adjustments below. The mock-ups in
-`mockups/` are the design reference; screenshots of the real game are in `screens/`.
+Status: **implemented** (Phases 4–6). Screenshots of the real game are in `screens/` and recordings of
+the level reactions in `reactions/`.
 
 ## Adjustments made while implementing (requested at validation)
 
@@ -12,7 +12,7 @@ Status: **mock-ups validated; implemented in Phase 4** with the adjustments belo
 | Compact phone header, no cut sprites | On phones the controls are a solid bar above the scene (smaller buttons); the level title sits below the scene. |
 | Phone dialogue bubbles | Portraits (40 px) sit above the bubble, so the text keeps the full width. |
 | Map progress bar | Empty part in dark wood (`#2e1b15`), filled part kit blue. |
-| Sound button | Back to the round kit button with a parchment speaker; the icon has a thin ink outline for ≥ 3:1 contrast. |
+| Sound and music buttons | Square kit buttons (see Phase 6 below). |
 | "What the Registry holds" | One ledger card per table: "Table: villagers", then "Columns:" with each column and its type in plain words (number / text), joined by dotted leaders. |
 
 ## Idea
@@ -81,37 +81,24 @@ list (CodeMirror's default marked `role` as a keyword).
 - Hint button: always visible next to "Lanzar conjuro", with a counter of the hints **left**
   (`2/3`; disabled at `0/3`). Revealed hints appear on the story page, below the task.
 - "Borrar" (clear) sits on the spell heading row, so it never covers the code.
-- Always visible: back button (top left), `ES · EN · FR` plank and mute button (top right).
+- Always visible: back button (top left), `ES · EN · FR` plank, music and sound buttons (top right).
 
 ## Responsive
 
 Desktop: two pages side by side. Phone (≤ 760 px): one column, no wood frame, level title at the bottom
 of the diorama, and a sticky bar with the primary action and the hint button.
 
-## Files
+## Screenshots
 
-| File | Shows |
+| Folder | Shows |
 |---|---|
-| `home.png` | Title screen, returning player (same progress as the map: Medium 3) |
-| `home-press.png` | Logo test with Press Start 2P (rejected, kept for reference) |
-| `map.png` | Kingdom map: Easy done, Medium on level 3, Hard locked |
-| `level-error.png` | Level with an SQL error and tip, one hint revealed (2 left) |
-| `level-success.png` | Same level solved: story continues, success note with aside, sparkles, celebrating diorama |
-| `level-mobile.png` / `level-mobile-full.png` | Phone: first screen, and full page in the success state |
-
-Sources: `home.html`, `map.html`, `level.html` (`?state=error|success`), `kit.css`, `world.js`.
-Open them directly in a browser after `npm install` (fonts are read from `node_modules`).
-`a/` holds images cut from the original packs; rebuild it with
-`python prep.py <project root> a` (requires Pillow). These are design references only: the game's
-own assets go to `public/assets/` in Phase 5. The repository is private; SPE frames must not be
-redistributed outside the game (see `public/assets/CREDITS.md`).
+| `screens/` | Title screen, map, level (error, success, French), epilogue and reset dialog, on desktop and phone |
+| `reactions/` | Recordings of eight level reactions (GIF) |
 
 ## Phase 5 — living dioramas
 
 Every level has its own scene in the strip above the Registry, and the world **reacts when the spell is
-right** (`src/ui/reactions.ts`, tested in `src/ui/reactions.test.ts`). Recordings: `reactions/*.gif`,
-and before/after for all 15 levels in `reactions/all-levels-before-after.png` (desktop) and
-`reactions/phone-before-after.png`.
+right** (`src/ui/reactions.ts`, tested in `src/ui/reactions.test.ts`). Recordings: `reactions/*.gif`.
 
 | Level | Reaction |
 |---|---|
@@ -144,7 +131,7 @@ the credits. Screens: `screens/epilogue-*.png`, `screens/reset-dialog-desktop.pn
 - **Controls bar:** back, music and sound use the square Tiny Swords button (`TinySquareBlueButton`),
   shown at its native size (64 px; 52 px on phones). Icons: the kit's orange arrow and music note, and
   the TS-1 speaker recoloured with the note's cream (the TS-2 kit has no speaker). A red X marks what is
-  switched off. Option B of the three proposals in `proposals/buttons-*.png`.
+  switched off.
 - **Sound:** the speaker silences everything; the note turns the music off or on (it is dimmed while
   everything is silenced). Sources and how the files were made: `public/assets/CREDITS.md`.
 - **Hints:** whole queries are shown one clause per line (see `src/ui/sql-layout.ts`).
