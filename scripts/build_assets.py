@@ -25,7 +25,7 @@ UNITS = os.path.join(TS2, 'Units')
 RES = os.path.join(TS2, 'Terrain', 'Resources')
 DECO = os.path.join(TS2, 'Terrain', 'Decorations')
 
-GENERATED_DIRS = ['ui', 'terrain', 'buildings', 'props', 'units', 'portraits', 'fx']
+GENERATED_DIRS = ['ui', 'terrain', 'buildings', 'props', 'units', 'portraits', 'fx', 'icons']
 
 
 def load(*parts):
@@ -106,6 +106,21 @@ def with_badge(icon, badge):
     return out
 
 
+def site_icons():
+    """Favicons and the home-screen icon: the TS-2 shield icon (heraldic, in the game's blue and cream)."""
+    shield = cropped(load(UI, 'Icons', 'Icon_06.png'))
+    side = max(shield.size) + 4
+    square = Image.new('RGBA', (side, side))
+    square.alpha_composite(shield, ((side - shield.width) // 2, (side - shield.height) // 2))
+    for size in (16, 32):
+        save(square.resize((size, size), Image.LANCZOS), f'icons/favicon-{size}.png')
+    # Home-screen icon (iOS/Android): opaque, the shield at 2x on the sea colour, with room for rounded corners.
+    touch = Image.new('RGBA', (180, 180), (0x47, 0xab, 0xa9, 255))
+    big = scaled(square, 2)
+    touch.alpha_composite(big, ((180 - big.width) // 2, (180 - big.height) // 2))
+    save(touch, 'icons/apple-touch-icon.png')
+
+
 def control_buttons():
     """128x128 images shown at 64 px (the button itself at its native size), regular and pressed."""
     button = scaled(load(UI, 'Buttons', 'TinySquareBlueButton.png'), 2)
@@ -155,6 +170,7 @@ def main():
             flag.paste(tail, (0, 64), tail)
             save(cropped(flag), f'ui/standard-{colour}.png')
     control_buttons()
+    site_icons()
     for n, name in [(5, 'task'), (9, 'error')]:
         save(load(UI, 'Icons', f'Icon_{n:02d}.png'), f'ui/icon-{name}.png')
 
