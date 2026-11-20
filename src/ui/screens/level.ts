@@ -1,3 +1,4 @@
+import { playSound } from '../../audio/sound';
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import { feedbackMessages, type Message } from '../../engine/messages';
@@ -52,9 +53,10 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
   // ---------- right page: spell and answer ----------
   const editorHost = h('div', { class: 'editor' });
   const clearBtn = h('button', { type: 'button', class: 'btn btn--ghost btn--small' }, t('level.clear'));
-  const runBtns = [h('button', { type: 'button', class: 'btn' }), h('button', { type: 'button', class: 'btn' })];
-  const hintBtns = [h('button', { type: 'button', class: 'btn btn--small btn--hint' }), h('button', { type: 'button', class: 'btn btn--hint' })];
-  const nextBtns = [h('a', { class: 'btn btn--primary' }), h('a', { class: 'btn btn--primary' })];
+  // Running has its own sounds (right / wrong), so its buttons do not click.
+  const runBtns = [h('button', { type: 'button', class: 'btn', 'data-sound': 'none' }), h('button', { type: 'button', class: 'btn', 'data-sound': 'none' })];
+  const hintBtns = [h('button', { type: 'button', class: 'btn btn--small btn--hint', 'data-sound': 'hint' }), h('button', { type: 'button', class: 'btn btn--hint', 'data-sound': 'hint' })];
+  const nextBtns = [h('a', { class: 'btn btn--primary', 'data-sound': 'page' }), h('a', { class: 'btn btn--primary', 'data-sound': 'page' })];
   const answer = h('div', { class: 'answer__body' });
   const answerLive = h('div', { class: 'answer', 'aria-live': 'polite' }, h('h3', {}, t('level.answer')), answer);
   const spellPage = h(
@@ -225,11 +227,13 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     } catch {
       session.result = undefined;
       fill(answer, h('p', { class: 'note note--error', role: 'alert' }, t('level.engineError')));
+      playSound('error');
       running = false;
       renderButtons();
       return;
     }
     running = false;
+    playSound(session.result.correct ? 'success' : 'error');
     const firstSolve = session.result.correct && !session.solvedNow;
     if (firstSolve) {
       session.solvedNow = true;

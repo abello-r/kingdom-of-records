@@ -169,7 +169,8 @@
   "credits": {
     "title": "Credits",
     "art": "Pixel art",
-    "effects": "Effects",
+    "effects": "Visual effects",
+    "sound": "Sound",
     "fonts": "Fonts",
     "tech": "Inside the Registry",
     "thanks": "Thank you for reading the Registry."

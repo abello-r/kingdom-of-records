@@ -20,7 +20,7 @@ export function detectLanguage(preferred: readonly string[]): Language {
 
 export interface Settings {
   language: Language;
-  /** No audio exists yet; the flag is stored so the toggle is ready when sound is added. */
+  /** Silences every sound effect. */
   muted: boolean;
 }
 

@@ -169,7 +169,8 @@
   "credits": {
     "title": "Créditos",
     "art": "Pixel art",
-    "effects": "Efectos",
+    "effects": "Efectos visuales",
+    "sound": "Sonido",
     "fonts": "Fuentes",
     "tech": "Dentro del Registro",
     "thanks": "Gracias por leer el Registro."

@@ -44,4 +44,22 @@ Both fonts are bundled locally with the game (no CDN), from the `@fontsource` np
 
 ## Audio
 
-None yet.
+### Kenney — sound effects
+
+- Source: https://kenney.nl (packs *Interface Sounds*, *RPG Audio*, *Music Jingles*, *Sci-fi Sounds*).
+- Licence: Creative Commons Zero (CC0 1.0, public domain) —
+  [`licenses/Kenney-CC0-license.txt`](licenses/Kenney-CC0-license.txt). Credit is not required; it is
+  given here and in the game's credits anyway.
+- Files are copied unchanged (Ogg Vorbis) with clean names:
+
+| File | Used for | Pack | Original file |
+|---|---|---|---|
+| `sounds/click.ogg` | Buttons and links | Interface Sounds | `Audio/click_001.ogg` |
+| `sounds/page.ogg` | "Turn the page" (next level) | RPG Audio | `Audio/bookFlip2.ogg` |
+| `sounds/success.ogg` | Correct answer | Music Jingles | `Audio/Pizzicato jingles/jingles_PIZZI00.ogg` |
+| `sounds/error.ogg` | Wrong answer or SQL error | Interface Sounds | `Audio/error_001.ogg` |
+| `sounds/hint.ogg` | A hint is revealed | Interface Sounds | `Audio/question_002.ogg` |
+| `sounds/react.ogg` | The diorama reacts | Interface Sounds | `Audio/maximize_002.ogg` |
+| `sounds/explosion.ogg` | TNT explosion (Hard 4) | Sci-fi Sounds | `Audio/explosionCrunch_000.ogg` |
+
+No background music: Kenney does not publish music loops, so none is included.

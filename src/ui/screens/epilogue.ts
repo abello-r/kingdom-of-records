@@ -20,6 +20,7 @@ const LINES: [Speaker, string][] = [
 const CREDITS: [string, string[]][] = [
   ['credits.art', ['Tiny Swords — Pixel Frog']],
   ['credits.effects', ['Super Pixel Effects Gigapack — Will Tice / unTied Games']],
+  ['credits.sound', ['Kenney (kenney.nl) — CC0']],
   ['credits.fonts', ['Jersey 10 — The Soft Type Project Authors (SIL OFL 1.1)', 'JetBrains Mono — The JetBrains Mono Project Authors (SIL OFL 1.1)']],
   ['credits.tech', ['SQLite · sql.js', 'CodeMirror']],
 ];

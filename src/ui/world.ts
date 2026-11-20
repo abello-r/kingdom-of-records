@@ -1,3 +1,4 @@
+import { playSound, type SoundName } from '../audio/sound';
 import { asset, img, prefersReducedMotion } from './dom';
 import manifest from './sprite-manifest.json';
 
@@ -116,6 +117,12 @@ export class World {
     else this.timers.push(window.setTimeout(fn, delay));
   }
 
+  /** A sound tied to the scene (not played when the scene is redrawn instantly). */
+  sound(name: SoundName, delay = 0): void {
+    if (this.instant) return;
+    this.later(delay, () => playSound(name));
+  }
+
   /** One-shot effect (dust, explosion, fire burst…) centred at the feet position, removed when it ends. */
   fx(name: SpriteName, x: number, y: number, delay = 0, scale = 1): void {
     if (this.instant) return;
@@ -189,6 +196,7 @@ export class World {
   /** Every character with a celebration plays it twice with a little hop, then goes back to idle. */
   celebrate(): void {
     if (this.instant) return;
+    this.sound('react', 600);
     this.el.querySelectorAll<Sprite>('.sprite:not(.is-hidden)').forEach((el, i) => {
       const cheer = CHEER[el.dataset.idle as SpriteName];
       if (!cheer) return;

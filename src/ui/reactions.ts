@@ -255,6 +255,7 @@ export const LEVEL_SCENES: Record<LevelId, LevelScene> = {
       const knights = [put('units/warrior-blue', 0.68, { dy: 20, hidden: true }), put('units/warrior-blue', 0.86, { dy: 22, hidden: true, flip: true })];
       return () => {
         world.fx('fx/explosion', x(0.86), y(4), 100);
+        world.sound('explosion', 100);
         world.vanish(skull, 300);
         world.appear(grubnak, 900);
         knights.forEach((s, i) => world.appear(s, stagger(i, 200, 1100)));
