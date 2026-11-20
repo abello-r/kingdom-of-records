@@ -31,6 +31,7 @@ Portraits come from TS-2 `Human Avatars` unless stated otherwise (see `/docs/ASS
 | **Sir Aldric** | Old Blue knight, mentor and main narrator | TS-2 Blue `Warrior` + Warrior portrait |
 | **King of the Blue Kingdom** | Receives reports; never shown on screen | — (no king sprite; only mentioned) |
 | **Sir Garrick** | Red Kingdom knight lent to the Blue Kingdom; last guard of Riverwatch | TS-2 Red `Warrior` / `Lancer` + portrait |
+| **Lady Maud** | Blue Kingdom noble, keeper of the royal storehouse; the red herring | TS-2 Purple `Monk` (purple sets her apart from the Blue monks) |
 | **Corvin** | Treasurer of the Red Kingdom — the traitor | TS-2 Red `Monk`-type portrait (no treasurer sprite) |
 | **Grubnak** | Goblin chief, at Skull Rock | TS-1 Goblin `Torch` sprite; portrait cropped from it |
 | Snik, Kragg, Gorb, Mogg, Zib, Nub, Fizzwick | Goblins | TS-1 Goblins `Torch`, `TNT` (+ `Dynamite`), `Barrel` |

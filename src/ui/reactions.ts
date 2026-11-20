@@ -266,7 +266,7 @@ export const LEVEL_SCENES: Record<LevelId, LevelScene> = {
     build({ put, world }) {
       put('buildings/castle', 0.5, { dy: -18, wide: true });
       put('units/warrior-blue', 0.2, { dy: 16 });
-      put('units/monk-blue', 0.29, { dy: 18 });
+      put('units/monk-purple', 0.29, { dy: 18 }); // Lady Maud
       put('units/monk-red', 0.6, { dy: 18, flip: true });
       put('units/warrior-red', 0.8, { dy: 16, flip: true });
       const guards = [put('units/warrior-blue', 0.53, { dy: 20, hidden: true }), put('units/warrior-blue', 0.68, { dy: 20, hidden: true, flip: true })];

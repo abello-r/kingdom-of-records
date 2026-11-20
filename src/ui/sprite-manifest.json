@@ -245,6 +245,18 @@
     "frames": 11,
     "fps": 10
   },
+  "units/monk-purple": {
+    "w": 192,
+    "h": 192,
+    "frames": 6,
+    "fps": 10
+  },
+  "units/monk-purple-heal": {
+    "w": 192,
+    "h": 192,
+    "frames": 11,
+    "fps": 10
+  },
   "units/monk-red": {
     "w": 192,
     "h": 192,

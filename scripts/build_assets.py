@@ -168,6 +168,9 @@ def main():
     sprite(load(UNITS, 'Blue Units', 'Archer', 'Archer_Idle.png'), 'units/archer-blue', 192, 192, 6)
     sprite(load(UNITS, 'Blue Units', 'Archer', 'Archer_Shoot.png'), 'units/archer-blue-shoot', 192, 192, 8, fps=12)
     sprite(load(UNITS, 'Blue Units', 'Monk', 'Heal.png'), 'units/monk-blue-heal', 192, 192, 11)
+    # Lady Maud wears purple so she stands apart from the Blue monks (epilogue, Hard 5).
+    sprite(load(UNITS, 'Purple Units', 'Monk', 'Idle.png'), 'units/monk-purple', 192, 192, 6)
+    sprite(load(UNITS, 'Purple Units', 'Monk', 'Heal.png'), 'units/monk-purple-heal', 192, 192, 11)
     sheep = os.path.join(RES, 'Meat', 'Sheep')
     sprite(load(sheep, 'Sheep_Idle.png'), 'units/sheep', 128, 128, 6, fps=8)
     sprite(load(sheep, 'Sheep_Grass.png'), 'units/sheep-grazing', 128, 128, 12, fps=8)

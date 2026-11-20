@@ -18,6 +18,7 @@ const CHEER: Partial<Record<SpriteName, SpriteName>> = {
   'units/warrior-blue': 'units/warrior-blue-attack',
   'units/archer-blue': 'units/archer-blue-shoot',
   'units/monk-blue': 'units/monk-blue-heal',
+  'units/monk-purple': 'units/monk-purple-heal',
   'units/sheep': 'units/sheep-move',
   'units/sheep-grazing': 'units/sheep-move',
 };
