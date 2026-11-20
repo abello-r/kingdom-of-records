@@ -113,8 +113,10 @@ a { color: inherit; }
 .btn:disabled { filter: grayscale(1) brightness(.85); cursor: not-allowed; transform: none; }
 .btn--primary { --face: var(--kit-yellow); --light: var(--kit-yellow-light); --shade: var(--kit-yellow-shade); }
 .btn--ghost { --face: var(--parchment); --light: #fff6e0; --shade: var(--parchment-deep); }
-/* Destructive action (only in confirmations): ember face, ink text. */
-.btn--danger { --face: #d77a6e; --light: #e9a196; --shade: var(--ember); }
+/* Neutral choice (e.g. "keep my progress"): the kit's wood with parchment text (large text, 3.8:1). */
+.btn--wood { --face: var(--wood); --light: #b98270; --shade: var(--wood-dark); color: var(--parchment); }
+/* Destructive action (only in confirmations): the kit's red button colours, ink text (5.1:1). */
+.btn--danger { --face: #f65555; --light: #fb8a80; --shade: #ba4954; }
 .btn--small { min-height: 40px; font-size: 1.4rem; padding: 6px 14px 9px; }
 .btn--big { font-size: 2.4rem; padding: 12px 40px 18px; }
 .btn img { width: 28px; height: 28px; }
@@ -380,11 +382,20 @@ a { color: inherit; }
 }
 
 /* ---------- confirmation dialog ---------- */
-.confirm { max-width: min(520px, calc(100vw - 48px)); padding: 0; color: var(--ink); background: transparent; }
-.confirm::backdrop { background: rgba(22, 28, 46, .55); }
+.confirm {
+  position: fixed; inset: 0; margin: auto; width: min(640px, calc(100vw - 32px)); max-width: none; height: fit-content;
+  padding: 0; color: var(--ink); background: transparent; white-space: normal; text-align: left;
+}
+.confirm::backdrop { background: rgba(22, 28, 46, .72); }
 .confirm h2 { margin: 0 0 8px; font-size: 2rem; line-height: 1; }
-.confirm p { margin: 0 0 18px; }
-.confirm__actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.confirm p { margin: 0 0 24px; }
+/* Two buttons of the same size, side by side and filling the row; they stack when they do not fit. */
+.confirm__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 20px 16px; padding-bottom: 8px; }
+.confirm__actions .btn { flex: 1 1 0; font-size: 1.6rem; min-height: 52px; }
+@media (max-width: 560px) {
+  .confirm__actions { flex-direction: column; }
+  .confirm__actions .btn { flex: none; width: 100%; }
+}
 .map__reset { margin-left: 6px; }
 
 /* ---------- epilogue ---------- */

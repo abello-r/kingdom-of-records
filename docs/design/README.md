@@ -138,5 +138,8 @@ the credits. Screens: `screens/epilogue-*.png`, `screens/reset-dialog-desktop.pn
 - **Star it on GitHub:** a pixel star (drawn like the padlock, as the kit has none) with a short link,
   in three quiet places: the title-screen footer ("GitHub" only on phones, to keep the footer below
   the island), a one-time line above "Turn the page" about 2 s after solving Easy 3 (after the
-  diorama's reaction; no pop-up) and the epilogue credits.
+  diorama's reaction; no pop-up; shown once ever, stored in `kor.star.v1`) and the epilogue credits.
+- **Start-over dialog:** centred over a darker backdrop. "Keep my progress" (kit wood, focused by
+  default) and "Erase my progress" (kit red) have the same size, side by side on desktop and stacked
+  at full width on phones.
 - **Music level:** 0.11 (55% of the first level, 0.2); effects unchanged.

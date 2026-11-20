@@ -102,8 +102,8 @@ export function mapScreen(ctx: AppContext, select?: LevelId): Screen {
 /** "Start over" with a confirmation dialog; the safe choice (keep progress) has the focus. */
 function resetButton(ctx: AppContext): HTMLElement {
   const { i18n } = ctx;
-  const keep = h('button', { type: 'button', class: 'btn btn--primary', value: 'keep' }, i18n.t('reset.cancel'));
-  const erase = h('button', { type: 'button', class: 'btn btn--danger btn--small', value: 'erase' }, i18n.t('reset.confirm'));
+  const keep = h('button', { type: 'button', class: 'btn btn--wood', value: 'keep', autofocus: true }, i18n.t('reset.cancel'));
+  const erase = h('button', { type: 'button', class: 'btn btn--danger', value: 'erase' }, i18n.t('reset.confirm'));
   const dialog = h('dialog', { class: 'paper confirm', 'aria-labelledby': 'reset-title', 'aria-describedby': 'reset-body' },
     h('h2', { id: 'reset-title' }, i18n.t('reset.title')),
     h('p', { id: 'reset-body' }, i18n.t('reset.body')),
