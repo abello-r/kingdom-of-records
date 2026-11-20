@@ -1,4 +1,4 @@
-# Design — The Kingdom of Records
+# Design of The Kingdom of Records
 
 Status: **implemented** (Phases 4–6). Screenshots of the real game are in `screens/` and recordings of
 the level reactions in `reactions/`.
@@ -26,7 +26,7 @@ No pop-ups. When an answer is right:
 - the story continues on the left page (the new line is outlined in kit blue);
 - a single success note appears on the right page, with any extra advice (e.g. double quotes) as a
   small aside inside it;
-- a short effect plays on the book (≈ 600 ms sparkle burst around the success note — SPE
+- a short effect plays on the book (≈ 600 ms sparkle burst around the success note, from SPE
   `round_sparkle_burst_001` + `status_sparkling_001`), never over the controls;
 - the diorama characters celebrate (pawns hop with a dust puff, Aldric raises his sword, sheep jump,
   archers appear on the towers when the level is about them);
@@ -95,7 +95,7 @@ of the diorama, and a sticky bar with the primary action and the hint button.
 | `screens/` | Title screen, map, level (error, success, French), epilogue and reset dialog, on desktop and phone |
 | `reactions/` | Recordings of eight level reactions (GIF) |
 
-## Phase 5 — living dioramas
+## Phase 5: living dioramas
 
 Every level has its own scene in the strip above the Registry, and the world **reacts when the spell is
 right** (`src/ui/reactions.ts`, tested in `src/ui/reactions.test.ts`). Recordings: `reactions/*.gif`.
@@ -126,7 +126,7 @@ The **epilogue** (`#/epilogue`, after the last level) shows the castle court and
 the gold in Corvin's coffers, the sheep in his garden, Lady Maud cleared, the Registry restored; then
 the credits. Screens: `screens/epilogue-*.png`, `screens/reset-dialog-desktop.png`.
 
-## Phase 6 — controls bar and sound
+## Phase 6: controls bar and sound
 
 - **Controls bar:** back, music and sound use the square Tiny Swords button (`TinySquareBlueButton`),
   shown at its native size (64 px; 52 px on phones). Icons: the kit's orange arrow and music note, and

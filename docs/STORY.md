@@ -1,4 +1,4 @@
-# Story — The Kingdom of Records
+# Story of The Kingdom of Records
 
 | | ES | EN | FR |
 |---|---|---|---|
@@ -13,7 +13,7 @@ identifiers and values the player must type); titles, narrative, tasks and hints
 
 Goblins raid the village of **Bluebrook**, in the **Blue Kingdom**, and burn the royal archive on the
 night of **14 March 1247**. Only the **Great Registry** survives: a magic book that answers questions
-asked in an ancient tongue — SQL.
+asked in an ancient tongue: SQL.
 
 The player is **Pip**, a humble pawn and shepherd who can read it. **Sir Aldric**, an old knight and the
 player's mentor, has them named royal scribe. But the Registry was damaged in the fire: its records are
@@ -29,10 +29,10 @@ Portraits come from TS-2 `Human Avatars` unless stated otherwise (see `scripts/b
 |---|---|---|
 | **Pip** (player, `scribe` speaker) | Blue pawn and shepherd who reads the Registry | TS-2 Blue `Pawn` + Pawn portrait |
 | **Sir Aldric** | Old Blue knight, mentor and main narrator | TS-2 Blue `Warrior` + Warrior portrait |
-| **King of the Blue Kingdom** | Receives reports; never shown on screen | — (no king sprite; only mentioned) |
+| **King of the Blue Kingdom** | Receives reports; never shown on screen | None (no king sprite; only mentioned) |
 | **Sir Garrick** | Red Kingdom knight lent to the Blue Kingdom; last guard of Riverwatch | TS-2 Red `Warrior` / `Lancer` + portrait |
 | **Lady Maud** | Blue Kingdom noble, keeper of the royal storehouse; the red herring | TS-2 Purple `Monk` (purple sets her apart from the Blue monks) |
-| **Corvin** | Treasurer of the Red Kingdom — the traitor | TS-2 Red `Monk`-type portrait (no treasurer sprite) |
+| **Corvin** | Treasurer of the Red Kingdom, the traitor | TS-2 Red `Monk`-type portrait (no treasurer sprite) |
 | **Grubnak** | Goblin chief, at Skull Rock | TS-1 Goblin `Torch` sprite; portrait cropped from it |
 | Snik, Kragg, Gorb, Mogg, Zib, Nub, Fizzwick | Goblins | TS-1 Goblins `Torch`, `TNT` (+ `Dynamite`), `Barrel` |
 | Villagers (Hob, Marta, Tam, Wren, Bram…) | Background characters | TS-2 Blue `Pawn`, `Archer`, `Warrior`, `Lancer`, `Monk` |
@@ -50,9 +50,9 @@ Each stage plants clues that pay off in the final level.
 | **Snik** | Medium 4 ("Snik Honestman", fake merchant) | Hard 1 (in the loot list) |
 | **Grubnak** | Hard 1 (loot at Skull Rock) | Hard 3 (one of the bosses), Hard 4 (found at Skull Rock with the ledger), Hard 5 |
 | **Lancelot and Lanolin** | Easy 4 (lost near Riverwatch) | Hard 2 (never recovered), Hard 5 (found in Corvin's garden) |
-| **Lady Maud — red herring** | Medium 2 (keeper of the emptied royal storehouse), Medium 4 (vouched for the three goblin "merchants"), Medium 5 (Garrick's order was signed in her name), Hard 4 (Grubnak: "soft hands, many rings"), Hard 5 (twists her rings; Corvin accuses her) | Hard 5: she paid the most *overall* — ransoms **after** the raid. Forgetting the date filter gives her as the answer, which is exactly Corvin's misdirection. She vouched for the merchants because of their Red Treasury permits, and Corvin forged the order in her name. |
+| **Lady Maud (red herring)** | Medium 2 (keeper of the emptied royal storehouse), Medium 4 (vouched for the three goblin "merchants"), Medium 5 (Garrick's order was signed in her name), Hard 4 (Grubnak: "soft hands, many rings"), Hard 5 (twists her rings; Corvin accuses her) | Hard 5: she paid the most *overall*, in ransoms **after** the raid. Forgetting the date filter gives her as the answer, which is exactly Corvin's misdirection. She vouched for the merchants because of their Red Treasury permits, and Corvin forged the order in her name. |
 
-## Stage 1 — Easy: The Village in Ashes
+## Stage 1 (Easy): The Village in Ashes
 
 Scene: spring meadow (`Tilemap_color1`/`color2`), burnt houses, sheep, villagers.
 
@@ -67,7 +67,7 @@ Scene: spring meadow (`Tilemap_color1`/`color2`), burnt houses, sheep, villagers
 **Stage ending:** only the royal storehouse, hidden behind the mill, was looted. *The goblins knew
 where the gold was.*
 
-## Stage 2 — Medium: The Blue Castle
+## Stage 2 (Medium): The Blue Castle
 
 Scene: autumn fields (`Tilemap_color4`), castle, resources, soldiers.
 
@@ -82,7 +82,7 @@ Scene: autumn fields (`Tilemap_color4`), castle, resources, soldiers.
 **Stage ending:** Garrick was relieved that night by a written order signed in Lady Maud's name.
 Aldric notes that a signature can be forged.
 
-## Stage 3 — Hard: The Goblin Frontier
+## Stage 3 (Hard): The Goblin Frontier
 
 Scene: dusk (`Tilemap_color5`), goblin camps, towers, fire and TNT.
 
@@ -109,6 +109,6 @@ the Red Kingdom, and the Registry is entrusted to Pip. Then the credits.
 | Burnt houses | TS-2 has no burnt buildings | TS-1 `House_Destroyed` rubble + TS-2 `Fire_*` / `Dust_*` on intact TS-2 houses. To be checked visually in Phase 5 (palette rule). |
 | King, treasurer, merchants | No dedicated sprites | King is only mentioned; Corvin uses a Red Monk-type portrait; merchants are pawns carrying gold (`Pawn_Idle Gold`). |
 | Goblin chief | No chief sprite | TS-1 `Torch` goblin; the "chief" status is given by text and the camp, not by a new sprite. |
-| Goblin camps | — | TS-1 `Goblin_House`, `Wood_Tower_*`. |
-| TNT stock | — | TS-1 `TNT` goblin and `Dynamite`. |
+| Goblin camps | None | TS-1 `Goblin_House`, `Wood_Tower_*`. |
+| TNT stock | None | TS-1 `TNT` goblin and `Dynamite`. |
 | Council (final scene) | No council sprite | Row of portraits (Blue, Red, Yellow). |

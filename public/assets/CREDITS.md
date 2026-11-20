@@ -12,27 +12,28 @@ ribbons. The original packs are never modified.
 
 ## Pixel art
 
-### Tiny Swords — Pixel Frog
+### Tiny Swords, by Pixel Frog
 
 - Source: https://pixelfrog-assets.itch.io/tiny-swords
 - Versions used: *Tiny Swords (Free Pack)* (main art) and *Tiny Swords (Update 010)* (goblins,
   destroyed / construction buildings, gold mine, decorations).
-- Terms (confirmed by the project owner; the packs ship without a licence file — summary in
+- Terms (confirmed by the project owner; the packs ship without a licence file; summary in
   [`licenses/TinySwords-terms.md`](licenses/TinySwords-terms.md)):
   - Personal and commercial use allowed.
   - Modification allowed.
-  - Credit optional — given here anyway.
+  - Credit optional (given here anyway).
   - The author confirms older versions of the pack may also be used.
   - Use of the assets to train AI is not allowed.
 
-### Super Pixel Effects Gigapack (Free Version) — Will Tice / unTied Games
+### Super Pixel Effects Gigapack (Free Version), by Will Tice / unTied Games
 
 - Source: https://untiedgames.itch.io/super-pixel-effects-gigapack
-- Licence: http://untiedgames.com/files/license.txt — summary shipped with the pack in
-  [`licenses/SuperPixelEffects-license.txt`](licenses/SuperPixelEffects-license.txt).
+- Licence: http://untiedgames.com/files/license.txt (summary shipped with the pack in
+  [`licenses/SuperPixelEffects-license.txt`](licenses/SuperPixelEffects-license.txt)).
 - Key terms: use in games (commercial or not) allowed; attribution required
-  (**"Super Pixel Effects Gigapack — Will Tice / unTied Games"**); the files must not be redistributed
-  on their own (only bundled with the game); use as AI training material is forbidden.
+  (**"Super Pixel Effects Gigapack - Will Tice / unTied Games"**, in the form the licence gives); the
+  files must not be redistributed on their own (only bundled with the game); use as AI training
+  material is forbidden.
 
 ## Fonts
 
@@ -40,8 +41,8 @@ Both fonts are bundled locally with the game (no CDN), from the `@fontsource` np
 
 | Font | Use | Authors | Licence |
 |---|---|---|---|
-| Jersey 10 | Interface and story text | The Soft Type Project Authors (https://github.com/scfried/soft-type-jersey) | SIL Open Font License 1.1 — [`licenses/Jersey10-OFL.txt`](licenses/Jersey10-OFL.txt) |
-| JetBrains Mono | SQL editor and results | The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono) | SIL Open Font License 1.1 — [`licenses/JetBrainsMono-OFL.txt`](licenses/JetBrainsMono-OFL.txt) |
+| Jersey 10 | Interface and story text | The Soft Type Project Authors (https://github.com/scfried/soft-type-jersey) | SIL Open Font License 1.1: [`licenses/Jersey10-OFL.txt`](licenses/Jersey10-OFL.txt) |
+| JetBrains Mono | SQL editor and results | The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono) | SIL Open Font License 1.1: [`licenses/JetBrainsMono-OFL.txt`](licenses/JetBrainsMono-OFL.txt) |
 
 ## Audio
 
@@ -62,12 +63,12 @@ the same peak (−3 dBFS) and the music to a quiet, even loudness, then exported
 
 ### Sound effects
 
-| File (`.ogg` / `.mp3`) | Used for | Original file | Author — work | Source |
+| File (`.ogg` / `.mp3`) | Used for | Original file | Author: work | Source |
 |---|---|---|---|---|
-| `sounds/click` | Buttons and links | `impactWood_light_002.ogg` | Kenney — Impact Sounds | https://kenney.nl/assets/impact-sounds |
-| `sounds/page` | "Turn the page" (next level) | `book_flip.6.ogg` | StarNinjas — 10 Book Page Flips | https://opengameart.org/content/10-book-page-flips |
-| `sounds/success` | Correct answer | `health_restore.wav` (faded out) | Spring Spring — Magic Words + Healing Sound Effect | https://opengameart.org/content/magic-words-healing-sound-effect |
-| `sounds/error` | Wrong answer or SQL error | `impactSoft_medium_001.ogg` | Kenney — Impact Sounds | https://kenney.nl/assets/impact-sounds |
-| `sounds/hint` | A hint is revealed | `bell_ding3.wav` (faded out) | PWL — Bell dings/chimes | https://opengameart.org/content/bell-dingschimes |
-| `sounds/react` | The diorama reacts | `impactBell_heavy_004.ogg` | Kenney — Impact Sounds | https://kenney.nl/assets/impact-sounds |
-| `sounds/explosion` | TNT explosion (Hard 4) | `explosion.wav` | TinyWorlds — Explosion | https://opengameart.org/content/explosion-0 |
+| `sounds/click` | Buttons and links | `impactWood_light_002.ogg` | Kenney: Impact Sounds | https://kenney.nl/assets/impact-sounds |
+| `sounds/page` | "Turn the page" (next level) | `book_flip.6.ogg` | StarNinjas: 10 Book Page Flips | https://opengameart.org/content/10-book-page-flips |
+| `sounds/success` | Correct answer | `health_restore.wav` (faded out) | Spring Spring: Magic Words + Healing Sound Effect | https://opengameart.org/content/magic-words-healing-sound-effect |
+| `sounds/error` | Wrong answer or SQL error | `impactSoft_medium_001.ogg` | Kenney: Impact Sounds | https://kenney.nl/assets/impact-sounds |
+| `sounds/hint` | A hint is revealed | `bell_ding3.wav` (faded out) | PWL: Bell dings/chimes | https://opengameart.org/content/bell-dingschimes |
+| `sounds/react` | The diorama reacts | `impactBell_heavy_004.ogg` | Kenney: Impact Sounds | https://kenney.nl/assets/impact-sounds |
+| `sounds/explosion` | TNT explosion (Hard 4) | `explosion.wav` | TinyWorlds: Explosion | https://opengameart.org/content/explosion-0 |

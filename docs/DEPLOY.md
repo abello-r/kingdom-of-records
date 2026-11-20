@@ -64,7 +64,7 @@ From then on:
 `netlify.toml` also adds a few safe response headers (`X-Content-Type-Options`, `Referrer-Policy`,
 `X-Frame-Options`).
 
-## Alternative — GitHub Pages
+## Alternative: GitHub Pages
 
 Kept ready in `.github/workflows/deploy-pages.yml`. It has **no automatic trigger**: it runs only
 when someone starts it. Free for public repositories.

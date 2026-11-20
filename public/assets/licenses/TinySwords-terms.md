@@ -1,6 +1,6 @@
-# Tiny Swords — terms of use
+# Tiny Swords: terms of use
 
-**Tiny Swords** by **Pixel Frog** — https://pixelfrog-assets.itch.io/tiny-swords
+**Tiny Swords** by **Pixel Frog**: https://pixelfrog-assets.itch.io/tiny-swords
 
 The pack ships without a licence file. Its terms are published on the itch.io page above; as confirmed
 by the project owner, they are:
