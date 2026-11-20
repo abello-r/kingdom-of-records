@@ -44,7 +44,7 @@ Each stage unlocks when the previous one is finished. The database is rebuilt fr
 time you run a query, so you cannot break anything. Solved levels can be played again from a blank
 page, and the map offers **Start over** to erase all progress.
 
-The language selector (ES · EN · FR) and the sound button are always in the top bar. Progress is saved
+The language selector (ES · EN · FR) and the music and sound buttons are always in the top bar. Progress is saved
 in your browser.
 
 ## Run it locally
@@ -84,19 +84,20 @@ instructions: [`docs/DEPLOY.md`](docs/DEPLOY.md).
 - **Editor**: [CodeMirror 6](https://codemirror.net) with SQLite highlighting and completion of the
   level's tables and columns.
 - **Languages**: `src/i18n/{es,en,fr}.json`; tests check that the three files have the same keys.
-- **Sound**: short effects with the Web Audio API. Nothing plays before the first click or key press,
-  and the sound button mutes everything. Browsers that cannot play Ogg Vorbis (some older Safari
-  versions) run the game without sound.
+- **Sound**: short effects and a quiet looping tune, with the Web Audio API. Nothing plays before the
+  first click or key press (that first click already has its sound). In the top bar, the speaker
+  silences everything and the note turns the music on or off; both choices are remembered. Files are
+  Ogg Vorbis, with MP3 copies for browsers that cannot play Ogg.
 - **Saved data** (`localStorage`): `kor.progress.v1` (completed levels), `kor.settings.v1` (language,
-  sound), `kor.hints.v1` (hints revealed), `kor.drafts.v1` (the SQL being written in each level).
+  sound, music), `kor.hints.v1` (hints revealed), `kor.drafts.v1` (the SQL being written in each level).
 
 ```
 docs/              Story, asset inventory, level format, deployment, design references
-public/assets/     Art, sounds and fonts used by the game + CREDITS.md and licences
+public/assets/     Art, sounds, music and fonts used by the game + CREDITS.md and licences
 scripts/           build_assets.py: copies the art from the original packs
 src/
   app/             App shell and hash router (#/, #/map, #/level/easy-2, #/epilogue)
-  audio/           Sound effects
+  audio/           Sound effects and music
   db/              sql.js loader
   engine/          SQL runner, answer checking, friendly errors, Web Worker client
   levels/          One JSON file per level
@@ -122,7 +123,8 @@ when the list of images changes.
 | Game design, story and development | Alexander Bello | All rights reserved |
 | Pixel art — *Tiny Swords* | Pixel Frog | Free for personal and commercial use, modification allowed; not to be used to train AI |
 | Visual effects — *Super Pixel Effects Gigapack* | Will Tice / unTied Games | Free for use in games with credit; files not to be redistributed on their own; not to be used to train AI |
-| Sound effects | Kenney ([kenney.nl](https://kenney.nl)) | CC0 1.0 (public domain) |
+| Music — *Medieval: The Old Tower Inn* | RandomMind | CC0 1.0 (public domain) |
+| Sound effects | Kenney ([kenney.nl](https://kenney.nl)), Spring Spring, StarNinjas, PWL, TinyWorlds | CC0 1.0 (public domain) |
 | Fonts — Jersey 10, JetBrains Mono | The Soft Type Project Authors; The JetBrains Mono Project Authors | SIL Open Font License 1.1 |
 | SQL engine — SQLite, sql.js | SQLite authors; sql.js contributors | Public domain; MIT |
 | Editor — CodeMirror | Marijn Haverbeke and contributors | MIT |

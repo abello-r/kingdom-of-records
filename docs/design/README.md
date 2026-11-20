@@ -138,3 +138,13 @@ animation. On phones, scenes skip items marked `wide` and the edge trees, and th
 The **epilogue** (`#/epilogue`, after the last level) shows the castle court and closes the story:
 the gold in Corvin's coffers, the sheep in his garden, Lady Maud cleared, the Registry restored; then
 the credits. Screens: `screens/epilogue-*.png`, `screens/reset-dialog-desktop.png`.
+
+## Phase 6 — controls bar and sound
+
+- **Controls bar:** back, music and sound use the square Tiny Swords button (`TinySquareBlueButton`),
+  shown at its native size (64 px; 52 px on phones). Icons: the kit's orange arrow and music note, and
+  the TS-1 speaker recoloured with the note's cream (the TS-2 kit has no speaker). A red X marks what is
+  switched off. Option B of the three proposals in `proposals/buttons-*.png`.
+- **Sound:** the speaker silences everything; the note turns the music off or on (it is dimmed while
+  everything is silenced). Sources and how the files were made: `public/assets/CREDITS.md`.
+- **Hints:** whole queries are shown one clause per line (see `src/ui/sql-layout.ts`).
