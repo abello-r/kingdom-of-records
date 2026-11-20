@@ -6,7 +6,7 @@ import { feedbackMessages, type Message } from '../../engine/messages';
 import type { SchemaTable } from '../../engine/runner';
 import type { DialogueLine, Level, ResultSet, TableSnapshot } from '../../engine/types';
 import { ALL_LEVELS } from '../../state/levels';
-import { externalLink, fill, h, icon, ICONS, img, prefersReducedMotion } from '../dom';
+import { externalLink, fill, h, icon, ICONS, img, isTouchFirst, prefersReducedMotion } from '../dom';
 import { createSqlEditor, type SqlEditor } from '../editor';
 import { rich } from '../rich';
 import { levelStrip } from '../scenes';
@@ -99,7 +99,7 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
       renderHints();
       renderAnswer();
       note.remove();
-      editor.focus();
+      focusEditor();
     });
     return note;
   }
@@ -263,6 +263,11 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     }
   }
 
+  /** Puts the cursor in the editor, except on touch devices, where it would open the keyboard. */
+  function focusEditor(): void {
+    if (!isTouchFirst()) editor.focus();
+  }
+
   function showStarNudge(animate: boolean): void {
     const nudge = spellPage.querySelector<HTMLElement>('.star-nudge');
     if (!nudge) return;
@@ -283,7 +288,7 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
   );
   clearBtn.addEventListener('click', () => {
     editor.setValue('');
-    editor.focus();
+    focusEditor();
   });
 
   // Restore what this page showed before (e.g. after switching language).
@@ -302,7 +307,8 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
 
   return {
     element,
-    focus: editor.view.contentDOM,
+    // On touch devices the page opens on the story (the main landmark gets the focus, no keyboard).
+    focus: isTouchFirst() ? undefined : editor.view.contentDOM,
     destroy: () => {
       window.clearTimeout(starTimer);
       editor.destroy();

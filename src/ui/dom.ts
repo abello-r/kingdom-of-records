@@ -78,6 +78,14 @@ export function fill(el: Element, ...children: Child[]): void {
 }
 
 /** True when the user asked the system to reduce motion. */
+/**
+ * Touch-first device (phone, tablet without mouse): focusing a text field there opens the on-screen
+ * keyboard, so the editor only takes the focus when the player taps it.
+ */
+export function isTouchFirst(): boolean {
+  return typeof matchMedia === 'function' && (matchMedia('(pointer: coarse)').matches || matchMedia('(hover: none)').matches);
+}
+
 export function prefersReducedMotion(): boolean {
   return typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 }

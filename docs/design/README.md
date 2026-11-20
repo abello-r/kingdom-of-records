@@ -87,6 +87,9 @@ list (CodeMirror's default marked `role` as a keyword).
 
 Desktop: two pages side by side. Phone (≤ 760 px): one column, no wood frame, level title at the bottom
 of the diorama, and a sticky bar with the primary action and the hint button.
+On touch devices (`pointer: coarse` or no hover) the editor never takes the focus by itself, so the
+on-screen keyboard only opens when the player taps it: a level opens on the story, and "Turn the
+page", "Clear" and replaying a level leave the keyboard closed. On desktop the editor is focused.
 
 ## Screenshots
 
