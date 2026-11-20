@@ -8,15 +8,12 @@ SQLite WebAssembly file, art, sounds and fonts). There is no server code and no 
 - Routes use the URL hash (`#/map`, `#/level/easy-2`), so no rewrite or redirect rules are needed.
 - Player progress is kept in each player's browser (`localStorage`); nothing is sent anywhere.
 
-**Chosen setup:** a private GitHub repository connected to **Netlify**. Every push to `main` is
+**Chosen setup:** a public GitHub repository connected to **Netlify**. Every push to `main` is
 tested, built and published automatically. GitHub Pages is documented below as an alternative.
-
-The published site is **public**: anyone with the address can play it and download its files, even
-though the repository is private.
 
 ## 1. Put the repository on GitHub
 
-1. On GitHub: **New repository** → name it → **Private** → do **not** add a README, licence or
+1. On GitHub: **New repository** → name it → **Public** → do **not** add a README, licence or
    `.gitignore` (the project has them) → **Create repository**.
 2. In the project folder:
 
@@ -26,6 +23,8 @@ though the repository is private.
    ```
 
 3. Open the **Actions** tab and check that **CI** passes.
+4. Put the repository address in `REPO_URL` (`src/app/site.ts`): the epilogue credits then show a
+   small "star it on GitHub" link.
 
 The original asset packs at the repository root are excluded by `.gitignore` and are not pushed; the
 game only needs the copies in `public/assets/`.
@@ -37,8 +36,6 @@ production build. It never publishes anything. The Node.js version for CI and Ne
 `.nvmrc`.
 
 ## 2. Connect Netlify (automatic deploys)
-
-Netlify's free plan can build from private repositories.
 
 1. Sign in at <https://app.netlify.com>.
 2. **Add new site** (or **Add new project**) → **Import an existing project** → **GitHub**.
@@ -70,8 +67,7 @@ From then on:
 ## Alternative — GitHub Pages
 
 Kept ready in `.github/workflows/deploy-pages.yml`. It has **no automatic trigger**: it runs only
-when someone starts it. GitHub Pages with a private repository needs a paid GitHub plan (Pro, Team
-or Enterprise).
+when someone starts it. Free for public repositories.
 
 1. On GitHub: **Settings** → **Pages** → **Build and deployment** → **Source**: **GitHub Actions**.
 2. **Actions** tab → **Deploy to GitHub Pages** → **Run workflow** → branch `main` → **Run workflow**.
@@ -83,7 +79,7 @@ To take it down: **Settings** → **Pages** → **Unpublish site**.
 ## Before publishing
 
 - Licences: the art, effects, sounds and fonts used allow use in a published game (see
-  [`public/assets/CREDITS.md`](../public/assets/CREDITS.md)). The *Super Pixel Effects Gigapack* licence
-  asks that its files are not redistributed on their own; on a website they are served as part of the
-  game, like in any web game.
-- The game's own code, story and texts: all rights reserved (see the README).
+  [`public/assets/CREDITS.md`](../public/assets/CREDITS.md)). The repository only contains the files the
+  game uses, inside the game's source; the original packs are not pushed. The *Super Pixel Effects
+  Gigapack* licence does not allow publishing its files apart from a game.
+- The game's own code, story and texts: all rights reserved (see `LICENSE`).

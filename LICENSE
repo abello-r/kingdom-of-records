@@ -1,0 +1,7 @@
+Copyright (c) 2026 Alexander Bello. All rights reserved.
+
+This applies to the game's own source code, story and texts.
+
+Third-party material keeps its own licence: the art, effects, sounds, music and fonts in
+public/assets/ (see public/assets/CREDITS.md and public/assets/licenses/), and the npm packages
+listed in package.json.

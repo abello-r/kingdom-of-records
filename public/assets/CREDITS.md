@@ -17,7 +17,8 @@ ribbons. The original packs are never modified.
 - Source: https://pixelfrog-assets.itch.io/tiny-swords
 - Versions used: *Tiny Swords (Free Pack)* (main art) and *Tiny Swords (Update 010)* (goblins,
   destroyed / construction buildings, gold mine, decorations).
-- Terms (confirmed by the project owner; the packs ship without a licence file):
+- Terms (confirmed by the project owner; the packs ship without a licence file — summary in
+  [`licenses/TinySwords-terms.md`](licenses/TinySwords-terms.md)):
   - Personal and commercial use allowed.
   - Modification allowed.
   - Credit optional — given here anyway.
@@ -45,9 +46,9 @@ Both fonts are bundled locally with the game (no CDN), from the `@fontsource` np
 ## Audio
 
 Every sound and the music are **CC0 1.0 (public domain)**: credit is not required, but it is given here
-and in the game's credits. Kenney's licence file:
-[`licenses/Kenney-CC0-license.txt`](licenses/Kenney-CC0-license.txt); for the OpenGameArt works the licence
-is stated on each page linked below (checked on 2026-11-20).
+and in the game's credits. Licence text: [`licenses/CC0-1.0.txt`](licenses/CC0-1.0.txt). Kenney's own
+licence file: [`licenses/Kenney-CC0-license.txt`](licenses/Kenney-CC0-license.txt); for the OpenGameArt
+works the licence is stated on each page linked below (checked on 2026-11-20).
 
 How the files were made from the originals: silence at the start and end trimmed, effects levelled to
 the same peak (−3 dBFS) and the music to a quiet, even loudness, then exported as Ogg Vorbis and as MP3

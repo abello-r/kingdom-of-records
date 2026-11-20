@@ -118,19 +118,22 @@ when the list of images changes.
 
 ## Credits and licences
 
-| What | Author | Licence |
-|---|---|---|
-| Game design, story and development | Alexander Bello | All rights reserved |
-| Pixel art — *Tiny Swords* | Pixel Frog | Free for personal and commercial use, modification allowed; not to be used to train AI |
-| Visual effects — *Super Pixel Effects Gigapack* | Will Tice / unTied Games | Free for use in games with credit; files not to be redistributed on their own; not to be used to train AI |
-| Music — *Medieval: The Old Tower Inn* | RandomMind | CC0 1.0 (public domain) |
-| Sound effects | Kenney ([kenney.nl](https://kenney.nl)), Spring Spring, StarNinjas, PWL, TinyWorlds | CC0 1.0 (public domain) |
-| Fonts — Jersey 10, JetBrains Mono | The Soft Type Project Authors; The JetBrains Mono Project Authors | SIL Open Font License 1.1 |
-| SQL engine — SQLite, sql.js | SQLite authors; sql.js contributors | Public domain; MIT |
-| Editor — CodeMirror | Marijn Haverbeke and contributors | MIT |
+**Game code, story and texts:** © Alexander Bello. All rights reserved (see [`LICENSE`](LICENSE)).
+Developed by [Alexander Bello](https://www.linkedin.com/in/alexanderbello-dev/).
 
-Sources, exact terms, licence files and the list of files used from each pack:
+Third-party material keeps its own licence:
+
+| What | Author | Licence | Licence text |
+|---|---|---|---|
+| Pixel art — *Tiny Swords* | Pixel Frog | Free for personal and commercial use, modification allowed; not to be used to train AI | [Terms](public/assets/licenses/TinySwords-terms.md) (the pack ships without a licence file) |
+| Visual effects — *Super Pixel Effects Gigapack* | Will Tice / unTied Games | Use in games with credit; not to be redistributed apart from a game; not to be used to train AI | [License](public/assets/licenses/SuperPixelEffects-license.txt) |
+| Music — *Medieval: The Old Tower Inn* | RandomMind | CC0 1.0 (public domain) | [CC0 1.0](public/assets/licenses/CC0-1.0.txt) |
+| Sound effects | Kenney ([kenney.nl](https://kenney.nl)), Spring Spring, StarNinjas, PWL, TinyWorlds | CC0 1.0 (public domain) | [CC0 1.0](public/assets/licenses/CC0-1.0.txt), [Kenney](public/assets/licenses/Kenney-CC0-license.txt) |
+| Fonts — Jersey 10 | The Soft Type Project Authors | SIL Open Font License 1.1 | [OFL](public/assets/licenses/Jersey10-OFL.txt) |
+| Fonts — JetBrains Mono | The JetBrains Mono Project Authors | SIL Open Font License 1.1 | [OFL](public/assets/licenses/JetBrainsMono-OFL.txt) |
+| SQL engine — SQLite, sql.js | SQLite authors; sql.js contributors | Public domain; MIT | npm package |
+| Editor — CodeMirror | Marijn Haverbeke and contributors | MIT | npm package |
+
+Sources, exact terms and the list of files used from each pack:
 [`public/assets/CREDITS.md`](public/assets/CREDITS.md). The game also shows the credits after the
 epilogue.
-
-**Game code, story and texts:** © Alexander Bello. All rights reserved.
