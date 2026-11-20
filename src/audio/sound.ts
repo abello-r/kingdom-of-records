@@ -57,6 +57,11 @@ export interface SoundBoardOptions {
   createContext?: () => PlaybackContext;
   /** Decodes before any gesture without playing anything; undefined when unavailable. */
   createDecoder?: () => Decoder | undefined;
+  /**
+   * Downloads start only once this settles (resolved or not): on a slow connection the SQL engine,
+   * which the game needs, must not share the bandwidth with sound, which is optional.
+   */
+  waitFor?: Promise<unknown>;
 }
 
 const defaultFetch = (url: string) => fetch(url).then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(`${r.status} ${url}`))));
@@ -80,10 +85,10 @@ export class SoundBoard {
     this.formats = (options.canPlayOgg ?? defaultCanPlayOgg)() ? ['ogg', 'mp3'] : ['mp3', 'ogg'];
   }
 
-  /** Downloads and decodes the effects, then the music, without playing anything. */
+  /** Downloads and decodes the effects, then the (larger) music, without playing anything. */
   preload(): void {
-    for (const name of SOUNDS) void this.load(name);
-    if (this.options.isMusicOn()) void this.load('music');
+    const effects = Promise.all(SOUNDS.map((name) => this.load(name)));
+    if (this.options.isMusicOn()) void effects.then(() => this.load('music'));
   }
 
   /** Waits for the first user gesture before turning audio on. */
@@ -199,6 +204,7 @@ export class SoundBoard {
     let buffer = this.buffers.get(track);
     if (!buffer) {
       buffer = (async () => {
+        await this.options.waitFor?.catch(() => undefined);
         for (const format of this.formats) {
           try {
             const data = await (this.options.fetchFile ?? defaultFetch)(this.options.url(track, format));

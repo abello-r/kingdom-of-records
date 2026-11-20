@@ -28,8 +28,8 @@ const settings = loadSettings(store, navigator.languages ?? [navigator.language]
 const sql = new SqlClient(new URL(sqlWasmUrl, document.baseURI).href);
 const html = document.documentElement;
 html.dataset.sqlEngine = 'loading';
-sql
-  .warmup()
+const engineReady = sql.warmup();
+engineReady
   .then(() => (html.dataset.sqlEngine = 'ready'))
   .catch((error: unknown) => {
     html.dataset.sqlEngine = 'error';
@@ -41,6 +41,7 @@ const sound = new SoundBoard({
   url: (name, format) => asset(name === 'music' ? `music/old-tower-inn.${format}` : `sounds/${name}.${format}`),
   isMuted: () => settings.muted,
   isMusicOn: () => settings.music,
+  waitFor: engineReady,
 });
 sound.listen(window);
 installSound(sound);

@@ -156,6 +156,30 @@ describe('SoundBoard', () => {
     expect(started).toHaveLength(0);
   });
 
+  it('downloads nothing until the SQL engine is ready, then the effects before the music', async () => {
+    let engineReady!: () => void;
+    const waitFor = new Promise<void>((resolve) => (engineReady = resolve));
+    const fetchFile = vi.fn(async (_url: string) => new ArrayBuffer(8));
+    const board = new SoundBoard({
+      url: (name, format) => `${name}.${format}`,
+      isMuted: () => false,
+      isMusicOn: () => true,
+      canPlayOgg: () => true,
+      fetchFile,
+      createDecoder: () => ({ decodeAudioData: async () => ({}) as AudioBuffer }),
+      waitFor,
+    });
+    board.preload();
+    await settle();
+    expect(fetchFile).not.toHaveBeenCalled();
+    engineReady();
+    await settle();
+    await settle();
+    const urls = fetchFile.mock.calls.map(([url]) => url);
+    expect(urls.slice(0, SOUNDS.length)).toEqual(SOUNDS.map((n) => `${n}.ogg`));
+    expect(urls.at(-1)).toBe('music.ogg');
+  });
+
   it('pauses while the page is hidden', async () => {
     const { board, context } = setup();
     board.setHidden(true); // before the gesture: nothing to pause
