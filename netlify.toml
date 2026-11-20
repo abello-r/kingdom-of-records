@@ -1,7 +1,8 @@
 # Netlify: static build of the game. Node version comes from .nvmrc.
+# Tests run first, so a failing test stops the deploy and the live site stays as it was.
 # The game uses hash routes (#/map, #/level/...), so no redirect rules are needed.
 [build]
-  command = "npm run build"
+  command = "npm test && npm run build"
   publish = "dist"
 
 [[headers]]

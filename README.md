@@ -68,7 +68,8 @@ npm run dev        # then open http://localhost:5173
 ## Publish it
 
 `dist/` is a static site that can be hosted anywhere, at the root of a domain or in a sub-folder.
-Ready-made setups for **GitHub Pages** (manual workflow) and **Netlify**, with step-by-step
+Chosen host: **Netlify**, connected to the GitHub repository, so every push to `main` is tested,
+built and deployed. **GitHub Pages** is set up as an alternative (manual workflow). Step-by-step
 instructions: [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## How it is built
@@ -118,6 +119,7 @@ when the list of images changes.
 
 | What | Author | Licence |
 |---|---|---|
+| Game design, story and development | Alexander Bello | All rights reserved |
 | Pixel art — *Tiny Swords* | Pixel Frog | Free for personal and commercial use, modification allowed; not to be used to train AI |
 | Visual effects — *Super Pixel Effects Gigapack* | Will Tice / unTied Games | Free for use in games with credit; files not to be redistributed on their own; not to be used to train AI |
 | Sound effects | Kenney ([kenney.nl](https://kenney.nl)) | CC0 1.0 (public domain) |
@@ -129,5 +131,4 @@ Sources, exact terms, licence files and the list of files used from each pack:
 [`public/assets/CREDITS.md`](public/assets/CREDITS.md). The game also shows the credits after the
 epilogue.
 
-**Game code and texts:** *[TO BE COMPLETED BY THE OWNER — licence not chosen yet; there is no
-`LICENSE` file. Until one is added, all rights are reserved by the author.]*
+**Game code, story and texts:** © Alexander Bello. All rights reserved.
