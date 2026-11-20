@@ -83,3 +83,14 @@ To take it down: **Settings** → **Pages** → **Unpublish site**.
   game uses, inside the game's source; the original packs are not pushed. The *Super Pixel Effects
   Gigapack* licence does not allow publishing its files apart from a game.
 - The game's own code, story and texts: all rights reserved (see `LICENSE`).
+
+## Sharing the link
+
+`index.html` holds the link-preview metadata (Open Graph and Twitter Card): title, description and the
+1200x630 image `public/og-image.png` (a capture of the title screen). Social sites need absolute URLs,
+so the address `https://kingdom-of-records.netlify.app/` is written there; update it if the site moves.
+
+- LinkedIn keeps its own copy of a preview. After changing the image or texts, paste the address into
+  https://www.linkedin.com/post-inspector/ to refresh it.
+- The favicons (`public/assets/icons/`) are made by `scripts/build_assets.py` from the Tiny Swords
+  shield icon.

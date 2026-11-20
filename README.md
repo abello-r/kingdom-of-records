@@ -1,6 +1,9 @@
 # The Kingdom of Records
 
-*The Chronicles of the Registry*: a pixel-art web game to learn SQL.
+### ▶ [Play it now: kingdom-of-records.netlify.app](https://kingdom-of-records.netlify.app/)
+
+*The Chronicles of the Registry*: a pixel-art web game to learn SQL. Free, in your browser, nothing
+to install.
 
 Goblins have burned the royal archive of the Blue Kingdom. Only the **Great Registry** survived: a
 magic book that answers questions asked in an ancient tongue, SQL. You play Pip, a young shepherd and
@@ -12,7 +15,7 @@ behind the raid is found.
 - Spanish, English and French.
 - Works on desktop and phone, with keyboard support.
 
-![The title screen](docs/design/screens/home-desktop.png)
+[![The title screen (click to play)](docs/design/screens/home-desktop.png)](https://kingdom-of-records.netlify.app/)
 
 | A level, solved | The kingdom map |
 |---|---|
@@ -68,8 +71,8 @@ npm run dev        # then open http://localhost:5173
 ## Publish it
 
 `dist/` is a static site that can be hosted anywhere, at the root of a domain or in a sub-folder.
-Chosen host: **Netlify**, connected to the GitHub repository, so every push to `main` is tested,
-built and deployed. **GitHub Pages** is set up as an alternative (manual workflow). Step-by-step
+It is published on **Netlify** at https://kingdom-of-records.netlify.app/, connected to the GitHub
+repository, so every push to `main` is tested, built and deployed. **GitHub Pages** is set up as an alternative (manual workflow). Step-by-step
 instructions: [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## How it is built
