@@ -24,6 +24,15 @@ export function asset(path: string): string {
   return `${import.meta.env.BASE_URL}assets/${path}`;
 }
 
+/**
+ * CSS url() for an image in public/assets, for custom properties. Absolute: a relative url() inside a
+ * custom property resolves against the stylesheet that uses it (dist/assets/…), not the page, which
+ * breaks with Vite's relative base in production.
+ */
+export function cssUrl(path: string): string {
+  return `url("${new URL(asset(path), document.baseURI).href}")`;
+}
+
 /** Decorative image (empty alt) from public/assets. */
 export function img(path: string, cls = ''): HTMLImageElement {
   const el = h('img', { src: asset(path), alt: '', class: cls || undefined, draggable: 'false' });
@@ -50,11 +59,6 @@ export function icon(paths: string[], viewBox = '0 0 16 16'): SVGSVGElement {
 
 /** Pixel-style icons drawn on a 16x16 grid with square shapes only. */
 export const ICONS = {
-  speaker: 'M2 6h3l4-3v10l-4-3H2z',
-  waves: 'M11 6h1v4h-1zM13 4h1v8h-1z',
-  cross:
-    'M10 6h1v1h-1zM11 7h1v1h-1zM12 8h1v1h-1zM13 9h1v1h-1zM14 10h1v1h-1z' +
-    'M14 6h1v1h-1zM13 7h1v1h-1zM11 9h1v1h-1zM10 10h1v1h-1z',
   lock: 'M5 7V5h1V4h4v1h1v2h1v7H4V7zm2 0h2V5H7z',
 };
 

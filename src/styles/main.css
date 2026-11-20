@@ -120,19 +120,20 @@ a { color: inherit; }
 .btn img { width: 28px; height: 28px; }
 .btn[hidden] { display: none; }
 
-.round {
-  display: grid; place-items: center; width: 56px; height: 56px; padding: 0 0 6px; border: 0;
-  background: var(--img-button-round) center / 56px 56px no-repeat; cursor: pointer;
+/* Square kit buttons of the controls bar (back, music, sound). Each image is the 64 px kit button
+   drawn on a 128 px canvas, so it is shown at exactly half size; the pressed image sinks the icon. */
+.square {
+  display: block; flex: none; width: 64px; height: 64px; padding: 0; border: 0; border-radius: 8px;
+  background: var(--btn) center / 100% 100% no-repeat; image-rendering: pixelated; cursor: pointer;
 }
-.round:active { background-image: var(--img-button-round-pressed); }
-.round img { width: 30px; height: 30px; }
-/* Sound icon: parchment with an ink outline so it reads on the kit blue (non-text contrast ≥ 3:1). */
-.round .icon { width: 28px; height: 28px; shape-rendering: crispEdges; overflow: visible; }
-.round .icon path { fill: var(--parchment); stroke: var(--ink); stroke-width: .9px; paint-order: stroke; }
+.square:hover { filter: brightness(1.08); }
+.square:active { background-image: var(--btn-pressed); }
+/* The music setting does nothing while everything is muted. */
+.square.is-idle { opacity: .55; }
 
 /* ---------- controls bar (every screen) ---------- */
 .chrome { position: absolute; top: 14px; left: 18px; right: 18px; z-index: 7000; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
-.chrome__side { display: flex; gap: 10px; align-items: center; pointer-events: auto; }
+.chrome__side { display: flex; gap: 8px; align-items: center; pointer-events: auto; }
 .lang {
   display: flex; align-items: center; gap: 2px; padding: 4px 6px; border-radius: 6px;
   background: var(--wood-dark); color: var(--parchment);
@@ -309,8 +310,8 @@ a { color: inherit; }
   body { font-size: 1.375rem; }
   /* Controls become a compact solid bar above the scene, so they never cover sprites. */
   .chrome { position: static; padding: 6px 10px; background: var(--wood-dark); border-bottom: 3px solid var(--ink); }
-  .round { width: 44px; height: 44px; background-size: 44px; padding-bottom: 5px; }
-  .round img, .round .icon { width: 22px; height: 22px; }
+  .square { width: 52px; height: 52px; image-rendering: auto; }
+  .chrome__side { gap: 6px; }
   .lang { box-shadow: 0 0 0 2px var(--ink); padding: 2px 4px; }
   .lang button { min-width: 36px; min-height: 36px; font-size: 1.35rem; padding: 0 4px; }
   .btn--big { font-size: 2rem; padding: 10px 28px 14px; }

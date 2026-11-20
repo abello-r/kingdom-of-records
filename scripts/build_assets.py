@@ -74,6 +74,61 @@ def spe(category, name, idx):
     return sheet.crop((x, y, x + w, y + h))
 
 
+
+# Controls bar (back, music, sound): the TS-2 tiny square button with TS-2 icons. The kit has no speaker
+# in the TS-2 style, so the TS-1 carved speaker is recoloured with the cream of the TS-2 music note.
+INK = (22, 28, 46, 255)
+CREAM, CREAM_SHADE = (239, 225, 171, 255), (200, 168, 118, 255)
+
+
+def carved_to_cream(img):
+    """TS-1 carved icon (ink outline + two translucent greys) -> opaque ink + two creams."""
+    out = Image.new('RGBA', img.size, (0, 0, 0, 0))
+    src, dst = img.load(), out.load()
+    for y in range(img.height):
+        for x in range(img.width):
+            r, g, b, a = src[x, y]
+            if a == 0:
+                continue
+            dst[x, y] = INK if a == 255 else CREAM if (r, g, b) == (0x76, 0x7a, 0x85) else CREAM_SHADE
+    return out
+
+
+def scaled(img, k, smooth=False):
+    return img.resize((round(img.width * k), round(img.height * k)), Image.LANCZOS if smooth else Image.NEAREST)
+
+
+def with_badge(icon, badge):
+    """Icon with a red X on its lower right (switched off)."""
+    out = Image.new('RGBA', (icon.width + badge.width // 3, icon.height + badge.height // 3))
+    out.alpha_composite(icon, (0, 0))
+    out.alpha_composite(badge, (out.width - badge.width, out.height - badge.height))
+    return out
+
+
+def control_buttons():
+    """128x128 images shown at 64 px (the button itself at its native size), regular and pressed."""
+    button = scaled(load(UI, 'Buttons', 'TinySquareBlueButton.png'), 2)
+    # The tiny button has no pressed image in the kit: a slightly darker copy stands in.
+    pressed = Image.eval(button.convert('RGB'), lambda v: int(v * .85)).convert('RGBA')
+    pressed.putalpha(button.getchannel('A'))
+    speaker = carved_to_cream(load(TS1, 'UI', 'Icons', 'Regular_03.png').crop((14, 8, 50, 42)))
+    badge = scaled(load(UI, 'Icons', 'Icon_09.png'), 0.5, smooth=True)
+    note = load(UI, 'Icons', 'Icon_12.png')
+    icons = {
+        'back': scaled(load(UI, 'Icons', 'Icon_08.png'), 0.95),
+        'music': scaled(note, 0.9),
+        'music-off': with_badge(scaled(note, 0.8), badge),
+        'sound': scaled(speaker, 2),
+        'sound-off': with_badge(scaled(speaker.crop((0, 0, 24, speaker.height)), 2), badge),
+    }
+    for name, icon in icons.items():
+        for state, base, dy in (('', button, 0), ('-pressed', pressed, 4)):
+            img = base.copy()
+            img.alpha_composite(icon, (round(64 - icon.width / 2), round(62 + dy - icon.height / 2)))
+            save(img, f'ui/btn-{name}{state}.png')
+
+
 def main():
     for d in GENERATED_DIRS:
         shutil.rmtree(os.path.join(OUT, d), ignore_errors=True)
@@ -96,9 +151,8 @@ def main():
             flag.paste(body, (0, 0))
             flag.paste(tail, (0, 64), tail)
             save(cropped(flag), f'ui/standard-{colour}.png')
-    save(load(UI, 'Buttons', 'SmallBlueRoundButton_Regular.png'), 'ui/button-round.png')
-    save(load(UI, 'Buttons', 'SmallBlueRoundButton_Pressed.png'), 'ui/button-round-pressed.png')
-    for n, name in [(5, 'task'), (8, 'back'), (9, 'error')]:
+    control_buttons()
+    for n, name in [(5, 'task'), (9, 'error')]:
         save(load(UI, 'Icons', f'Icon_{n:02d}.png'), f'ui/icon-{name}.png')
 
     # --- Portraits (TS-2 avatars; the goblin chief is cropped from the TS-1 torch goblin) ---

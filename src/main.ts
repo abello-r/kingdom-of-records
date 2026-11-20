@@ -36,14 +36,19 @@ sql
     console.error('SQL engine failed to load', error);
   });
 
-// Sound effects: files are fetched in the background, but audio only starts after the first gesture.
-const sound = new SoundBoard({ url: (name) => asset(`sounds/${name}.ogg`), isMuted: () => settings.muted });
+// Sound: files are downloaded and decoded in the background, but nothing plays before the first gesture.
+const sound = new SoundBoard({
+  url: (name, format) => asset(name === 'music' ? `music/old-tower-inn.${format}` : `sounds/${name}.${format}`),
+  isMuted: () => settings.muted,
+  isMusicOn: () => settings.music,
+});
 sound.listen(window);
 installSound(sound);
 clickSounds(document);
+document.addEventListener('visibilitychange', () => sound.setHidden(document.hidden));
 const preload = () => sound.preload();
-if ('requestIdleCallback' in window) requestIdleCallback(preload);
-else setTimeout(preload, 1500);
+if ('requestIdleCallback' in window) requestIdleCallback(preload, { timeout: 2000 });
+else setTimeout(preload, 1000);
 
 new App({
   root,
@@ -54,4 +59,5 @@ new App({
   memory: new LevelMemory(store),
   levels: loadLevels(),
   sql,
+  onSoundSettings: () => sound.refresh(),
 }).start();

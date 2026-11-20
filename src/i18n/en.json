@@ -13,8 +13,10 @@
     "scene": "Scene"
   },
   "sound": {
-    "mute": "Mute sound",
-    "unmute": "Unmute sound"
+    "muteAll": "Mute all sound",
+    "mutedAll": "Sound muted",
+    "muteMusic": "Mute music",
+    "mutedMusic": "Music muted"
   },
   "home": {
     "start": "Open the Registry",
@@ -172,6 +174,7 @@
     "developedBy": "Developed by",
     "art": "Pixel art",
     "effects": "Visual effects",
+    "music": "Music",
     "sound": "Sound",
     "fonts": "Fonts",
     "tech": "Inside the Registry",

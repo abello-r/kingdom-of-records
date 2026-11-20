@@ -13,8 +13,10 @@
     "scene": "Scène"
   },
   "sound": {
-    "mute": "Couper le son",
-    "unmute": "Activer le son"
+    "muteAll": "Couper tout le son",
+    "mutedAll": "Son coupé",
+    "muteMusic": "Couper la musique",
+    "mutedMusic": "Musique coupée"
   },
   "home": {
     "start": "Ouvrir le Registre",
@@ -172,6 +174,7 @@
     "developedBy": "Développé par",
     "art": "Pixel art",
     "effects": "Effets visuels",
+    "music": "Musique",
     "sound": "Son",
     "fonts": "Polices",
     "tech": "Dans le Registre",

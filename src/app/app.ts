@@ -21,6 +21,8 @@ export interface AppDeps {
   memory: LevelMemory;
   levels: Map<LevelId, Level>;
   sql: SqlClient;
+  /** Called after the sound or music setting changes, so the audio follows at once. */
+  onSoundSettings?: () => void;
 }
 
 /** Owns the current screen and re-renders it on navigation, language change or width change. */
@@ -80,20 +82,25 @@ export class App {
   }
 
   private chrome(back?: { href: string; labelKey: string }): HTMLElement {
-    const { i18n, settings, store } = this.deps;
+    const { i18n, settings } = this.deps;
     const bar = createChrome({
       i18n,
       back,
       isMuted: () => settings.muted,
+      isMusicOn: () => settings.music,
       onLanguage: (lang) => i18n.setLanguage(lang),
-      onToggleMute: () => {
-        settings.muted = !settings.muted;
-        saveSettings(store, settings);
-        this.chromeUpdaters.forEach((fn) => fn());
-      },
+      onToggleMute: () => this.changeSound(() => (settings.muted = !settings.muted)),
+      onToggleMusic: () => this.changeSound(() => (settings.music = !settings.music)),
     });
     this.chromeUpdaters.push(bar.update);
     return bar.element;
+  }
+
+  private changeSound(change: () => void): void {
+    change();
+    saveSettings(this.deps.store, this.deps.settings);
+    this.chromeUpdaters.forEach((fn) => fn());
+    this.deps.onSoundSettings?.();
   }
 
   private async build(route: Route): Promise<Screen> {

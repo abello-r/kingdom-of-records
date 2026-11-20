@@ -13,8 +13,10 @@
     "scene": "Escena"
   },
   "sound": {
-    "mute": "Silenciar sonido",
-    "unmute": "Activar sonido"
+    "muteAll": "Silenciar todo",
+    "mutedAll": "Sonido silenciado",
+    "muteMusic": "Silenciar música",
+    "mutedMusic": "Música silenciada"
   },
   "home": {
     "start": "Abrir el Registro",
@@ -172,6 +174,7 @@
     "developedBy": "Desarrollado por",
     "art": "Pixel art",
     "effects": "Efectos visuales",
+    "music": "Música",
     "sound": "Sonido",
     "fonts": "Fuentes",
     "tech": "Dentro del Registro",

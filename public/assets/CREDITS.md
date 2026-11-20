@@ -44,22 +44,29 @@ Both fonts are bundled locally with the game (no CDN), from the `@fontsource` np
 
 ## Audio
 
-### Kenney — sound effects
+Every sound and the music are **CC0 1.0 (public domain)**: credit is not required, but it is given here
+and in the game's credits. Kenney's licence file:
+[`licenses/Kenney-CC0-license.txt`](licenses/Kenney-CC0-license.txt); for the OpenGameArt works the licence
+is stated on each page linked below (checked on 2026-11-20).
 
-- Source: https://kenney.nl (packs *Interface Sounds*, *RPG Audio*, *Music Jingles*, *Sci-fi Sounds*).
-- Licence: Creative Commons Zero (CC0 1.0, public domain) —
-  [`licenses/Kenney-CC0-license.txt`](licenses/Kenney-CC0-license.txt). Credit is not required; it is
-  given here and in the game's credits anyway.
-- Files are copied unchanged (Ogg Vorbis) with clean names:
+How the files were made from the originals: silence at the start and end trimmed, effects levelled to
+the same peak (−3 dBFS) and the music to a quiet, even loudness, then exported as Ogg Vorbis and as MP3
+(the backup for browsers that cannot play Ogg). The music loop is not trimmed, so it loops seamlessly.
 
-| File | Used for | Pack | Original file |
-|---|---|---|---|
-| `sounds/click.ogg` | Buttons and links | Interface Sounds | `Audio/click_001.ogg` |
-| `sounds/page.ogg` | "Turn the page" (next level) | RPG Audio | `Audio/bookFlip2.ogg` |
-| `sounds/success.ogg` | Correct answer | Music Jingles | `Audio/Pizzicato jingles/jingles_PIZZI00.ogg` |
-| `sounds/error.ogg` | Wrong answer or SQL error | Interface Sounds | `Audio/error_001.ogg` |
-| `sounds/hint.ogg` | A hint is revealed | Interface Sounds | `Audio/question_002.ogg` |
-| `sounds/react.ogg` | The diorama reacts | Interface Sounds | `Audio/maximize_002.ogg` |
-| `sounds/explosion.ogg` | TNT explosion (Hard 4) | Sci-fi Sounds | `Audio/explosionCrunch_000.ogg` |
+### Music
 
-No background music: Kenney does not publish music loops, so none is included.
+| File | Used for | Work | Author | Source |
+|---|---|---|---|---|
+| `music/old-tower-inn.ogg` / `.mp3` | Background music, whole game (loop) | *Medieval: The Old Tower Inn* (loop version, `Loop_The_Old_Tower_Inn.wav`) | RandomMind | https://opengameart.org/content/medieval-the-old-tower-inn |
+
+### Sound effects
+
+| File (`.ogg` / `.mp3`) | Used for | Original file | Author — work | Source |
+|---|---|---|---|---|
+| `sounds/click` | Buttons and links | `impactWood_light_002.ogg` | Kenney — Impact Sounds | https://kenney.nl/assets/impact-sounds |
+| `sounds/page` | "Turn the page" (next level) | `book_flip.6.ogg` | StarNinjas — 10 Book Page Flips | https://opengameart.org/content/10-book-page-flips |
+| `sounds/success` | Correct answer | `health_restore.wav` (faded out) | Spring Spring — Magic Words + Healing Sound Effect | https://opengameart.org/content/magic-words-healing-sound-effect |
+| `sounds/error` | Wrong answer or SQL error | `impactSoft_medium_001.ogg` | Kenney — Impact Sounds | https://kenney.nl/assets/impact-sounds |
+| `sounds/hint` | A hint is revealed | `bell_ding3.wav` (faded out) | PWL — Bell dings/chimes | https://opengameart.org/content/bell-dingschimes |
+| `sounds/react` | The diorama reacts | `impactBell_heavy_004.ogg` | Kenney — Impact Sounds | https://kenney.nl/assets/impact-sounds |
+| `sounds/explosion` | TNT explosion (Hard 4) | `explosion.wav` | TinyWorlds — Explosion | https://opengameart.org/content/explosion-0 |

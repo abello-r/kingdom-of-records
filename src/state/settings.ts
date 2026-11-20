@@ -20,8 +20,10 @@ export function detectLanguage(preferred: readonly string[]): Language {
 
 export interface Settings {
   language: Language;
-  /** Silences every sound effect. */
+  /** Silences everything: effects and music (the speaker button). */
   muted: boolean;
+  /** Background music on or off (the note button); has no effect while `muted`. */
+  music: boolean;
 }
 
 export function loadSettings(store: KeyValueStore, browserLanguages: readonly string[]): Settings {
@@ -29,6 +31,7 @@ export function loadSettings(store: KeyValueStore, browserLanguages: readonly st
   return {
     language: isLanguage(data?.language) ? data.language : detectLanguage(browserLanguages),
     muted: typeof data?.muted === 'boolean' ? data.muted : false,
+    music: typeof data?.music === 'boolean' ? data.music : true,
   };
 }
 
