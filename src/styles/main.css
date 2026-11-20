@@ -144,6 +144,11 @@ a { color: inherit; }
 
 /* ---------- shared bits ---------- */
 .chip { font-size: .7em; padding: 1px 6px; border-radius: 3px; background: rgba(22, 28, 46, .08); border: 1px solid rgba(22, 28, 46, .2); white-space: nowrap; }
+/* Long chips may wrap rather than overflow their box. */
+.chip--wrap { white-space: normal; overflow-wrap: anywhere; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+/* Whole queries (hints): one clause per line, wrapping inside the box if a line is still too long. */
+.chip--block { display: block; margin: 6px 0 4px; padding: 6px 10px; font-size: .68em; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.chip--block .ln { display: block; padding-left: calc(var(--depth, 0) * 2ch + 2ch); text-indent: -2ch; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
 .chips .chip { font-size: .95rem; }
 .tag { margin: 0; padding: 4px 14px 6px; border-radius: 4px; background: rgba(238, 225, 198, .94); box-shadow: 0 0 0 3px var(--ink); font-size: 1.5rem; }
@@ -237,7 +242,7 @@ a { color: inherit; }
 .task p { margin: 0; }
 .hints { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
 .hints:empty { display: none; }
-.hint-card { display: grid; grid-template-columns: 36px 1fr; gap: 8px; padding: 8px 12px 10px; border: 3px dashed var(--kit-blue-shade); border-radius: 6px; background: rgba(65, 145, 157, .12); font-size: 1.4rem; }
+.hint-card { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 8px; padding: 8px 12px 10px; border: 3px dashed var(--kit-blue-shade); border-radius: 6px; background: rgba(65, 145, 157, .12); font-size: 1.4rem; }
 .hint-card img { width: 34px; height: 34px; }
 .hint-card b { display: block; font-weight: normal; font-size: 1.25rem; line-height: 1; color: var(--kit-blue-shade); }
 .hint-card p { margin: 0; }

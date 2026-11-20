@@ -143,7 +143,7 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     fill(hintsBox, ...level.hints.slice(0, used).map((hint, i) =>
       h('div', { class: 'hint-card', tabindex: '-1' },
         img('fx/hint.png'),
-        h('div', {}, h('b', {}, t('level.hintTitle', { n: i + 1, total: level.hints.length })), h('p', {}, rich(hint[lang]))))));
+        h('div', {}, h('b', {}, t('level.hintTitle', { n: i + 1, total: level.hints.length })), h('p', {}, rich(hint[lang], {}, { blocks: true }))))));
     const left = level.hints.length - used;
     for (const btn of hintBtns) {
       fill(btn, img('fx/hint.png'), left > 0 ? i18n.tp('level.hint', left) : t('level.noHints'));
