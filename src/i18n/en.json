@@ -7,11 +7,9 @@
     "newTab": "opens in a new tab",
     "skipLink": "Skip to content",
     "languageSelector": "Language",
-    "locked": "Locked",
     "backToMap": "Back to the map",
     "backToHome": "Back to the title screen",
-    "editor": "SQL editor",
-    "scene": "Scene"
+    "editor": "SQL editor"
   },
   "sound": {
     "muteAll": "Mute all sound",
@@ -91,7 +89,6 @@
     "tableNow": "The table {table} now",
     "success": "The Registry answers! Your spell is right.",
     "next": "Turn the page",
-    "toMap": "Back to the map",
     "finish": "Close the book",
     "engineError": "The Registry could not be opened. Reload the page to try again.",
     "replay": "You have already solved this page. You can solve it again.",

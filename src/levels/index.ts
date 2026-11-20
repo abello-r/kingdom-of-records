@@ -1,6 +1,6 @@
 import { parseLevel } from '../engine/level-schema';
 import type { Level } from '../engine/types';
-import { ALL_LEVELS, type LevelId } from '../state/levels';
+import type { LevelId } from '../state/levels';
 
 /** Every `/src/levels/{stage}-{n}.json` file, bundled at build time. */
 const files = import.meta.glob<unknown>('./*.json', { eager: true, import: 'default' });
@@ -15,9 +15,4 @@ export function loadLevels(raw: Record<string, unknown> = files): Map<LevelId, L
     levels.set(level.id, level);
   }
   return levels;
-}
-
-/** Level ids that have a file, in game order. */
-export function availableLevelIds(levels: Map<LevelId, Level>): LevelId[] {
-  return ALL_LEVELS.filter((id) => levels.has(id));
 }

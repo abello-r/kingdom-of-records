@@ -7,11 +7,9 @@
     "newTab": "s’ouvre dans un nouvel onglet",
     "skipLink": "Aller au contenu",
     "languageSelector": "Langue",
-    "locked": "Verrouillé",
     "backToMap": "Retour à la carte",
     "backToHome": "Retour à l’écran titre",
-    "editor": "Éditeur SQL",
-    "scene": "Scène"
+    "editor": "Éditeur SQL"
   },
   "sound": {
     "muteAll": "Couper tout le son",
@@ -91,7 +89,6 @@
     "tableNow": "La table {table} maintenant",
     "success": "Le Registre te répond ! Ton sort est juste.",
     "next": "Tourner la page",
-    "toMap": "Retour à la carte",
     "finish": "Refermer le livre",
     "engineError": "Impossible d’ouvrir le Registre. Recharge la page pour réessayer.",
     "replay": "Tu as déjà résolu cette page. Tu peux la résoudre à nouveau.",

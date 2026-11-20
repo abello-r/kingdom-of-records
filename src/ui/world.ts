@@ -235,7 +235,3 @@ function setSheet(el: Sprite, name: SpriteName): void {
   el.style.setProperty('--dur', `${(s.frames / s.fps).toFixed(2)}s`);
 }
 
-/** True when a sprite name exists (used by tests on scene definitions). */
-export function isSprite(name: string): name is SpriteName {
-  return name in SHEETS;
-}

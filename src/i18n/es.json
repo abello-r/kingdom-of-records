@@ -7,11 +7,9 @@
     "newTab": "se abre en una pestaña nueva",
     "skipLink": "Saltar al contenido",
     "languageSelector": "Idioma",
-    "locked": "Bloqueado",
     "backToMap": "Volver al mapa",
     "backToHome": "Volver a la portada",
-    "editor": "Editor SQL",
-    "scene": "Escena"
+    "editor": "Editor SQL"
   },
   "sound": {
     "muteAll": "Silenciar todo",
@@ -91,7 +89,6 @@
     "tableNow": "Así queda la tabla {table}",
     "success": "¡El Registro te responde! Tu conjuro es correcto.",
     "next": "Pasar página",
-    "toMap": "Volver al mapa",
     "finish": "Cerrar el libro",
     "engineError": "No se ha podido abrir el Registro. Recarga la página para intentarlo de nuevo.",
     "replay": "Ya resolviste esta página. Puedes volver a resolverla.",
