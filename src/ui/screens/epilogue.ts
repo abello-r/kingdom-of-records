@@ -72,7 +72,7 @@ function epilogueScene(world: World, width: number, height: number): void {
   put('buildings/castle', 0.42, -18, { wide: true });
   put('units/warrior-blue', compact ? 0.16 : 0.13, 16);
   put('units/pawn-blue', compact ? 0.28 : 0.2, 18);
-  put('units/monk-purple', compact ? 0.4 : 0.27, 18, { wide: compact }); // Lady Maud
+  put('units/monk-purple', compact ? 0.4 : 0.27, 18); // Lady Maud (shown on phones too)
   put('units/warrior-red', 0.56, 16, { flip: true, wide: true });
   put('units/warrior-blue', compact ? 0.52 : 0.62, 20);
   put('units/monk-red', compact ? 0.62 : 0.68, 18, { flip: true });
