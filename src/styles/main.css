@@ -173,21 +173,15 @@ a { color: inherit; }
 .logo span { display: block; font-size: 94px; }
 .home__subtitle { margin-top: 12px; font-size: 2.5rem; }
 .home__actions { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 22px; }
-/* Ko-fi: a wooden signpost with a scroll on its own islet (left/top = its feet), or a square button. */
+/* Ko-fi: a scroll over a signpost pointing out of the game, on its own islet (left/top = its feet). The
+   scroll only rests on the post's leaves, so the arrow stays in sight. Smaller screens: a square button. */
 .kofi-sign { position: absolute; z-index: 5000; display: flex; flex-direction: column; align-items: center; width: max-content; transform: translate(-50%, -100%);
   color: var(--ink); text-decoration: none; }
-.kofi-sign__board { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; padding: 31px 30px 27px;
-  font-size: 1.45rem; line-height: 1.15; text-align: left; border-image: var(--img-scroll) 128 fill / 52px / 0 stretch;
+.kofi-sign__board { position: relative; z-index: 1; max-width: 11em; padding: 30px 38px 27px; font-size: 1.6rem; line-height: 1.15;
+  text-align: center; text-wrap: balance; border-image: var(--img-scroll) 128 fill / 52px / 0 stretch;
   image-rendering: pixelated; filter: drop-shadow(0 3px 0 rgba(22, 28, 46, .35)); }
-.kofi-sign__text { max-width: 10em; }
-.kofi-sign__post { width: 88px; height: 135px; margin-top: -44px; image-rendering: pixelated; }
+.kofi-sign__post { width: 88px; height: 135px; margin-top: -24px; image-rendering: pixelated; }
 .kofi-sign:hover .kofi-sign__board { filter: drop-shadow(0 3px 0 rgba(22, 28, 46, .35)) brightness(1.06); }
-.square--kofi { display: grid; place-items: center; }
-.square--kofi .cup { width: 30px; height: 30px; margin-top: -4px; }
-.cup { flex: none; width: 26px; height: 26px; shape-rendering: crispEdges; overflow: visible; }
-.cup__body { fill: #f7eedb; stroke: var(--ink); stroke-width: .9px; paint-order: stroke; }
-.cup__coffee { fill: #6b4434; }
-.cup__steam { fill: var(--parchment); stroke: var(--ink); stroke-width: .7px; paint-order: stroke; }
 
 /* Touch devices: a quiet one-time note under the subtitle; the cross is a 32 px target. */
 .device-note { display: inline-flex; align-items: center; gap: 4px; margin: 8px 0 -10px; padding: 0 0 0 12px; border-radius: 6px;
@@ -351,7 +345,6 @@ a { color: inherit; }
   /* Controls become a compact solid bar above the scene, so they never cover sprites. */
   .chrome { position: static; padding: 6px 10px; background: var(--wood-dark); border-bottom: 3px solid var(--ink); }
   .square { width: 52px; height: 52px; image-rendering: auto; }
-  .square--kofi .cup { width: 26px; height: 26px; }
   .spellbook-link__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .spellbook-link { padding-left: 10px; padding-right: 10px; }
   .spell-chapter { transform: scale(.8); transform-origin: left center; }

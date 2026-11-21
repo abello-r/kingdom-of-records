@@ -73,13 +73,6 @@ export function bookIcon(): SVGSVGElement {
   return svg;
 }
 
-/** A cup of coffee in pixel style (the kit has none): cream cup, ink outline, steam. */
-export function cupIcon(): SVGSVGElement {
-  const svg = icon(['M3 5h9v6H3zM12 6h2v3h-2zM2 12h12v1H2z', 'M4 6h7v1H4z', 'M6 1h1v3H6zM9 2h1v2H9z']);
-  svg.classList.add('cup');
-  ['cup__body', 'cup__coffee', 'cup__steam'].forEach((c, n) => svg.children[n]?.setAttribute('class', c));
-  return svg;
-}
 
 /** Pixel-style icons drawn on a 16x16 grid with square shapes only. */
 export const ICONS = {

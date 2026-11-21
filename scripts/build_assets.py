@@ -13,7 +13,7 @@ import os
 import shutil
 import sys
 
-from PIL import Image
+from PIL import Image, ImageOps
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 OUT = os.path.join(ROOT, 'public', 'assets')
@@ -136,8 +136,8 @@ def control_buttons():
         'music-off': with_badge(scaled(note, 0.8), badge),
         'sound': scaled(speaker, 2),
         'sound-off': with_badge(scaled(speaker.crop((0, 0, 24, speaker.height)), 2), badge),
-        # No icon: the Ko-fi button draws its cup on top (the kit has no cup).
-        'blank': Image.new('RGBA', (1, 1)),
+        # Ko-fi ("Support the creator"): the TS-2 gold coin.
+        'coin': scaled(load(UI, 'Icons', 'Icon_03.png'), 0.9),
     }
     for name, icon in icons.items():
         for state, base, dy in (('', button, 0), ('-pressed', pressed, 4)):
@@ -158,7 +158,8 @@ def main():
     save(joined(load(UI, 'Papers', 'SpecialPaper.png'), s64, s64), 'ui/special-paper.png')
     # Ko-fi sign on the title screen: the TS-2 scroll banner and the TS-1 wooden signpost.
     save(joined(load(UI, 'Banners', 'Banner.png'), s128, s128), 'ui/scroll.png')
-    save(cropped(load(TS1, 'Deco', '17.png')), 'ui/signpost.png')
+    # Mirrored so its arrow points to the right, out of the game (the link opens another site).
+    save(ImageOps.mirror(cropped(load(TS1, 'Deco', '17.png'))), 'ui/signpost.png')
     save(joined(load(UI, 'Wood Table', 'WoodTable.png'), s128, s128), 'ui/wood.png')
     big, small = load(UI, 'Ribbons', 'BigRibbons.png'), load(UI, 'Ribbons', 'SmallRibbons.png')
     for i, colour in enumerate(['blue', 'red', 'yellow', 'purple', 'black']):

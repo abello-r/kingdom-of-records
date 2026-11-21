@@ -2,7 +2,7 @@ import { AUTHOR, AUTHOR_URL, KOFI_URL, REPO_URL } from '../../app/site';
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import { DEVICE_NOTE_KEY, isFlagSet, setFlag } from '../../state/flags';
-import { asset, cssUrl, cupIcon, externalLink, h, icon, ICONS, isTouchFirst } from '../dom';
+import { asset, cssUrl, externalLink, h, icon, ICONS, isTouchFirst } from '../dom';
 import { homeScene, type HomeLayout } from '../scenes';
 import { suggestionsLink } from '../suggestions';
 import { World } from '../world';
@@ -88,21 +88,22 @@ function deviceNote(ctx: AppContext): HTMLElement | null {
 }
 
 /**
- * "Buy the scribe a coffee": a wooden signpost with a scroll on its islet, or, when the island has no
- * room for it (phones, narrow windows), a square kit button with a cup in the controls bar.
+ * "Support the creator": a scroll over a wooden signpost whose arrow points out of the game, on its own
+ * islet; when the island has no room for it (phones, narrow windows), a square kit button with the kit's
+ * gold coin in the controls bar.
  */
 function kofiLink(ctx: AppContext, at: HomeLayout['kofi']): HTMLElement {
   const { i18n } = ctx;
   const label = i18n.t('home.kofi');
   if (!at) {
     const square = externalLink(KOFI_URL, `Ko-fi, ${i18n.t('a11y.newTab')}`, { class: 'square square--kofi', title: label },
-      cupIcon(), h('span', { class: 'visually-hidden' }, label));
-    square.style.setProperty('--btn', cssUrl('ui/btn-blank.png'));
-    square.style.setProperty('--btn-pressed', cssUrl('ui/btn-blank-pressed.png'));
+      h('span', { class: 'visually-hidden' }, label));
+    square.style.setProperty('--btn', cssUrl('ui/btn-coin.png'));
+    square.style.setProperty('--btn-pressed', cssUrl('ui/btn-coin-pressed.png'));
     return square;
   }
   const sign = externalLink(KOFI_URL, `Ko-fi, ${i18n.t('a11y.newTab')}`, { class: 'kofi-sign' },
-    h('span', { class: 'kofi-sign__board' }, cupIcon(), h('span', { class: 'kofi-sign__text' }, label)),
+    h('span', { class: 'kofi-sign__board' }, label),
     h('img', { src: asset('ui/signpost.png'), alt: '', class: 'kofi-sign__post' }));
   sign.style.left = `${at.x}px`;
   sign.style.top = `${at.y}px`;
