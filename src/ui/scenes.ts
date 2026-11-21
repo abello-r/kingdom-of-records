@@ -1,7 +1,7 @@
 import type { Level } from '../engine/types';
 import type { Stage } from '../state/levels';
 import { LEVEL_SCENES, type Kit, type Solve } from './reactions';
-import type { PutOptions, Terrain, World } from './world';
+import type { PutOptions, Sprite, Terrain, World } from './world';
 
 export const STAGE_TERRAIN: Record<Stage, Terrain> = { easy: 'spring', medium: 'autumn', hard: 'dusk' };
 
@@ -48,9 +48,34 @@ export function levelStrip(world: World, level: Level, width: number, height: nu
   return scene.build(kit);
 }
 
-/** Where the title screen's Ko-fi signpost stands (its feet), or null when it is shown as a button. */
 export interface HomeLayout {
+  /** Where the Ko-fi signpost stands (its feet), or null when it is shown as a button. */
   kofi: { x: number; y: number } | null;
+  /**
+   * The swimming ducks, each with its candidate spots in `data-spots`: the screen moves each one to the
+   * first spot that is clear of its texts, buttons, islands and sprites, or takes it out.
+   */
+  ducks: Sprite[];
+}
+
+type Spot = [x: number, y: number];
+
+/** Spots in reading order of `ys` then `xs`, never lower than `maxY`. */
+function spots(xs: number[], ys: number[], maxY: number): Spot[] {
+  return ys.filter((y) => y <= maxY).flatMap((y) => xs.map((x): Spot => [Math.round(x), y]));
+}
+
+/**
+ * A rubber duck that swims slowly to the left by `swim` px and back (CSS `swim`; still with reduced
+ * motion). A spot is the right end of its course, at its feet; it starts at the first one.
+ */
+function swimmingDuck(world: World, at: Spot[], swim: number, scale = 1): Sprite | null {
+  if (!at.length) return null;
+  const duck = world.put('props/duck', at[0]![0], at[0]![1], { scale });
+  duck.classList.add('swim');
+  duck.style.setProperty('--swim', `${swim}px`);
+  duck.dataset.spots = JSON.stringify(at);
+  return duck;
 }
 
 /**
@@ -72,6 +97,8 @@ export function homeScene(world: World, width: number, height: number, opts: { k
   world.island(left, iy, cols, rows, 'spring');
   const ground = iy + rows * 64 - (compact ? 40 : 70);
   let kofi: HomeLayout['kofi'] = null;
+  const ducks: Sprite[] = [];
+  const duck = (d: Sprite | null) => void (d && ducks.push(d));
   if (!compact) {
     // Ko-fi islet (3x2 tiles). The sign (scroll + post, about 215 px tall) stands on it, so it starts
     // about 95 px above the islet. Below the tree islet it must clear the tree (feet at y 250); in the
@@ -94,11 +121,15 @@ export function homeScene(world: World, width: number, height: number, opts: { k
     world.put('props/gold-stone', 140, 270);
     world.cloud(1, -120, 40, 0.9);
     world.cloud(2, width / 2 + 120, -30, 0.7);
-    // The duck and the low cloud would sit on the Ko-fi islet.
-    if (mode !== 'below') {
-      world.put('props/duck', width - 150, 330);
-      world.cloud(3, width - 520, 330, 0.8);
-    }
+    // The low cloud would sit on the Ko-fi islet.
+    if (mode !== 'below') world.cloud(3, width - 520, 330, 0.8);
+    // Ducks in the open sea above the big island: two on the left, under the gold islet and beside the
+    // logo; one on the right, beside the logo and high enough to clear the castle (about 90 px tall).
+    const sea = iy - 24;
+    const mid = width / 2;
+    duck(swimmingDuck(world, spots([300, 260, 220, 180], [350, 400], sea), 56));
+    duck(swimmingDuck(world, spots([mid - 330, mid - 370, 400, 360, 320], [500, 460, 420], sea), 64));
+    duck(swimmingDuck(world, spots([mid + 400, mid + 440, mid + 360, mid + 480], [450, 410, 370, 330], iy - 90), 46));
   }
   const put = (name: Parameters<World['put']>[0], x: number, y: number, opts: PutOptions = {}) =>
     world.put(name, x, y, { ...opts, scale: k * (opts.scale ?? 1) });
@@ -112,7 +143,11 @@ export function homeScene(world: World, width: number, height: number, opts: { k
     put('units/pawn-blue', left + span * (span >= 300 ? 0.52 : 0.6), ground + 22);
     // The sheep needs room between Pip and the tower; on the narrowest phones it stays out.
     if (span >= 300) put('units/sheep', left + span * 0.68, ground + 26);
-    return { kofi };
+    // Two small ducks in the sea just above the island, near its ends, beside the buttons when they
+    // come down that far.
+    duck(swimmingDuck(world, [[left + 64, iy - 26], [left + 64, iy - 56], [left + 44, iy - 86]], 26, 0.75));
+    if (span >= 300) duck(swimmingDuck(world, [[right - 16, iy - 30], [right - 16, iy - 60], [right - 8, iy - 90]], 26, 0.75));
+    return { kofi, ducks };
   }
   put('props/tree-1', 110, iy + 140);
   put('buildings/house-1', 200, iy + 160);
@@ -147,7 +182,7 @@ export function homeScene(world: World, width: number, height: number, opts: { k
   const start = Math.max(from, (from + to) / 2 - (step * (chosen.length - 1)) / 2);
   chosen.forEach(([name, dy, opts], i) => put(name, start + i * step, iy + dy, opts));
   if (castleLeft > 700) put('props/rock-2', 640, iy + 268);
-  return { kofi };
+  return { kofi, ducks };
 }
 
 /** One island of the kingdom map (fixed size; the map lays islands out responsively). */

@@ -72,6 +72,16 @@ a { color: inherit; }
 .world .cloud { z-index: 5000; opacity: .85; }
 .world .dim, .world .tile.dim { filter: grayscale(.55) brightness(.72); }
 @keyframes sprite-play { from { background-position-x: 0; } to { background-position-x: calc(-1 * var(--sheet-w)); } }
+/* Home ducks: slowly to the left by --swim, a pause, turn round, back, a pause. Turning round with
+   `scale` moves the sprite one box width to the right, which the extra -100% translate undoes. */
+.world .sprite.anim.swim { animation: sprite-play var(--dur) steps(var(--frames)) infinite, swim 26s ease-in-out infinite; }
+@keyframes swim {
+  0% { translate: 0 0; scale: 1 1; }
+  42%, 50% { translate: calc(var(--swim) * -1) 0; scale: 1 1; }
+  50.01% { translate: calc(var(--swim) * -1 - 100%) 0; scale: -1 1; }
+  92%, 99.99% { translate: -100% 0; scale: -1 1; }
+  100% { translate: 0 0; scale: 1 1; }
+}
 
 /* ---------- panels and ribbons ---------- */
 .paper {

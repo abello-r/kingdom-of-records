@@ -146,10 +146,18 @@ the credits. Screens: `screens/epilogue-*.png`, `screens/reset-dialog-desktop.pn
   default) and "Erase my progress" (kit red) have the same size, side by side on the right on desktop
   and stacked in the centre on phones.
 - **Music level:** 0.11 (55% of the first level, 0.2); effects unchanged.
-- **Ko-fi:** "Buy the scribe a coffee" on the title screen (`KOFI_URL` in `src/app/site.ts`). From 1350 px
-  wide, a TS-1 wooden signpost with a TS-2 scroll stands on its own islet on the right (below the tree
-  islet, or in its place on short screens); on smaller screens and phones it is a square kit button with
-  a pixel cup at the left of the controls bar. The cup is drawn like the padlock (the kit has none).
+- **Ko-fi:** "Support the creator" on the title screen (`KOFI_URL` in `src/app/site.ts`). From 1350 px
+  wide, a TS-2 scroll with the text centred (one line in every language) rests on top of the TS-1
+  wooden signpost, mirrored so its arrow points to the right, out of the game; it stands on its own
+  islet on the right (below the tree islet, or in its place on short screens). On smaller screens and
+  phones it is a square kit button with the TS-2 gold coin at the left of the controls bar. No boat:
+  none of the packs has one.
+- **Ducks:** the TS-2 rubber duck, two or three on the title screen's sea (two small ones on phones).
+  Each swims slowly about 50 px to the left, turns round and comes back (26 s); still with reduced
+  motion. Every duck has a few candidate spots and takes the first one clear of the texts, buttons,
+  islands, sprites, clouds and other ducks, so small or short screens may show one or none.
+- **Suggestions:** after sending, the dialog keeps only the thanks, centred, and a "Close" button. On a
+  local copy (localhost) a note says suggestions are only sent from the published site.
 - **Spell book** (`#/spellbook`, `src/spellbook/spells.ts`): 16 spells, one per new SQL idea, in stage
   chapters with the stage ribbons. A learned spell shows what it does and one code block with
   `-- Formula` and `-- In the kingdom` (an example that runs on its level's data, tested); the others are

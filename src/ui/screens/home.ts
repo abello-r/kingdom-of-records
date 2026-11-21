@@ -66,7 +66,51 @@ export function homeScreen(ctx: AppContext): Screen {
         : null,
       suggestionsLink(i18n)),
   );
+  // Once the texts have their final size, each duck goes to its first clear spot.
+  void document.fonts.ready.then(() => requestAnimationFrame(() => placeDucks(element, layout.ducks)));
   return { element, focus: primary };
+}
+
+interface Box { left: number; right: number; top: number; bottom: number }
+
+/**
+ * Moves each duck to the first of its spots (`data-spots`) where its whole course stays clear of the
+ * texts, buttons and controls, the islands and their foam, the other sprites, the clouds and the ducks
+ * already placed; a duck with no clear spot is taken out.
+ */
+function placeDucks(screen: HTMLElement, ducks: HTMLElement[]): void {
+  const world = ducks[0]?.parentElement;
+  if (!screen.isConnected || !world) return;
+  const origin = world.getBoundingClientRect();
+  const grow = (r: DOMRect, by: number): Box => ({ left: r.left - by, right: r.right + by, top: r.top - by, bottom: r.bottom + by });
+  const all = (selector: string, by: number) => [...screen.querySelectorAll(selector)]
+    .map((el) => el.getBoundingClientRect()).filter((r) => r.width > 0).map((r) => grow(r, by));
+  const blockers = [
+    ...all('.logo, .home__subtitle, .device-note, .home__actions > *, .chrome a, .chrome button, .chrome .lang, .credits > *, .kofi-sign', 10),
+    ...all('.world .tile', 16),
+    ...all('.world .sprite:not(.swim), .world .cloud', 4),
+  ];
+  const hits = (a: Box) => blockers.some((b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top);
+  for (const duck of ducks) {
+    const k = Number(duck.style.getPropertyValue('--sy')) || 1;
+    const swim = parseFloat(duck.style.getPropertyValue('--swim')) || 0;
+    // The duck's drawing (about 26 x 22 of its 32 x 32 cell) over its whole course.
+    const course = ([x, y]: [number, number]): Box => ({
+      left: origin.left + x - 13 * k - swim, right: origin.left + x + 13 * k, top: origin.top + y - 24 * k, bottom: origin.top + y - 2 * k,
+    });
+    const spots = JSON.parse(duck.dataset.spots ?? '[]') as [number, number][];
+    const spot = spots.find((s) => !hits(course(s)));
+    if (!spot) {
+      duck.remove();
+      continue;
+    }
+    duck.style.left = `${spot[0]}px`;
+    duck.style.top = `${spot[1]}px`;
+    duck.style.zIndex = String(100 + spot[1]);
+    // Ducks keep their distance from each other too.
+    const c = course(spot);
+    blockers.push({ left: c.left - 24, right: c.right + 24, top: c.top - 24, bottom: c.bottom + 24 });
+  }
 }
 
 /** "Developed by {name}" with the name as a link, in the word order of each language. */
