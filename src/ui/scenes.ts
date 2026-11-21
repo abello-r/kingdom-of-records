@@ -1,7 +1,7 @@
 import type { Level } from '../engine/types';
 import type { Stage } from '../state/levels';
 import { LEVEL_SCENES, type Kit, type Solve } from './reactions';
-import { drawnCentreOffset, type PutOptions, type Sprite, type Terrain, type World } from './world';
+import { drawnCentreOffset, swimming, type PutOptions, type Sprite, type Terrain, type World } from './world';
 
 export const STAGE_TERRAIN: Record<Stage, Terrain> = { easy: 'spring', medium: 'autumn', hard: 'dusk' };
 
@@ -94,16 +94,14 @@ function spots(xs: number[], ys: number[], maxY: number): Spot[] {
 }
 
 /**
- * A rubber duck that swims slowly to the left by `swim` px and back (CSS `swim`; still with reduced
- * motion). A spot is the right end of its course, at its feet; it starts at the first one.
+ * A rubber duck that swims slowly back and forth over `swim` px (see `swimming`): to the left of its
+ * spot, or to the right when `flip`. A spot is where it starts, at its feet; it starts at the first one.
  */
-function swimmingDuck(world: World, at: Spot[], swim: number, scale = 1): Sprite | null {
+function swimmingDuck(world: World, at: Spot[], swim: number, scale = 1, flip = false): Sprite | null {
   if (!at.length) return null;
-  const duck = world.put('props/duck', at[0]![0], at[0]![1], { scale });
-  duck.classList.add('swim');
-  duck.style.setProperty('--swim', `${swim}px`);
+  const duck = world.put('props/duck', at[0]![0], at[0]![1], { scale, flip });
   duck.dataset.spots = JSON.stringify(at);
-  return duck;
+  return swimming(duck, swim, flip);
 }
 
 /**
@@ -156,7 +154,7 @@ export function homeScene(world: World, width: number, height: number, opts: { k
     const sea = iy - 24;
     const mid = width / 2;
     duck(swimmingDuck(world, spots([300, 260, 220, 180], [350, 400], sea), 56));
-    duck(swimmingDuck(world, spots([mid - 330, mid - 370, 400, 360, 320], [500, 460, 420], sea), 64));
+    duck(swimmingDuck(world, spots([mid - 394, mid - 434, 336, 296, 256], [500, 460, 420], sea), 64, 1, true));
     duck(swimmingDuck(world, spots([mid + 400, mid + 440, mid + 360, mid + 480], [450, 410, 370, 330], iy - 90), 46));
   }
   const put = (name: Parameters<World['put']>[0], x: number, y: number, opts: PutOptions = {}) =>
@@ -174,7 +172,7 @@ export function homeScene(world: World, width: number, height: number, opts: { k
     // Two small ducks in the sea just above the island, near its ends, beside the buttons when they
     // come down that far.
     duck(swimmingDuck(world, [[left + 64, iy - 26], [left + 64, iy - 56], [left + 44, iy - 86]], 26, 0.75));
-    if (span >= 300) duck(swimmingDuck(world, [[right - 16, iy - 30], [right - 16, iy - 60], [right - 8, iy - 90]], 26, 0.75));
+    if (span >= 300) duck(swimmingDuck(world, [[right - 42, iy - 30], [right - 42, iy - 60], [right - 34, iy - 90]], 26, 0.75, true));
     return { kofi, ducks };
   }
   put('props/tree-1', 110, iy + 140);

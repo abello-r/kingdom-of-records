@@ -244,6 +244,21 @@ export class World {
   }
 }
 
+/**
+ * Makes a sprite swim back and forth over `distance` px (CSS `swim`; still with reduced motion): to the
+ * left first, or to the right when `flip` (it faces right). Each one gets its own pace and its own point
+ * in the cycle, so they never move in step.
+ */
+export function swimming(el: Sprite, distance: number, flip = false): Sprite {
+  el.classList.add('swim');
+  el.style.setProperty('--swim', `${distance}px`);
+  el.style.setProperty('--way', flip ? '1' : '-1');
+  const pace = 22 + Math.random() * 8;
+  el.style.setProperty('--swim-dur', `${pace.toFixed(1)}s`);
+  el.style.animationDelay = `${(-Math.random()).toFixed(2)}s, ${(-Math.random() * pace).toFixed(1)}s`;
+  return el;
+}
+
 /** A sprite's drawing (its cell without the transparent margin), relative to its feet, at scale 1. */
 export function drawnBox(name: SpriteName, flip = false): { left: number; right: number; top: number; bottom: number } {
   const s = SHEETS[name];

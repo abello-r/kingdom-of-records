@@ -94,9 +94,12 @@ function placeDucks(screen: HTMLElement, ducks: HTMLElement[]): void {
   for (const duck of ducks) {
     const k = Number(duck.style.getPropertyValue('--sy')) || 1;
     const swim = parseFloat(duck.style.getPropertyValue('--swim')) || 0;
+    // Its course goes left of its spot, or right when it faces right (--way 1).
+    const way = Number(duck.style.getPropertyValue('--way')) || -1;
     // The duck's drawing (about 26 x 22 of its 32 x 32 cell) over its whole course.
     const course = ([x, y]: [number, number]): Box => ({
-      left: origin.left + x - 13 * k - swim, right: origin.left + x + 13 * k, top: origin.top + y - 24 * k, bottom: origin.top + y - 2 * k,
+      left: origin.left + x - 13 * k - (way < 0 ? swim : 0), right: origin.left + x + 13 * k + (way > 0 ? swim : 0),
+      top: origin.top + y - 24 * k, bottom: origin.top + y - 2 * k,
     });
     const spots = JSON.parse(duck.dataset.spots ?? '[]') as [number, number][];
     const spot = spots.find((s) => !hits(course(s)));
