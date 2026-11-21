@@ -50,7 +50,8 @@ export function epilogueScreen(ctx: AppContext): Screen {
     h('p', { class: 'credits-thanks' }, t('credits.thanks')),
     REPO_URL ? h('p', { class: 'credits-star' }, externalLink(REPO_URL, t('a11y.newTab'), {}, icon([ICONS.star]), t('credits.star'))) : null,
     h('div', { class: 'credits-actions' },
-      h('a', { class: 'btn btn--primary', href: routeHash({ name: 'map' }) }, t('epilogue.back')),
+      h('a', { class: 'btn btn--primary', href: routeHash({ name: 'title', id: 'high' }), 'data-sound': 'page' }, t('title.claim')),
+      h('a', { class: 'btn btn--ghost btn--small', href: routeHash({ name: 'map' }) }, t('epilogue.back')),
       h('a', { class: 'btn btn--ghost btn--small', href: routeHash({ name: 'home' }) }, t('epilogue.home'))));
 
   const element = h('div', { class: 'screen screen--level screen--epilogue is-solved' },

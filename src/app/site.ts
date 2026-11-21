@@ -2,6 +2,9 @@
  * Names and links of the project, in one place. They are not translated.
  */
 
+/** Address of the published game (share pages and link previews need absolute URLs). */
+export const SITE_URL = 'https://kingdom-of-records.netlify.app';
+
 /** Browser tab title, the same on every screen and in every language. */
 export const APP_NAME = 'The Kingdom of Records';
 

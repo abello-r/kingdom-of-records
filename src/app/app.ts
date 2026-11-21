@@ -8,6 +8,7 @@ import { saveSettings, type Settings } from '../state/settings';
 import type { KeyValueStore } from '../state/storage';
 import { createChrome } from '../ui/chrome';
 import { APP_NAME } from './site';
+import { TITLES } from '../titles/titles';
 import { homeScreen } from '../ui/screens/home';
 import { mapScreen } from '../ui/screens/map';
 import type { AppContext, LevelSession, Screen } from './context';
@@ -120,6 +121,16 @@ export class App {
       if (this.deps.progress.nextLevel() === null) {
         const { epilogueScreen } = await import('../ui/screens/epilogue');
         return epilogueScreen(this.ctx);
+      }
+      history.replaceState(null, '', routeHash({ name: 'map' }));
+      return mapScreen(this.ctx);
+    }
+    if (route.name === 'title') {
+      // A title can be seen once its stage is complete; the last one after the epilogue too.
+      const title = TITLES.find((t) => t.id === route.id);
+      if (title && this.deps.progress.isStageCompleted(title.stage)) {
+        const { titleScreen } = await import('../ui/screens/title');
+        return titleScreen(this.ctx, title);
       }
       history.replaceState(null, '', routeHash({ name: 'map' }));
       return mapScreen(this.ctx);

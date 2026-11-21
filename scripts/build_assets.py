@@ -154,14 +154,16 @@ def main():
     s64 = [(0, 64), (128, 192), (256, 320)]
     s128 = [(0, 128), (192, 256), (320, 448)]
     save(joined(load(UI, 'Papers', 'RegularPaper.png'), s64, s64), 'ui/paper.png')
+    # Certificates of the titles: the dark TS-2 paper with golden corners.
+    save(joined(load(UI, 'Papers', 'SpecialPaper.png'), s64, s64), 'ui/special-paper.png')
     # Ko-fi sign on the title screen: the TS-2 scroll banner and the TS-1 wooden signpost.
     save(joined(load(UI, 'Banners', 'Banner.png'), s128, s128), 'ui/scroll.png')
     save(cropped(load(TS1, 'Deco', '17.png')), 'ui/signpost.png')
     save(joined(load(UI, 'Wood Table', 'WoodTable.png'), s128, s128), 'ui/wood.png')
     big, small = load(UI, 'Ribbons', 'BigRibbons.png'), load(UI, 'Ribbons', 'SmallRibbons.png')
     for i, colour in enumerate(['blue', 'red', 'yellow', 'purple', 'black']):
-        # Used: the big blue ribbon (title screen), small ribbons for the stages, standards for the map.
-        if colour == 'blue':
+        # Used: big ribbons (title screen, certificates), small ribbons for the stages, standards for the map.
+        if colour in ('blue', 'red', 'purple'):
             save(joined(big, s128, [(i * 128, i * 128 + 128)]), f'ui/ribbon-{colour}.png')
         rib = joined(small, s64, [(i * 128, i * 128 + 64)])
         if colour in ('blue', 'red', 'purple'):

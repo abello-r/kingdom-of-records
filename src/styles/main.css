@@ -97,6 +97,8 @@ a { color: inherit; }
 }
 .ribbon-small small { font-size: 1.3rem; opacity: .85; }
 .ribbon-small--red { border-image-source: var(--img-ribbon-small-red); }
+.ribbon--red { border-image-source: var(--img-ribbon-red); }
+.ribbon--purple { border-image-source: var(--img-ribbon-purple); }
 .ribbon-small--purple { border-image-source: var(--img-ribbon-small-purple); }
 
 /* ---------- buttons ---------- */
@@ -433,6 +435,38 @@ a { color: inherit; }
   .confirm__actions .btn { flex: none; width: 75%; }
 }
 .map__reset { margin-left: 6px; }
+
+/* ---------- titles ---------- */
+.certificate { display: flex; flex-direction: column; align-items: center; margin: 4px 0 0; padding: 30px 40px 26px;
+  text-align: center; color: var(--parchment);
+  border-image: var(--img-special) 64 fill / 64px / 18px round; image-rendering: pixelated; }
+.certificate__lead { margin: 6px 0 4px; font-size: 1.45rem; opacity: .9; }
+/* Centred over the card even when wider; a long name goes on two balanced lines. */
+.certificate__ribbon { width: max-content; max-width: calc(100% + 120px); margin: -14px 0 -8px; font-size: 2.1rem; font-weight: normal;
+  line-height: .9; white-space: normal; text-wrap: balance; }
+.certificate__who { position: relative; display: grid; place-items: center; width: 140px; height: 120px; margin: 8px auto 0; }
+.certificate__pip { width: 96px; height: 96px; border-radius: 50%; background: rgba(238, 225, 198, .12); box-shadow: 0 0 0 4px var(--kit-yellow), 0 0 0 7px var(--ink); }
+.certificate__twinkle { position: absolute; inset: -10px 0 0; width: 140px; height: 140px; pointer-events: none; }
+.certificate__for { margin: 10px 0 4px; font-size: 1.55rem; }
+.certificate__stats { margin: 0 0 14px; font-size: 1.3rem; color: #e9d9a8; }
+.certificate__brand { margin: 0; font-size: 1.15rem; opacity: .8; }
+.share h2 { margin: 0 0 10px; font-size: 1.9rem; }
+.share__chips { gap: 8px; margin: 0 0 22px; }
+.share__chips .chip { padding: 4px 9px; border: 2px solid var(--ink); background: var(--page-light); font-size: 1.05rem; }
+.share__text { margin: 0 0 14px; padding: 12px 14px; border: 3px solid var(--ink); border-radius: 6px; background: var(--page-light); font-size: 1.35rem; line-height: 1.35; overflow-wrap: anywhere; }
+.share__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 12px; }
+.share__actions .btn { min-height: 44px; padding: 6px 14px 10px; font-size: 1.4rem; }
+.share__actions .share__linkedin { grid-column: 1 / -1; }
+.share__status { min-height: 1.3em; margin: 12px 0 0; font-size: 1.25rem; color: var(--kit-blue-shade); }
+.share__note { margin: 4px 0 0; font-size: 1.15rem; color: var(--ink-soft); }
+.share__next { margin-top: 22px; }
+@media (max-width: 760px) {
+  .share__actions { grid-template-columns: 1fr; }
+  .certificate { padding-left: 20px; padding-right: 20px; }
+  /* A three-quarter ribbon, as wide as the screen allows. */
+  .certificate__ribbon { max-width: calc(100vw - 28px); height: 96px; margin: 0 0 -6px; padding: 0 2px 16px; border-width: 0 74px;
+    border-image-width: 0 96px; border-image-outset: 0 21px; font-size: 1.35rem; text-shadow: 2px 2px 0 rgba(22, 28, 46, .55); }
+}
 
 /* ---------- spell book ---------- */
 .book-icon { width: 20px; height: 20px; flex: none; fill: var(--parchment); stroke: var(--ink); stroke-width: .9px; paint-order: stroke; shape-rendering: crispEdges; overflow: visible; }

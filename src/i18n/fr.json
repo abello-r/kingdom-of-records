@@ -207,5 +207,40 @@
     "tech": "Dans le Registre",
     "star": "Ça te plaît ? Mets-lui une étoile sur GitHub",
     "thanks": "Merci d’avoir lu le Registre."
+  },
+  "title": {
+    "kicker": "Titre obtenu",
+    "lead": "Le Grand Registre décerne le titre de",
+    "for": {
+      "apprentice": "pour avoir ranimé Le Village en Cendres",
+      "castle": "pour avoir remis en ordre Le Château Bleu",
+      "high": "pour avoir percé le mystère du Grand Registre"
+    },
+    "stats": "{pages} pages du Registre · {spells} sorts",
+    "mastered": "Sorts maîtrisés",
+    "share": "Partage ton titre",
+    "text": {
+      "apprentice": "J’ai obtenu le titre « Scribe en apprentissage » dans The Kingdom of Records ! C’est un jeu en pixel art pour apprendre le SQL en résolvant un mystère médiéval. Je maîtrise déjà SELECT, WHERE, LIKE, ORDER BY, INSERT et UPDATE. Tu te lances ? {url}",
+      "castle": "J’ai obtenu le titre « Scribe du Château » dans The Kingdom of Records ! GROUP BY, HAVING, DELETE et mon premier JOIN, appris en résolvant un mystère médiéval en pixel art. Tu te lances ? {url}",
+      "high": "J’ai terminé The Kingdom of Records et je suis désormais « Scribe en chef du Royaume » ! Les 15 pages du Registre résolues avec du vrai SQL : JOIN, LEFT JOIN, sous-requêtes et plus encore, dans un mystère médiéval en pixel art. Tu te lances ? {url}"
+    },
+    "linkedin": "Partager sur LinkedIn",
+    "copy": "Copier le texte",
+    "copied": "Texte copié.",
+    "copiedLinkedin": "Texte copié : colle-le dans ta publication LinkedIn.",
+    "copyFailed": "Impossible de copier : sélectionne le texte et copie-le toi-même.",
+    "download": "Télécharger l’image",
+    "note": "LinkedIn ne permet pas de remplir le texte : « Partager sur LinkedIn » le copie pour que tu le colles dans ta publication.",
+    "continue": "Continuer vers la carte",
+    "claim": "Recevoir mon titre",
+    "imageLead": "Titre obtenu dans",
+    "imageSub": {
+      "apprentice": "Le Village en Cendres · 5 pages",
+      "castle": "Le Château Bleu · 10 pages",
+      "high": "Les 15 pages du Registre"
+    },
+    "imageFoot": "Apprends le SQL en résolvant un mystère médiéval",
+    "ogDescription": "Un jeu en pixel art pour apprendre le SQL en résolvant un mystère médiéval. Gratuit, dans le navigateur.",
+    "play": "Jouer à The Kingdom of Records"
   }
 }

@@ -207,5 +207,40 @@
     "tech": "Dentro del Registro",
     "star": "¿Te gusta? Dale una estrella en GitHub",
     "thanks": "Gracias por leer el Registro."
+  },
+  "title": {
+    "kicker": "Título conseguido",
+    "lead": "El Gran Registro concede el título de",
+    "for": {
+      "apprentice": "por devolver la vida a La Aldea en Cenizas",
+      "castle": "por poner en orden El Castillo Azul",
+      "high": "por desvelar el misterio del Gran Registro"
+    },
+    "stats": "{pages} páginas del Registro · {spells} conjuros",
+    "mastered": "Conjuros dominados",
+    "share": "Comparte tu título",
+    "text": {
+      "apprentice": "¡He conseguido el título «Aprendiz de Escriba» en The Kingdom of Records! Es un juego pixel art para aprender SQL resolviendo un misterio medieval. Ya domino SELECT, WHERE, LIKE, ORDER BY, INSERT y UPDATE. ¿Te animas? {url}",
+      "castle": "¡He conseguido el título «Escriba del Castillo» en The Kingdom of Records! GROUP BY, HAVING, DELETE y mi primer JOIN, aprendidos resolviendo un misterio medieval en pixel art. ¿Te animas? {url}",
+      "high": "¡He completado The Kingdom of Records y ya soy «Escriba Mayor del Reino»! Las 15 páginas del Registro resueltas con SQL de verdad: JOIN, LEFT JOIN, subconsultas y más, en un misterio medieval en pixel art. ¿Te animas? {url}"
+    },
+    "linkedin": "Compartir en LinkedIn",
+    "copy": "Copiar texto",
+    "copied": "Texto copiado.",
+    "copiedLinkedin": "Texto copiado: pégalo en tu publicación de LinkedIn.",
+    "copyFailed": "No se ha podido copiar: selecciona el texto y cópialo a mano.",
+    "download": "Descargar imagen",
+    "note": "LinkedIn no permite rellenar el texto: al pulsar «Compartir en LinkedIn» se copia solo, para que lo pegues en tu publicación.",
+    "continue": "Seguir al mapa",
+    "claim": "Recoger mi título",
+    "imageLead": "Título conseguido en",
+    "imageSub": {
+      "apprentice": "La Aldea en Cenizas · 5 páginas",
+      "castle": "El Castillo Azul · 10 páginas",
+      "high": "Las 15 páginas del Registro"
+    },
+    "imageFoot": "Aprende SQL resolviendo un misterio medieval",
+    "ogDescription": "Un juego pixel art para aprender SQL resolviendo un misterio medieval. Gratis y en el navegador.",
+    "play": "Jugar a The Kingdom of Records"
   }
 }

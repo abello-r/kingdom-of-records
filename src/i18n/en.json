@@ -207,5 +207,40 @@
     "tech": "Inside the Registry",
     "star": "Like it? Give it a star on GitHub",
     "thanks": "Thank you for reading the Registry."
+  },
+  "title": {
+    "kicker": "Title earned",
+    "lead": "The Great Registry grants the title of",
+    "for": {
+      "apprentice": "for bringing The Village in Ashes back to life",
+      "castle": "for setting The Blue Castle in order",
+      "high": "for solving the mystery of the Great Registry"
+    },
+    "stats": "{pages} pages of the Registry · {spells} spells",
+    "mastered": "Spells mastered",
+    "share": "Share your title",
+    "text": {
+      "apprentice": "I earned the title “Apprentice Scribe” in The Kingdom of Records! It is a pixel-art game to learn SQL by solving a medieval mystery. I can already use SELECT, WHERE, LIKE, ORDER BY, INSERT and UPDATE. Up for it? {url}",
+      "castle": "I earned the title “Castle Scribe” in The Kingdom of Records! GROUP BY, HAVING, DELETE and my first JOIN, learned by solving a medieval mystery in pixel art. Up for it? {url}",
+      "high": "I finished The Kingdom of Records and I am now “High Scribe of the Realm”! All 15 pages of the Registry solved with real SQL: JOIN, LEFT JOIN, subqueries and more, in a pixel-art medieval mystery. Up for it? {url}"
+    },
+    "linkedin": "Share on LinkedIn",
+    "copy": "Copy text",
+    "copied": "Text copied.",
+    "copiedLinkedin": "Text copied: paste it into your LinkedIn post.",
+    "copyFailed": "It could not be copied: select the text and copy it yourself.",
+    "download": "Download image",
+    "note": "LinkedIn does not let a site fill in the text: “Share on LinkedIn” copies it for you to paste into your post.",
+    "continue": "On to the map",
+    "claim": "Claim my title",
+    "imageLead": "Title earned in",
+    "imageSub": {
+      "apprentice": "The Village in Ashes · 5 pages",
+      "castle": "The Blue Castle · 10 pages",
+      "high": "All 15 pages of the Registry"
+    },
+    "imageFoot": "Learn SQL by solving a medieval mystery",
+    "ogDescription": "A pixel-art game to learn SQL by solving a medieval mystery. Free, in your browser.",
+    "play": "Play The Kingdom of Records"
   }
 }

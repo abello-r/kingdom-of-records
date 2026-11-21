@@ -1,0 +1,26 @@
+[
+  {
+    "id": "apprentice",
+    "stage": "easy",
+    "pages": 5,
+    "ribbon": "blue",
+    "name": { "es": "Aprendiz de Escriba", "en": "Apprentice Scribe", "fr": "Scribe en apprentissage" },
+    "chips": ["SELECT", "WHERE", "AND · OR · IN", "LIKE", "ORDER BY", "INSERT", "UPDATE"]
+  },
+  {
+    "id": "castle",
+    "stage": "medium",
+    "pages": 10,
+    "ribbon": "purple",
+    "name": { "es": "Escriba del Castillo", "en": "Castle Scribe", "fr": "Scribe du Château" },
+    "chips": ["SUM · COUNT · AVG", "GROUP BY", "HAVING", "DELETE", "JOIN"]
+  },
+  {
+    "id": "high",
+    "stage": "hard",
+    "pages": 15,
+    "ribbon": "red",
+    "name": { "es": "Escriba Mayor del Reino", "en": "High Scribe of the Realm", "fr": "Scribe en chef du Royaume" },
+    "chips": ["LEFT JOIN", "IS NULL", { "es": "subconsultas", "en": "subqueries", "fr": "sous-requêtes" }, "MAX", "LIMIT"]
+  }
+]

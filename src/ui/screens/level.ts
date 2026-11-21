@@ -6,6 +6,7 @@ import { feedbackMessages, type Message } from '../../engine/messages';
 import type { SchemaTable } from '../../engine/runner';
 import type { DialogueLine, Level, ResultSet, TableSnapshot } from '../../engine/types';
 import { ALL_LEVELS } from '../../state/levels';
+import { titleFor } from '../../titles/titles';
 import { bookIcon, externalLink, fill, h, icon, ICONS, img, isTouchFirst, prefersReducedMotion } from '../dom';
 import { createSqlEditor, type SqlEditor } from '../editor';
 import { rich } from '../rich';
@@ -182,6 +183,9 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     const i = ALL_LEVELS.indexOf(level.id);
     const following = ALL_LEVELS[i + 1];
     if (!following) return { href: routeHash({ name: 'epilogue' }), labelKey: 'level.finish' };
+    // The end of a stage: its title first (the title page then leads to the map).
+    const title = level.order === 5 ? titleFor(level.stage) : undefined;
+    if (title) return { href: routeHash({ name: 'title', id: title.id }), labelKey: 'level.next' };
     if (level.order === 5) return { href: routeHash({ name: 'map', select: following }), labelKey: 'level.next' };
     return { href: routeHash({ name: 'level', id: following }), labelKey: 'level.next' };
   }

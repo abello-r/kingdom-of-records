@@ -1,4 +1,5 @@
 import { parseLevelId, type LevelId } from '../state/levels';
+import { isTitleId, type TitleId } from '../titles/titles';
 
 /** Screens of the game. Routes live in the URL hash so the static build works on any host. */
 export type Route =
@@ -7,7 +8,8 @@ export type Route =
   | { name: 'level'; id: LevelId }
   | { name: 'epilogue' }
   /** `from`: the level it was opened from (the back button returns there). */
-  | { name: 'spellbook'; from?: LevelId };
+  | { name: 'spellbook'; from?: LevelId }
+  | { name: 'title'; id: TitleId };
 
 export function parseRoute(hash: string): Route {
   const path = hash.replace(/^#\/?/, '').split('/').filter(Boolean);
@@ -17,6 +19,7 @@ export function parseRoute(hash: string): Route {
   }
   if (path[0] === 'level' && path[1] && parseLevelId(path[1])) return { name: 'level', id: path[1] as LevelId };
   if (path[0] === 'epilogue') return { name: 'epilogue' };
+  if (path[0] === 'title' && isTitleId(path[1])) return { name: 'title', id: path[1] };
   if (path[0] === 'spellbook') {
     const from = path[1] && parseLevelId(path[1]) ? (path[1] as LevelId) : undefined;
     return from ? { name: 'spellbook', from } : { name: 'spellbook' };
@@ -36,5 +39,7 @@ export function routeHash(route: Route): string {
       return '#/epilogue';
     case 'spellbook':
       return route.from ? `#/spellbook/${route.from}` : '#/spellbook';
+    case 'title':
+      return `#/title/${route.id}`;
   }
 }
