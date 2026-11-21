@@ -15,3 +15,6 @@ export const AUTHOR_URL = 'https://www.linkedin.com/in/alexanderbello-dev/';
  * Leave it empty and the link is not shown.
  */
 export const REPO_URL = 'https://github.com/abello-r/kingdom-of-records';
+
+/** Ko-fi page for the "buy the scribe a coffee" sign on the title screen. Leave it empty to hide the sign. */
+export const KOFI_URL = 'https://ko-fi.com/alexanderbellodev';

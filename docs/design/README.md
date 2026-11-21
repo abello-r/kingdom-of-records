@@ -146,3 +146,9 @@ the credits. Screens: `screens/epilogue-*.png`, `screens/reset-dialog-desktop.pn
   default) and "Erase my progress" (kit red) have the same size, side by side on the right on desktop
   and stacked in the centre on phones.
 - **Music level:** 0.11 (55% of the first level, 0.2); effects unchanged.
+- **Ko-fi:** "Buy the scribe a coffee" on the title screen (`KOFI_URL` in `src/app/site.ts`). From 1350 px
+  wide, a TS-1 wooden signpost with a TS-2 scroll stands on its own islet on the right (below the tree
+  islet, or in its place on short screens); on smaller screens and phones it is a square kit button with
+  a pixel cup at the left of the controls bar. The cup is drawn like the padlock (the kit has none).
+- **Touch devices:** a one-time note "Best played on a computer" under the subtitle (kept in
+  `kor.device-note.v1`).

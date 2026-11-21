@@ -12,6 +12,7 @@ export function installTheme(): void {
     paper: 'ui/paper.png',
     wood: 'ui/wood.png',
     foam: 'terrain/foam.png',
+    scroll: 'ui/scroll.png',
   };
   images['ribbon-blue'] = 'ui/ribbon-blue.png';
   for (const colour of ['blue', 'red', 'purple']) images[`ribbon-small-${colour}`] = `ui/ribbon-small-${colour}.png`;

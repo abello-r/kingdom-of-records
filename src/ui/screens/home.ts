@@ -1,16 +1,16 @@
-import { AUTHOR, AUTHOR_URL, REPO_URL } from '../../app/site';
+import { AUTHOR, AUTHOR_URL, KOFI_URL, REPO_URL } from '../../app/site';
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import { DEVICE_NOTE_KEY, isFlagSet, setFlag } from '../../state/flags';
-import { externalLink, h, icon, ICONS, isTouchFirst } from '../dom';
-import { homeScene } from '../scenes';
+import { asset, cssUrl, cupIcon, externalLink, h, icon, ICONS, isTouchFirst } from '../dom';
+import { homeScene, type HomeLayout } from '../scenes';
 import { World } from '../world';
 
 /** Title screen: the island, the logo and the one thing to do next. */
 export function homeScreen(ctx: AppContext): Screen {
   const { i18n, progress } = ctx;
   const world = new World('world--full');
-  homeScene(world, innerWidth, innerHeight);
+  const layout = homeScene(world, innerWidth, innerHeight, { kofi: !!KOFI_URL });
 
   const done = progress.completedCount();
   const next = progress.nextLevel();
@@ -42,11 +42,17 @@ export function homeScreen(ctx: AppContext): Screen {
     ),
   );
 
+  const chrome = ctx.chrome();
+  const kofi = KOFI_URL ? kofiLink(ctx, layout.kofi) : null;
+  // Without room on the island, the Ko-fi button takes the free left side of the controls bar.
+  if (kofi && !layout.kofi) chrome.querySelector('.chrome__side')?.append(kofi);
+
   const element = h(
     'div',
     { class: 'screen screen--home' },
     world.el,
-    ctx.chrome(),
+    layout.kofi ? kofi : null,
+    chrome,
     main,
     h('footer', { class: 'credits' },
       h('span', {}, i18n.t('footer.credits')),
@@ -77,4 +83,26 @@ function deviceNote(ctx: AppContext): HTMLElement | null {
     note.remove();
   });
   return note;
+}
+
+/**
+ * "Buy the scribe a coffee": a wooden signpost with a scroll on its islet, or, when the island has no
+ * room for it (phones, narrow windows), a square kit button with a cup in the controls bar.
+ */
+function kofiLink(ctx: AppContext, at: HomeLayout['kofi']): HTMLElement {
+  const { i18n } = ctx;
+  const label = i18n.t('home.kofi');
+  if (!at) {
+    const square = externalLink(KOFI_URL, `Ko-fi, ${i18n.t('a11y.newTab')}`, { class: 'square square--kofi', title: label },
+      cupIcon(), h('span', { class: 'visually-hidden' }, label));
+    square.style.setProperty('--btn', cssUrl('ui/btn-blank.png'));
+    square.style.setProperty('--btn-pressed', cssUrl('ui/btn-blank-pressed.png'));
+    return square;
+  }
+  const sign = externalLink(KOFI_URL, `Ko-fi, ${i18n.t('a11y.newTab')}`, { class: 'kofi-sign' },
+    h('span', { class: 'kofi-sign__board' }, cupIcon(), h('span', { class: 'kofi-sign__text' }, label)),
+    h('img', { src: asset('ui/signpost.png'), alt: '', class: 'kofi-sign__post' }));
+  sign.style.left = `${at.x}px`;
+  sign.style.top = `${at.y}px`;
+  return sign;
 }

@@ -48,8 +48,18 @@ export function levelStrip(world: World, level: Level, width: number, height: nu
   return scene.build(kit);
 }
 
-/** Title screen: a wide island at the bottom with the village, the castle and an open square. */
-export function homeScene(world: World, width: number, height: number): void {
+/** Where the title screen's Ko-fi signpost stands (its feet), or null when it is shown as a button. */
+export interface HomeLayout {
+  kofi: { x: number; y: number } | null;
+}
+
+/**
+ * Title screen: a wide island at the bottom with the village, the castle and an open square.
+ * With `kofi`, screens from 1350 px get a small islet on the right for the Ko-fi signpost: below the tree
+ * islet when there is room above the castle, otherwise in the tree islet's place; smaller screens show a
+ * button in the controls bar instead (kofi: null).
+ */
+export function homeScene(world: World, width: number, height: number, opts: { kofi?: boolean } = {}): HomeLayout {
   const compact = isCompact(width);
   const k = compact ? 0.6 : 1;
   const rows = compact ? 3 : 4;
@@ -60,16 +70,34 @@ export function homeScene(world: World, width: number, height: number): void {
   const right = left + cols * 64;
   world.island(left, iy, cols, rows, 'spring');
   const ground = iy + rows * 64 - (compact ? 40 : 70);
+  let kofi: HomeLayout['kofi'] = null;
   if (!compact) {
-    world.island(width - 330, 120, 3, 2, 'spring');
+    // Ko-fi islet (3x2 tiles). The sign (scroll + post, about 215 px tall) stands on it, so it starts
+    // about 95 px above the islet. Below the tree islet it must clear the tree (feet at y 250); in the
+    // tree islet's place it must clear the controls bar (bottom at y 78). The archer on the tower is
+    // about 50 px above the island, so the islet must end 16 px above that. From 1350 px the sign
+    // (about 310 px wide) also clears the logo.
+    const room = iy - 50 - 144;
+    const mode = !opts.kofi || width < 1350 ? 'none' : room >= 353 ? 'below' : room >= 190 ? 'instead' : 'none';
+    if (mode !== 'instead') {
+      world.island(width - 330, 120, 3, 2, 'spring');
+      world.put('props/tree-4', width - 260, 250);
+      world.put('units/sheep', width - 170, 245);
+    }
+    if (mode !== 'none') {
+      const top = mode === 'below' ? 353 : 190;
+      world.island(width - 300, top, 3, 2, 'spring');
+      kofi = { x: width - 204, y: top + 118 };
+    }
     world.island(70, 150, 2, 2, 'spring');
-    world.put('props/tree-4', width - 260, 250);
-    world.put('units/sheep', width - 170, 245);
     world.put('props/gold-stone', 140, 270);
-    world.put('props/duck', width - 150, 330);
     world.cloud(1, -120, 40, 0.9);
-    world.cloud(3, width - 520, 330, 0.8);
     world.cloud(2, width / 2 + 120, -30, 0.7);
+    // The duck and the low cloud would sit on the Ko-fi islet.
+    if (mode !== 'below') {
+      world.put('props/duck', width - 150, 330);
+      world.cloud(3, width - 520, 330, 0.8);
+    }
   }
   const put = (name: Parameters<World['put']>[0], x: number, y: number, opts: PutOptions = {}) =>
     world.put(name, x, y, { ...opts, scale: k * (opts.scale ?? 1) });
@@ -83,7 +111,7 @@ export function homeScene(world: World, width: number, height: number): void {
     put('units/pawn-blue', left + span * (span >= 300 ? 0.52 : 0.6), ground + 22);
     // The sheep needs room between Pip and the tower; on the narrowest phones it stays out.
     if (span >= 300) put('units/sheep', left + span * 0.68, ground + 26);
-    return;
+    return { kofi };
   }
   put('props/tree-1', 110, iy + 140);
   put('buildings/house-1', 200, iy + 160);
@@ -118,6 +146,7 @@ export function homeScene(world: World, width: number, height: number): void {
   const start = Math.max(from, (from + to) / 2 - (step * (chosen.length - 1)) / 2);
   chosen.forEach(([name, dy, opts], i) => put(name, start + i * step, iy + dy, opts));
   if (castleLeft > 700) put('props/rock-2', 640, iy + 268);
+  return { kofi };
 }
 
 /** One island of the kingdom map (fixed size; the map lays islands out responsively). */

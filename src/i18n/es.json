@@ -18,6 +18,7 @@
     "mutedMusic": "Música silenciada"
   },
   "home": {
+    "kofi": "Invita al escriba a un café",
     "deviceNote": "Se juega mejor en ordenador",
     "deviceNoteClose": "Cerrar el aviso",
     "start": "Abrir el Registro",

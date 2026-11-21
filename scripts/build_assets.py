@@ -136,6 +136,8 @@ def control_buttons():
         'music-off': with_badge(scaled(note, 0.8), badge),
         'sound': scaled(speaker, 2),
         'sound-off': with_badge(scaled(speaker.crop((0, 0, 24, speaker.height)), 2), badge),
+        # No icon: the Ko-fi button draws its cup on top (the kit has no cup).
+        'blank': Image.new('RGBA', (1, 1)),
     }
     for name, icon in icons.items():
         for state, base, dy in (('', button, 0), ('-pressed', pressed, 4)):
@@ -152,6 +154,9 @@ def main():
     s64 = [(0, 64), (128, 192), (256, 320)]
     s128 = [(0, 128), (192, 256), (320, 448)]
     save(joined(load(UI, 'Papers', 'RegularPaper.png'), s64, s64), 'ui/paper.png')
+    # Ko-fi sign on the title screen: the TS-2 scroll banner and the TS-1 wooden signpost.
+    save(joined(load(UI, 'Banners', 'Banner.png'), s128, s128), 'ui/scroll.png')
+    save(cropped(load(TS1, 'Deco', '17.png')), 'ui/signpost.png')
     save(joined(load(UI, 'Wood Table', 'WoodTable.png'), s128, s128), 'ui/wood.png')
     big, small = load(UI, 'Ribbons', 'BigRibbons.png'), load(UI, 'Ribbons', 'SmallRibbons.png')
     for i, colour in enumerate(['blue', 'red', 'yellow', 'purple', 'black']):
