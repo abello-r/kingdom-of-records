@@ -5,7 +5,9 @@ export type Route =
   | { name: 'home' }
   | { name: 'map'; select?: LevelId }
   | { name: 'level'; id: LevelId }
-  | { name: 'epilogue' };
+  | { name: 'epilogue' }
+  /** `from`: the level it was opened from (the back button returns there). */
+  | { name: 'spellbook'; from?: LevelId };
 
 export function parseRoute(hash: string): Route {
   const path = hash.replace(/^#\/?/, '').split('/').filter(Boolean);
@@ -15,6 +17,10 @@ export function parseRoute(hash: string): Route {
   }
   if (path[0] === 'level' && path[1] && parseLevelId(path[1])) return { name: 'level', id: path[1] as LevelId };
   if (path[0] === 'epilogue') return { name: 'epilogue' };
+  if (path[0] === 'spellbook') {
+    const from = path[1] && parseLevelId(path[1]) ? (path[1] as LevelId) : undefined;
+    return from ? { name: 'spellbook', from } : { name: 'spellbook' };
+  }
   return { name: 'home' };
 }
 
@@ -28,5 +34,7 @@ export function routeHash(route: Route): string {
       return `#/level/${route.id}`;
     case 'epilogue':
       return '#/epilogue';
+    case 'spellbook':
+      return route.from ? `#/spellbook/${route.from}` : '#/spellbook';
   }
 }

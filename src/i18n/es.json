@@ -4,6 +4,7 @@
     "subtitle": "Las Crónicas del Registro"
   },
   "a11y": {
+    "backToLevel": "Volver al nivel",
     "newTab": "se abre en una pestaña nueva",
     "skipLink": "Saltar al contenido",
     "languageSelector": "Idioma",
@@ -166,6 +167,16 @@
     "thanks": "¡Gracias! Tu sugerencia ha llegado al Registro.",
     "close": "Cerrar",
     "error": "No se ha podido enviar. Inténtalo de nuevo en un rato."
+  },
+  "spellbook": {
+    "kicker": "Registro",
+    "title": "Libro de conjuros",
+    "short": "Conjuros",
+    "count": "Conjuros aprendidos: {n} de {total}.",
+    "intro": "Cada página del Registro añade los suyos.",
+    "formula": "Fórmula",
+    "example": "En el reino",
+    "locked": "Se aprende en {level}"
   },
   "reset": {
     "title": "¿Empezar de cero?",

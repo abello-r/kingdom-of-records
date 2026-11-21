@@ -4,6 +4,7 @@
     "subtitle": "Les Chroniques du Registre"
   },
   "a11y": {
+    "backToLevel": "Retour au niveau",
     "newTab": "s’ouvre dans un nouvel onglet",
     "skipLink": "Aller au contenu",
     "languageSelector": "Langue",
@@ -166,6 +167,16 @@
     "thanks": "Merci ! Ta suggestion est arrivée au Registre.",
     "close": "Fermer",
     "error": "L’envoi a échoué. Réessaie un peu plus tard."
+  },
+  "spellbook": {
+    "kicker": "Registre",
+    "title": "Livre des sorts",
+    "short": "Sorts",
+    "count": "Sorts appris : {n} sur {total}.",
+    "intro": "Chaque page du Registre ajoute les siens.",
+    "formula": "Formule",
+    "example": "Dans le royaume",
+    "locked": "S’apprend dans {level}"
   },
   "reset": {
     "title": "Tout recommencer ?",

@@ -6,7 +6,7 @@ import { feedbackMessages, type Message } from '../../engine/messages';
 import type { SchemaTable } from '../../engine/runner';
 import type { DialogueLine, Level, ResultSet, TableSnapshot } from '../../engine/types';
 import { ALL_LEVELS } from '../../state/levels';
-import { externalLink, fill, h, icon, ICONS, img, isTouchFirst, prefersReducedMotion } from '../dom';
+import { bookIcon, externalLink, fill, h, icon, ICONS, img, isTouchFirst, prefersReducedMotion } from '../dom';
 import { createSqlEditor, type SqlEditor } from '../editor';
 import { rich } from '../rich';
 import { levelStrip } from '../scenes';
@@ -66,7 +66,10 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
   const spellPage = h(
     'section',
     { class: 'page paper spell', 'aria-labelledby': 'spell-title' },
-    h('div', { class: 'spell__head' }, h('h2', { id: 'spell-title' }, t('level.spell')), clearBtn),
+    h('div', { class: 'spell__head' }, h('h2', { id: 'spell-title' }, t('level.spell')),
+      h('a', { class: 'btn btn--ghost btn--small spellbook-link', href: routeHash({ name: 'spellbook', from: level.id }), 'data-sound': 'page' },
+        bookIcon(), h('span', { class: 'spellbook-link__text' }, t('spellbook.short'))),
+      clearBtn),
     replayNote(),
     editorHost,
     h('div', { class: 'actions' }, runBtns[0], hintBtns[0]),

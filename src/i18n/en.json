@@ -4,6 +4,7 @@
     "subtitle": "The Chronicles of the Registry"
   },
   "a11y": {
+    "backToLevel": "Back to the level",
     "newTab": "opens in a new tab",
     "skipLink": "Skip to content",
     "languageSelector": "Language",
@@ -166,6 +167,16 @@
     "thanks": "Thank you! Your suggestion has reached the Registry.",
     "close": "Close",
     "error": "It could not be sent. Please try again in a while."
+  },
+  "spellbook": {
+    "kicker": "Registry",
+    "title": "Spell book",
+    "short": "Spells",
+    "count": "Spells learned: {n} of {total}.",
+    "intro": "Every page of the Registry adds its own.",
+    "formula": "Formula",
+    "example": "In the kingdom",
+    "locked": "You learn it in {level}"
   },
   "reset": {
     "title": "Start over?",

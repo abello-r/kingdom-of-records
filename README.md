@@ -43,6 +43,9 @@ behind the raid is found.
 | Medium: *The Blue Castle* | 1–5 | Aggregates, `GROUP BY`, `HAVING`, `DELETE` and `UPDATE` with conditions, a first `JOIN` |
 | Hard: *The Goblin Frontier* | 1–5 | Several joins, `LEFT JOIN`, subqueries, subqueries with aggregates, and a final challenge |
 
+The **spell book** (from any level or from the map) fills in as you play: every SQL idea you learn,
+with its formula and an example on the kingdom's data; the ones still to come are sealed.
+
 Each stage unlocks when the previous one is finished. The database is rebuilt from scratch every
 time you run a query, so you cannot break anything. Solved levels can be played again from a blank
 page, and the map offers **Start over** to erase all progress.
@@ -107,6 +110,7 @@ src/
   db/              sql.js loader
   engine/          SQL runner, answer checking, friendly errors, Web Worker client
   levels/          One JSON file per level
+  spellbook/       The spell book: one spell per SQL idea, learned with its level
   i18n/            Translations
   state/           Progress, settings, hints and drafts
   styles/          CSS

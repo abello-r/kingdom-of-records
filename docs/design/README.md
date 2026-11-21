@@ -150,5 +150,10 @@ the credits. Screens: `screens/epilogue-*.png`, `screens/reset-dialog-desktop.pn
   wide, a TS-1 wooden signpost with a TS-2 scroll stands on its own islet on the right (below the tree
   islet, or in its place on short screens); on smaller screens and phones it is a square kit button with
   a pixel cup at the left of the controls bar. The cup is drawn like the padlock (the kit has none).
+- **Spell book** (`#/spellbook`, `src/spellbook/spells.ts`): 16 spells, one per new SQL idea, in stage
+  chapters with the stage ribbons. A learned spell shows what it does and one code block with
+  `-- Formula` and `-- In the kingdom` (an example that runs on its level's data, tested); the others are
+  sealed with the padlock and say where they are learned. Opened from the spell heading of a level (the
+  back button returns to it) and from the map's progress bar; icon only on phones.
 - **Touch devices:** a one-time note "Best played on a computer" under the subtitle (kept in
   `kor.device-note.v1`).

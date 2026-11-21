@@ -124,6 +124,10 @@ export class App {
       history.replaceState(null, '', routeHash({ name: 'map' }));
       return mapScreen(this.ctx);
     }
+    if (route.name === 'spellbook') {
+      const { spellbookScreen } = await import('../ui/screens/spellbook');
+      return spellbookScreen(this.ctx, route.from);
+    }
     if (route.name === 'map') return mapScreen(this.ctx, route.select);
     return homeScreen(this.ctx);
   }

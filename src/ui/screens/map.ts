@@ -1,7 +1,7 @@
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import { ALL_LEVELS, STAGES, levelsOf, type LevelId, type Stage } from '../../state/levels';
-import { ICONS, h, icon, img } from '../dom';
+import { ICONS, bookIcon, h, icon, img } from '../dom';
 import { MAP_ISLAND, mapIsland } from '../scenes';
 import { World } from '../world';
 
@@ -89,6 +89,8 @@ export function mapScreen(ctx: AppContext, select?: LevelId): Screen {
       h('span', {}, i18n.t('map.progress', { done, total: ALL_LEVELS.length })),
       h('span', { class: 'bar', role: 'img', 'aria-label': `${done} / ${ALL_LEVELS.length}` },
         h('i', { style: `width:${(done / ALL_LEVELS.length) * 100}%` })),
+      h('a', { class: 'btn btn--ghost btn--small spellbook-link', href: routeHash({ name: 'spellbook' }), 'data-sound': 'page' },
+        bookIcon(), h('span', { class: 'spellbook-link__text' }, i18n.t('spellbook.title'))),
       done > 0 ? resetButton(ctx) : null,
     ),
     h('main', { id: 'main', class: 'map', tabindex: '-1' },
