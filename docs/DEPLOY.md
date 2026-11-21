@@ -71,7 +71,8 @@ From then on:
 The "Suggestions" link in the title-screen footer opens a small form (message and an optional email)
 that is sent to **Netlify Forms** as the form `suggestions`. `index.html` holds a hidden copy of the
 form so Netlify detects it when the site is deployed; a hidden honeypot field (`bot-field`) and
-Netlify's own spam filter keep bots out. Forms only work on Netlify, not on GitHub Pages.
+Netlify's own spam filter keep bots out. Forms only work on Netlify, not on GitHub Pages; on a local
+copy the form says so.
 
 To receive each suggestion by email:
 

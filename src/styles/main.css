@@ -423,7 +423,13 @@ a { color: inherit; }
 .suggest textarea { resize: vertical; min-height: 110px; }
 .suggest__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .suggest__status { min-height: 1.4em; margin: 12px 0 8px; font-size: 1.3rem; }
-.suggest.is-sent label, .suggest.is-sent textarea, .suggest.is-sent input, .suggest.is-sent .btn--wood { display: none; }
+.suggest__local { padding: 8px 12px; border: 2px dashed var(--ink-soft); border-radius: 6px; font-size: 1.2rem; }
+.confirm .suggest__local { margin: -12px 0 8px; }
+/* Sent: only the thanks, centred, and one button to close. */
+.suggest.is-sent > h2, .suggest.is-sent .suggest__intro, .suggest.is-sent .suggest__local, .suggest.is-sent label,
+.suggest.is-sent textarea, .suggest.is-sent input, .suggest.is-sent .btn--wood { display: none; }
+.suggest.is-sent .suggest__status { margin: 18px 0 22px; font-size: 1.6rem; text-align: center; }
+.suggest.is-sent .confirm__actions { justify-content: center; }
 .confirm h2 { margin: 0 0 8px; font-size: 2rem; line-height: 1; }
 .confirm p { margin: 0 0 24px; }
 /* Two buttons of the same size, side by side on the right; stacked and centred on phones. The padding

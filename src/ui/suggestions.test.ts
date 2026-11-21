@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { HONEYPOT, sendSuggestion, SUGGESTIONS_FORM } from './suggestions';
+import { HONEYPOT, isLocalHost, sendSuggestion, SUGGESTIONS_FORM } from './suggestions';
 
 const ok = () => vi.fn(async () => ({ ok: true }) as Response);
 
@@ -24,5 +24,12 @@ describe('sendSuggestion', () => {
   it('reports a failure when the server refuses or the network fails', async () => {
     expect(await sendSuggestion({ message: 'x', email: '', trap: '', lang: 'fr' }, vi.fn(async () => ({ ok: false }) as Response))).toBe(false);
     expect(await sendSuggestion({ message: 'x', email: '', trap: '', lang: 'fr' }, vi.fn(async () => Promise.reject(new Error('offline'))))).toBe(false);
+  });
+});
+
+describe('isLocalHost', () => {
+  it('knows a copy served from this computer from the published site', () => {
+    for (const host of ['localhost', '127.0.0.1', '[::1]', 'my-pc.local']) expect(isLocalHost(host), host).toBe(true);
+    for (const host of ['kingdom-of-records.netlify.app', 'example.com']) expect(isLocalHost(host), host).toBe(false);
   });
 });

@@ -166,7 +166,8 @@
     "sending": "Envoi…",
     "thanks": "Merci ! Ta suggestion est arrivée au Registre.",
     "close": "Fermer",
-    "error": "L’envoi a échoué. Réessaie un peu plus tard."
+    "error": "L’envoi a échoué. Réessaie un peu plus tard.",
+    "local": "Ceci est une copie locale : les suggestions ne partent que depuis le site publié."
   },
   "spellbook": {
     "kicker": "Registre",

@@ -166,7 +166,8 @@
     "sending": "Enviando…",
     "thanks": "¡Gracias! Tu sugerencia ha llegado al Registro.",
     "close": "Cerrar",
-    "error": "No se ha podido enviar. Inténtalo de nuevo en un rato."
+    "error": "No se ha podido enviar. Inténtalo de nuevo en un rato.",
+    "local": "Esta es una copia local: las sugerencias solo se envían desde la web publicada."
   },
   "spellbook": {
     "kicker": "Registro",

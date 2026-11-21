@@ -14,6 +14,11 @@ export interface Suggestion {
   lang: string;
 }
 
+/** True on a copy of the game served from this computer, where Netlify Forms does not exist. */
+export function isLocalHost(hostname: string): boolean {
+  return ['localhost', '127.0.0.1', '[::1]', '::1', ''].includes(hostname) || hostname.endsWith('.local');
+}
+
 /**
  * Sends a suggestion to Netlify Forms (a URL-encoded POST to the site root). A filled honeypot means a
  * bot: nothing is sent, but it looks like a success. Resolves to true when the suggestion arrived.
@@ -43,7 +48,8 @@ export function suggestionsLink(i18n: I18n): HTMLElement {
   const send = h('button', { type: 'submit', class: 'btn btn--primary' }, t('suggest.send'));
   const form = h('form', { class: 'suggest', name: SUGGESTIONS_FORM },
     h('h2', { id: 'suggest-title' }, t('suggest.title')),
-    h('p', {}, t('suggest.intro')),
+    h('p', { class: 'suggest__intro' }, t('suggest.intro')),
+    isLocalHost(location.hostname) ? h('p', { class: 'suggest__local' }, t('suggest.local')) : null,
     h('label', { for: 'suggest-message' }, t('suggest.message')),
     message,
     h('label', { for: 'suggest-email' }, t('suggest.email')),
@@ -78,6 +84,7 @@ export function suggestionsLink(i18n: I18n): HTMLElement {
     const ok = await sendSuggestion({ message: message.value, email: email.value, trap: trap.value, lang: i18n.language });
     send.disabled = false;
     if (ok) {
+      // Only the thanks and a button to close are left.
       form.classList.add('is-sent');
       status.textContent = t('suggest.thanks');
       send.textContent = t('suggest.close');

@@ -166,7 +166,8 @@
     "sending": "Sending…",
     "thanks": "Thank you! Your suggestion has reached the Registry.",
     "close": "Close",
-    "error": "It could not be sent. Please try again in a while."
+    "error": "It could not be sent. Please try again in a while.",
+    "local": "This is a local copy: suggestions can only be sent from the published site."
   },
   "spellbook": {
     "kicker": "Registry",
