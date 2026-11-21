@@ -197,7 +197,11 @@ def main():
         for i in range(frames):
             strip.paste(img.crop((i * w, row * h, i * w + w, row * h + h)), (i * w, 0))
         save(strip, f'{name}.png')
-        manifest[name] = {'w': w, 'h': h, 'frames': frames, 'fps': fps}
+        # Drawn area in the cell (union of every frame): what can be seen of the sprite, for layout tests.
+        boxes = [strip.crop((i * w, 0, i * w + w, h)).getchannel('A').getbbox() for i in range(frames)]
+        boxes = [b for b in boxes if b]
+        box = [min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes)]
+        manifest[name] = {'w': w, 'h': h, 'frames': frames, 'fps': fps, 'box': box}
 
     def still(img, name):
         sprite(img, name, img.width, img.height)
