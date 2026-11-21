@@ -108,7 +108,8 @@ To take it down: **Settings** → **Pages** → **Unpublish site**.
 ## Sharing the link
 
 `index.html` holds the link-preview metadata (Open Graph and Twitter Card): title, description and the
-1200x630 image `public/og-image.png` (a capture of the title screen). Social sites need absolute URLs,
+1200x630 image `public/og-image.png` (a capture of the title screen at 1440x756, the narrowest width
+with the Ko-fi sign, scaled down). Social sites need absolute URLs,
 so the address `https://kingdom-of-records.netlify.app/` is written there; update it if the site moves.
 
 - LinkedIn keeps its own copy of a preview. After changing the image or texts, paste the address into

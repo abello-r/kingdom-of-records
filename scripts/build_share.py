@@ -3,7 +3,9 @@
 LinkedIn and other sites build a link preview from the page they are given, so each title has its own
 small page per language with its own image and texts; the page then opens the game in that language.
 Texts come from src/titles/titles.json and src/i18n/*.json; the art from public/ (run build_assets.py
-first) and the fonts from node_modules (run npm install first). Usage, from the project root
+first) and the fonts from node_modules (run npm install first). The background, scripts/share-background.png,
+is a 1200x630 capture of the title screen like public/og-image.png, without its Ko-fi sign (it would show
+behind the card). Usage, from the project root
 (requires Pillow and fonttools):
 
     python scripts/build_share.py
@@ -77,7 +79,7 @@ def text(draw, xy, s, f, fill, shadow=None, anchor='mt'):
 
 
 def image(title, lang, t):
-    bg = Image.open(os.path.join(PUBLIC, 'og-image.png')).convert('RGBA').resize((W, H))
+    bg = Image.open(os.path.join(ROOT, 'scripts', 'share-background.png')).convert('RGBA').resize((W, H))
     img = Image.alpha_composite(bg, Image.new('RGBA', (W, H), INK + (115,)))
     paper = Image.open(os.path.join(PUBLIC, 'assets', 'ui', 'special-paper.png')).convert('RGBA')
     card = (140, 46, W - 140, H - 70)

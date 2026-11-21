@@ -134,8 +134,9 @@ are kept outside version control and never modified. The output is committed, so
 when the list of images changes.
 
 `scripts/build_share.py` (Python 3 + Pillow + fonttools, after `npm install` and `build_assets.py`)
-builds `public/share/`: one page and one 1200x630 image per title and language. Run it again when
-a title, its texts or the site address change; the tests check that every page and image exists.
+builds `public/share/`: one page and one 1200x630 image per title and language, over
+`scripts/share-background.png` (the title screen without its Ko-fi sign). Run it again when a title,
+its texts, the background or the site address change; the tests check that every page and image exists.
 
 ## Credits and licences
 
