@@ -155,5 +155,12 @@ the credits. Screens: `screens/epilogue-*.png`, `screens/reset-dialog-desktop.pn
   `-- Formula` and `-- In the kingdom` (an example that runs on its level's data, tested); the others are
   sealed with the padlock and say where they are learned. Opened from the spell heading of a level (the
   back button returns to it) and from the map's progress bar; icon only on phones.
+- **Titles** (`#/title/<id>`, `src/titles/titles.json`): Apprentice Scribe (blue), Castle Scribe
+  (purple) and High Scribe of the Realm (red), one per stage. "Turn the page" after Easy 5 and Medium 5
+  leads to the title; the last one is claimed from the epilogue, after the story ends. Left page: a
+  certificate on the TS-2 special paper with the big kit ribbon in the stage colour (two balanced lines
+  on phones when the name is long) and Pip's portrait. Right page: spells mastered, the share text
+  (no spoilers), LinkedIn (copies the text, since LinkedIn only takes a link), copy text and download
+  image. Share pages and images are made by `scripts/build_share.py`.
 - **Touch devices:** a one-time note "Best played on a computer" under the subtitle (kept in
   `kor.device-note.v1`).

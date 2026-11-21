@@ -10,7 +10,7 @@ import { I18n } from './i18n';
 import { loadLevels } from './levels';
 import { LevelMemory } from './state/level-memory';
 import { Progress } from './state/progress';
-import { loadSettings } from './state/settings';
+import { isLanguage, loadSettings, saveSettings } from './state/settings';
 import { createBrowserStore } from './state/storage';
 import { asset } from './ui/dom';
 import { installTheme } from './ui/theme';
@@ -22,6 +22,13 @@ if (!root) throw new Error('#app element not found');
 
 const store = createBrowserStore();
 const settings = loadSettings(store, navigator.languages ?? [navigator.language]);
+// Share pages open the game as ?lang=xx: that language is used (and remembered), then the query goes away.
+const langParam = new URLSearchParams(location.search).get('lang');
+if (isLanguage(langParam) && langParam !== settings.language) {
+  settings.language = langParam;
+  saveSettings(store, settings);
+}
+if (langParam !== null) history.replaceState(null, '', location.pathname + location.hash);
 
 // The SQL engine lives in a Web Worker. The wasm URL is made absolute because the worker resolves
 // relative URLs from its own location.

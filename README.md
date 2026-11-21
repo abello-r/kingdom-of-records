@@ -46,6 +46,11 @@ behind the raid is found.
 The **spell book** (from any level or from the map) fills in as you play: every SQL idea you learn,
 with its formula and an example on the kingdom's data; the ones still to come are sealed.
 
+Finishing a stage earns a **title** (*Apprentice Scribe*, *Castle Scribe* and, after the epilogue,
+*High Scribe of the Realm*): a certificate with the spells mastered, a suggested text to share, a
+LinkedIn button and a downloadable image. Each title has a small share page per language
+(`/share/<title>/<lang>/`) with its own preview image, which opens the game in that language.
+
 Each stage unlocks when the previous one is finished. The database is rebuilt from scratch every
 time you run a query, so you cannot break anything. Solved levels can be played again from a blank
 page, and the map offers **Start over** to erase all progress.
@@ -104,6 +109,7 @@ instructions: [`docs/DEPLOY.md`](docs/DEPLOY.md).
 docs/              Story, asset inventory, level format, deployment, design references
 public/assets/     Art, sounds, music and fonts used by the game + CREDITS.md and licences
 scripts/           build_assets.py: copies the art from the original packs
+                   build_share.py: builds the share pages of the titles (public/share/)
 src/
   app/             App shell and hash router (#/, #/map, #/level/easy-2, #/epilogue)
   audio/           Sound effects and music
@@ -111,6 +117,7 @@ src/
   engine/          SQL runner, answer checking, friendly errors, Web Worker client
   levels/          One JSON file per level
   spellbook/       The spell book: one spell per SQL idea, learned with its level
+  titles/          The titles earned at the end of each stage and their share links
   i18n/            Translations
   state/           Progress, settings, hints and drafts
   styles/          CSS
@@ -125,6 +132,10 @@ The story and its clues are described in [`docs/STORY.md`](docs/STORY.md).
 into `public/assets/` with clean names, and writes `src/ui/sprite-manifest.json`. The original packs
 are kept outside version control and never modified. The output is committed, so this is only needed
 when the list of images changes.
+
+`scripts/build_share.py` (Python 3 + Pillow + fonttools, after `npm install` and `build_assets.py`)
+builds `public/share/`: one page and one 1200x630 image per title and language. Run it again when
+a title, its texts or the site address change; the tests check that every page and image exists.
 
 ## Credits and licences
 
