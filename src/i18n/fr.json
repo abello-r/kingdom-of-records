@@ -40,7 +40,10 @@
     "done": "terminé",
     "current": "à lire ensuite",
     "locked": "verrouillé",
-    "reset": "Tout recommencer"
+    "reset": "Tout recommencer",
+    "solved": "Page résolue",
+    "unsolved": "Pas encore résolue",
+    "hintsUsed": "Indices utilisés : {n} sur {total}"
   },
   "stages": {
     "easy": {

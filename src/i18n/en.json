@@ -40,7 +40,10 @@
     "done": "completed",
     "current": "next to read",
     "locked": "locked",
-    "reset": "Start over"
+    "reset": "Start over",
+    "solved": "Page solved",
+    "unsolved": "Not solved yet",
+    "hintsUsed": "Hints used: {n} of {total}"
   },
   "stages": {
     "easy": {

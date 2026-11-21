@@ -74,8 +74,19 @@ list (CodeMirror's default marked `role` as a keyword).
 
 - Panels: TS-2 parchment and wood table as 9-slice `border-image` at 1×.
 - Map nodes: **standards** made from TS-2 small ribbons (body + forked tail, rotated) on a wooden pole.
-  Done: kit blue + tick. Current: kit blue, raised, parchment outline, Pip standing at its foot.
-  Locked: slate (black ribbon) + padlock.
+  Done: kit blue + tick. Current: kit blue, parchment outline. Selected (its card is open): raised, with a
+  golden outline and a soft glow. Locked: slate (black ribbon) + padlock. Pip waits on a strip of land
+  below the standards (the islands' bottom row), halfway to the next one, never over a standard.
+- Map: from 1000 px the three islands are in a row (shrunk to fit up to 1400 px, ribbons too) and the
+  dotted route goes on over the sea from the last standard of an island to the first of the next; below
+  1000 px they are stacked. In a row the map also fits the window's height (no scroll from 1280x800,
+  including 1440x900 and 1366x768): the islands first stop being staggered, then shrink down to 62%,
+  and the level card takes the free width (up to 520 px) so it stays short. When it still does not
+  fit (smaller screens, phones), the page scrolls so the level card is in view. The open sea gets small 2x2 islets (wide screens), TS-2 water rocks and
+  swimming ducks, each in the largest free stretch of water, never over an island, ribbon, card, note or
+  control (`fillSea` in `src/ui/screens/map.ts`). The level card shows the title, the stage, the task,
+  the ideas, "Open this page" and the state (solved or not, hints used). The top bar's buttons are
+  smaller than the kit's, inside the bar; up to 1200 px the spell book is an icon.
 - Buttons: CSS pixel buttons (ink outline, top highlight, bottom shade). The TS-2 button images only
   stay crisp at large sizes.
 - Hint button: always visible next to "Lanzar conjuro", with a counter of the hints **left**

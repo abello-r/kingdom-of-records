@@ -208,14 +208,19 @@ a { color: inherit; }
 .credits > span + span::before { content: '·'; margin: 0 .5em; }
 
 /* ---------- map ---------- */
-.screen--map { position: relative; min-height: 100vh; padding: 96px 20px 60px; overflow-x: clip; }
+.screen--map { position: relative; min-height: 100vh; padding: 90px 20px 12px; overflow-x: clip; }
 .map:focus { outline: none; }
 .map__stages { display: flex; justify-content: center; align-items: flex-start; gap: 24px; }
 .stage { display: flex; flex-direction: column; align-items: center; }
-.stage--easy { margin-top: 110px; }
-.stage--hard { margin-top: 140px; }
+/* The islands are staggered; to fit a laptop's height the map flattens them first (--stagger 1 to 0). */
+.stage--easy { margin-top: calc(110px * var(--island-zoom, 1) * var(--stagger, 1)); }
+.stage--hard { margin-top: calc(140px * var(--island-zoom, 1) * var(--stagger, 1)); }
 .stage > h2 { position: relative; z-index: 2; margin-bottom: -18px; }
-.world--island { background: transparent; overflow: visible; }
+/* Islands keep their pixel size where they fit; the map sets --island-zoom to fit three in a row. */
+.world--island { background: transparent; overflow: visible; zoom: var(--island-zoom, 1); }
+.map { position: relative; z-index: 1; }
+/* The open sea behind the islands: the route between them, islets, rocks and ducks (see fillSea). */
+.world--sea { position: absolute; left: 0; top: 0; z-index: 0; background: transparent; pointer-events: none; }
 .route { position: absolute; left: 0; top: 0; z-index: 3000; pointer-events: none; }
 .route path { fill: none; stroke: var(--parchment); stroke-width: 6; stroke-dasharray: 6 10; shape-rendering: crispEdges; }
 .standard {
@@ -228,20 +233,63 @@ a { color: inherit; }
 .standard__n { position: relative; z-index: 2; margin-top: 24px; font-size: 2.1rem; line-height: 1; color: var(--ink); }
 .standard__tick { position: absolute; z-index: 3; right: -22px; top: -6px; width: 34px; height: 34px; }
 .standard .icon { position: relative; z-index: 2; margin-top: 34px; width: 22px; height: 22px; fill: var(--parchment); shape-rendering: crispEdges; }
-.standard--current { margin-top: -18px; }
 .standard--current .standard__flag { filter: drop-shadow(3px 0 0 var(--parchment)) drop-shadow(-3px 0 0 var(--parchment)); }
-.standard[aria-current='true'] .standard__flag { filter: drop-shadow(3px 0 0 var(--parchment)) drop-shadow(-3px 0 0 var(--parchment)) drop-shadow(0 3px 0 var(--parchment)); }
+/* The selected standard (its card is open below the island): raised, with a golden outline and a soft glow. */
+.standard[aria-current='true'] { transform: translate(-50%, calc(-100% - 12px)); }
+.standard[aria-current='true'] .standard__flag {
+  filter: drop-shadow(3px 0 0 var(--kit-yellow)) drop-shadow(-3px 0 0 var(--kit-yellow)) drop-shadow(0 3px 0 var(--kit-yellow))
+    drop-shadow(0 0 8px rgba(242, 226, 138, .75));
+}
 .standard:disabled { cursor: not-allowed; }
 .standard:hover:not(:disabled) .standard__flag { filter: brightness(1.1); }
-.locked-note { display: flex; align-items: center; gap: 10px; margin: 6px 0 0; padding: 6px 14px 8px; border-radius: 4px; background: rgba(22, 28, 46, .82); color: var(--parchment); font-size: 1.35rem; }
+.locked-note { display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 24px); margin: 6px 0 0; padding: 6px 14px 8px; border-radius: 4px; background: rgba(22, 28, 46, .82); color: var(--parchment); font-size: 1.35rem; }
 .locked-note .icon { width: 20px; height: 20px; fill: var(--parchment); }
-.map-card { width: 440px; max-width: calc(100vw - 40px); margin-top: 18px; }
+/* As wide as the row leaves room for (--card-width, set by the map), so it stays short. */
+.map-card { width: var(--card-width, max(300px, min(440px, calc(448px * var(--island-zoom, 1))))); max-width: calc(100vw - 40px); margin-top: 18px; }
 .map-card h3 { margin: 0; font-size: 2.1rem; line-height: 1; }
+/* On desktop the card is compact (thinner paper edge, smaller button), so the whole map fits a laptop. */
+@media (min-width: 761px) {
+  /* It rises over the sea margin of its island (32 px at full size, mostly open water). */
+  .map-card { margin-top: calc(14px - 28px * var(--island-zoom, 1)); border-width: 26px 30px; border-image-width: 48px; border-image-outset: 12px; }
+  .map-card .map-card__task { margin-bottom: 10px; font-size: 1.3rem; line-height: 1.3; }
+  .map-card .chips { margin-bottom: 10px; }
+  .map-card .btn { min-height: 40px; padding: 5px 18px 9px; font-size: 1.55rem; }
+}
 .map-card__where { margin: 2px 0 10px; color: var(--ink-soft); font-size: 1.35rem; }
+.map-card__task { margin: 0 0 12px; font-size: 1.35rem; line-height: 1.35; }
+.map-card__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding-bottom: 8px; }
+.map-card__status { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; margin: 0; color: var(--ink-soft); font-size: 1.25rem; }
+.map-card__status.is-solved { color: var(--ink); }
+.map-card__tick { width: 26px; height: 26px; margin: -4px -2px -4px -4px; }
+.map-card__hints::before { content: '·'; margin-right: 8px; }
 .map__progress {
   position: absolute; left: 90px; top: 16px; z-index: 7000; display: flex; align-items: center; gap: 14px;
-  padding: 8px 16px 10px; border-radius: 6px; background: var(--wood-dark); color: var(--parchment);
+  padding: 9px 16px 13px; border-radius: 6px; background: var(--wood-dark); color: var(--parchment);
   box-shadow: 0 0 0 3px var(--ink), 0 6px 0 3px var(--ink);
+}
+/* The bar's buttons are smaller than the kit's, with their outline and shadow inside the bar. */
+.map__progress .btn--small {
+  min-height: 30px; padding: 3px 10px 6px; font-size: 1.15rem; gap: 8px;
+  box-shadow: inset 0 3px 0 var(--light), inset 0 -4px 0 var(--shade), 0 0 0 3px var(--ink), 0 5px 0 3px var(--ink);
+}
+.map__progress .btn--small:active { box-shadow: inset 0 3px 0 var(--light), inset 0 -2px 0 var(--shade), 0 0 0 3px var(--ink), 0 2px 0 3px var(--ink); transform: translateY(3px); }
+.map__progress .book-icon { width: 18px; height: 18px; }
+/* Below 1000 px the three islands do not fit in a row: they are stacked, as on phones, and the bar goes
+   under the controls. */
+@media (min-width: 761px) and (max-width: 999px) {
+  .screen--map { padding-top: 90px; }
+  .map__stages { flex-direction: column; align-items: center; gap: 18px; }
+  .stage--easy, .stage--hard { margin-top: 0; }
+  .map__progress { position: static; width: fit-content; margin: 0 auto 8px; }
+}
+/* The stage ribbons shrink with the islands (not below 80%, to stay readable). */
+@media (min-width: 761px) {
+  .stage > h2 { zoom: max(.8, var(--island-zoom, 1)); }
+}
+/* From 761 to 1200 px the bar leaves room for the controls: a shorter bar and the spell book as an icon. */
+@media (min-width: 761px) and (max-width: 1200px) {
+  .map__progress .bar { width: 120px; }
+  .map__progress .spellbook-link__text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
 .bar { position: relative; width: 220px; height: 20px; background: var(--wood-darker); box-shadow: inset 0 0 0 2px var(--ink); }
 .bar i { position: absolute; left: 2px; top: 2px; bottom: 2px; max-width: calc(100% - 4px); background: var(--kit-blue); box-shadow: inset 0 3px 0 var(--kit-blue-light), inset 0 -4px 0 var(--kit-blue-shade); }
@@ -381,9 +429,9 @@ a { color: inherit; }
   .screen--map { padding: 0 0 90px; }
   .map__stages { flex-direction: column; align-items: center; gap: 18px; padding-top: 16px; }
   .stage--easy, .stage--hard { margin-top: 0; }
-  .world--island { zoom: .82; }
+  .stage > h2 { max-width: calc(100vw - 8px); }
   .map__progress { position: static; flex-wrap: wrap; row-gap: 10px; justify-content: center; margin: 12px 10px 0; white-space: nowrap; font-size: 1.3rem; }
-  .map__progress .bar { flex: 1; width: auto; max-width: 200px; }
+  .map__progress .bar { flex: 1 1 90px; width: auto; min-width: 90px; max-width: 200px; }
   .map-card { width: calc(100vw - 40px); }
 
   .scene { display: flex; flex-direction: column; }

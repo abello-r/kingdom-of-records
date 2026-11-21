@@ -244,6 +244,14 @@ export class World {
   }
 }
 
+/** A sprite's drawing (its cell without the transparent margin), relative to its feet, at scale 1. */
+export function drawnBox(name: SpriteName, flip = false): { left: number; right: number; top: number; bottom: number } {
+  const s = SHEETS[name];
+  const [x0, y0, x1, y1] = s.box as [number, number, number, number];
+  const [left, right] = flip ? [s.w - x1, s.w - x0] : [x0, x1];
+  return { left: left - s.w / 2, right: right - s.w / 2, top: y0 - s.h, bottom: y1 - s.h };
+}
+
 /**
  * How far to move a sprite's feet so that its drawing (not its cell, which may have more transparent room
  * on one side) is centred on a point; mirrored sprites need the opposite move.

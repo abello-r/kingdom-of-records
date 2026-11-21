@@ -214,8 +214,11 @@ export function homeScene(world: World, width: number, height: number, opts: { k
   return { kofi, ducks };
 }
 
-/** One island of the kingdom map (fixed size; the map lays islands out responsively). */
-export const MAP_ISLAND = { cols: 6, rows: 5, width: 6 * 64, height: 5 * 64 };
+/**
+ * One island of the kingdom map (fixed size; the map lays islands out responsively). The bottom row is
+ * a strip of land below the standards, for the route and Pip.
+ */
+export const MAP_ISLAND = { cols: 6, rows: 6, width: 6 * 64, height: 6 * 64 };
 
 export function mapIsland(world: World, stage: Stage, locked: boolean): void {
   const pad = 32;
