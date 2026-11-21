@@ -1,7 +1,7 @@
 import type { Level } from '../engine/types';
 import type { Stage } from '../state/levels';
 import { LEVEL_SCENES, type Kit, type Solve } from './reactions';
-import type { PutOptions, Sprite, Terrain, World } from './world';
+import { drawnCentreOffset, type PutOptions, type Sprite, type Terrain, type World } from './world';
 
 export const STAGE_TERRAIN: Record<Stage, Terrain> = { easy: 'spring', medium: 'autumn', hard: 'dusk' };
 
@@ -16,6 +16,14 @@ export function isCompact(width: number): boolean {
  * the controls above the strip and the title below it, so they need no band.
  */
 export const HEADER_BAND = 84;
+
+/**
+ * How far above a tower's feet a unit's feet go so it stands on the tower's wooden floor, between the
+ * battlements (TS-2 tower: floor centre about 104 px down its 256 px cell; units' feet sit 64 px above
+ * the bottom of their 192 px cell). Drawn over the tower, it looks inside: the front battlements are
+ * below its feet.
+ */
+export const TOWER_FLOOR = 88;
 
 /** Height of a level strip (level, title, spell book and epilogue screens), header band included. */
 export function stripHeight(width: number): number {
@@ -51,10 +59,12 @@ export function levelStrip(world: World, level: Level, width: number, height: nu
     ground,
     x,
     y,
-    towerTop: 137,
     put(name, f, opts: PutOptions & { dy?: number; s?: number; wide?: boolean } = {}) {
       if (opts.wide && compact) return null;
       return world.put(name, x(f), y(opts.dy), { ...opts, scale: k * (opts.s ?? 1) });
+    },
+    onTower(name, f, towerDy, opts: PutOptions = {}) {
+      return world.put(name, x(f) + drawnCentreOffset(name, opts.flip) * k, y(towerDy - TOWER_FLOOR), { ...opts, above: true, scale: k });
     },
   };
   const edge = level.stage === 'easy' ? 'props/tree-1' : level.stage === 'medium' ? 'props/tree-4' : 'props/tree-3';
@@ -180,7 +190,8 @@ export function homeScene(world: World, width: number, height: number, opts: { k
   if (castleLeft > 545) put('buildings/house-2', 470, iy + 150);
   put('buildings/castle', castleX, iy + 175);
   put('buildings/tower', towerX, iy + 190);
-  put('units/archer-blue', towerX, iy + 76, { above: true });
+  // The archer stands on the tower's floor, between its battlements.
+  put('units/archer-blue', towerX + drawnCentreOffset('units/archer-blue'), iy + 190 - TOWER_FLOOR, { above: true });
   // The crowd fills the square between the houses and the castle; when the square is narrow, the
   // least important figures stay out rather than overlap (Pip and Sir Aldric always come).
   const from = castleLeft > 545 ? 560 : 440;

@@ -129,6 +129,10 @@ tall and keeps its top 84 px as open sea (`HEADER_BAND` in `src/ui/scenes.ts`): 
 sprite start below it, so nothing a reaction shows (archers on the towers, for instance) is hidden.
 A test checks every scene, before and after its reaction, on desktop and phone, using the drawn area
 of each sprite recorded in `src/ui/sprite-manifest.json` by `scripts/build_assets.py`.
+Units on a tower (the archers of Easy 2 and Medium 5, and the one on the title screen) stand on its
+wooden floor, between the battlements: `onTower` puts their feet `TOWER_FLOOR` (88 px at scale 1)
+above the tower's and centres their drawing on it; drawn over the tower, the front battlements stay
+below their feet. The scene test checks it.
 
 The **epilogue** (`#/epilogue`, after the last level) shows the castle court and closes the story:
 the gold in Corvin's coffers, the sheep in his garden, Lady Maud cleared, the Registry restored; then

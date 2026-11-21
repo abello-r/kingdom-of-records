@@ -18,8 +18,11 @@ export interface Kit {
   /** Pixel position for a fraction of the width / an offset from the ground. */
   x(f: number): number;
   y(dy?: number): number;
-  /** Height of a tower top above its base, at this scale (archers stand there). */
-  towerTop: number;
+  /**
+   * Places a unit standing on the wooden floor of the tower put at (f, towerDy), centred between its
+   * battlements and drawn over it.
+   */
+  onTower(name: SpriteName, f: number, towerDy: number, opts?: PutOptions): Sprite | null;
 }
 
 /** Applies the reaction: animated after a correct answer, instant when redrawing a solved page. */
@@ -53,11 +56,11 @@ export const LEVEL_SCENES: Record<LevelId, LevelScene> = {
   },
   // Eyes on the towers — the archers climb the four towers.
   'easy-2': {
-    build({ put, world, towerTop }) {
+    build({ put, onTower, world }) {
       const towers = [0.14, 0.38, 0.62, 0.86];
       towers.forEach((f, i) => put('buildings/tower', f, { dy: i % 2 ? -4 : -10 }));
       const ground = [0.45, 0.49, 0.53, 0.57].map((f, i) => put('units/archer-blue', f, { dy: 10 + (i % 2) * 4, flip: i % 2 === 1 }));
-      const tops = towers.map((f, i) => put('units/archer-blue', f, { dy: (i % 2 ? -4 : -10) - towerTop, above: true, hidden: true, flip: f > 0.5 }));
+      const tops = towers.map((f, i) => onTower('units/archer-blue', f, i % 2 ? -4 : -10, { hidden: true, flip: f > 0.5 }));
       return () => {
         ground.forEach((s, i) => world.vanish(s, stagger(i, 160)));
         tops.forEach((s, i) => world.appear(s, stagger(i, 260, 420)));
@@ -182,11 +185,11 @@ export const LEVEL_SCENES: Record<LevelId, LevelScene> = {
   },
   // The unguarded tower — Riverwatch has no guard; Sir Garrick is found at its foot.
   'medium-5': {
-    build({ put, world, towerTop }) {
+    build({ put, onTower, world }) {
       const towers = [0.15, 0.4, 0.65, 0.88];
       towers.forEach((f, i) => put('buildings/tower', f, { dy: i % 2 ? -4 : -10 }));
       towers.forEach((f, i) => {
-        if (i !== 1) put('units/archer-blue', f, { dy: (i % 2 ? -4 : -10) - towerTop, above: true, flip: f > 0.5 });
+        if (i !== 1) onTower('units/archer-blue', f, i % 2 ? -4 : -10, { flip: f > 0.5 });
       });
       const garrick = put('units/warrior-red', 0.46, { dy: 20, hidden: true, flip: true });
       return () => world.appear(garrick, 300);
