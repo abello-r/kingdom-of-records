@@ -11,6 +11,23 @@ export function isCompact(width: number): boolean {
 }
 
 /**
+ * On desktop the level's title ribbon and the controls float over the top of the strip (down to about
+ * y 78), so strips keep a band of sea there and draw the land, and every sprite, below it. Phones show
+ * the controls above the strip and the title below it, so they need no band.
+ */
+export const HEADER_BAND = 84;
+
+/** Height of a level strip (level, title, spell book and epilogue screens), header band included. */
+export function stripHeight(width: number): number {
+  return isCompact(width) ? 190 : 262 + HEADER_BAND;
+}
+
+/** Where the land of a strip starts: just under the header band on desktop. */
+export function stripLandTop(width: number): number {
+  return isCompact(width) ? 36 : 36 + HEADER_BAND;
+}
+
+/**
  * The strip above the open Registry: the stage's land, trees at its edges and the level's own scene.
  * Returns the level's reaction, to run when the spell is right (or instantly when redrawing a solved page).
  */
@@ -22,7 +39,8 @@ export function levelStrip(world: World, level: Level, width: number, height: nu
   const scene = LEVEL_SCENES[level.id] ?? { build: () => () => undefined };
   const land = scene.land ?? 1;
   const cols = land >= 1 ? Math.ceil(width / 64) + 2 : Math.max(3, Math.round((width * land) / 64) + 1);
-  world.island(-64, 36, cols, Math.ceil(height / 64) + 1, STAGE_TERRAIN[level.stage]);
+  const landTop = stripLandTop(width);
+  world.island(-64, landTop, cols, Math.ceil((height - landTop) / 64) + 1, STAGE_TERRAIN[level.stage]);
 
   const x = (f: number) => Math.round(f * width);
   const y = (dy = 0) => Math.round(ground + dy * k);

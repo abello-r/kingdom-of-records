@@ -124,6 +124,11 @@ right** (`src/ui/reactions.ts`, tested in `src/ui/reactions.test.ts`). Recording
 Sprites are animated strips (idles, work, runs, celebrations, fire, foam, trees). After a reaction,
 characters celebrate with their action animation. With *reduce motion*, the end state is shown without
 animation. On phones, scenes skip items marked `wide` and the edge trees, and the strip is 190 px tall.
+On desktop the level title and the controls float over the top of the strip, so the strip is 346 px
+tall and keeps its top 84 px as open sea (`HEADER_BAND` in `src/ui/scenes.ts`): the land and every
+sprite start below it, so nothing a reaction shows (archers on the towers, for instance) is hidden.
+A test checks every scene, before and after its reaction, on desktop and phone, using the drawn area
+of each sprite recorded in `src/ui/sprite-manifest.json` by `scripts/build_assets.py`.
 
 The **epilogue** (`#/epilogue`, after the last level) shows the castle court and closes the story:
 the gold in Corvin's coffers, the sheep in his garden, Lady Maud cleared, the Registry restored; then

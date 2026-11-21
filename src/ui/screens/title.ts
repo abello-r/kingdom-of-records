@@ -4,7 +4,7 @@ import { SPELLS } from '../../spellbook/spells';
 import { ALL_LEVELS, levelsOf, parseLevelId } from '../../state/levels';
 import { chipText, linkedinShareUrl, shareImagePath, shareUrl, type Title } from '../../titles/titles';
 import { externalLink, h, img } from '../dom';
-import { isCompact, levelStrip } from '../scenes';
+import { levelStrip, stripHeight } from '../scenes';
 import { World } from '../world';
 
 /**
@@ -19,7 +19,7 @@ export function titleScreen(ctx: AppContext, title: Title): Screen {
 
   const lastLevel = levels.get(levelsOf(title.stage).at(-1)!)!;
   const width = Math.min(innerWidth, 1920);
-  const height = isCompact(width) ? 190 : 262;
+  const height = stripHeight(width);
   const world = new World('world--strip');
   world.el.style.height = `${height}px`;
   const solve = levelStrip(world, lastLevel, width, height);

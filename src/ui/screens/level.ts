@@ -10,7 +10,7 @@ import { titleFor } from '../../titles/titles';
 import { bookIcon, externalLink, fill, h, icon, ICONS, img, isTouchFirst, prefersReducedMotion } from '../dom';
 import { createSqlEditor, type SqlEditor } from '../editor';
 import { rich } from '../rich';
-import { levelStrip } from '../scenes';
+import { levelStrip, stripHeight } from '../scenes';
 import { dialogue as storyLine } from '../story';
 import { typeKey } from '../sql-types';
 import { World } from '../world';
@@ -29,8 +29,8 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
 
   // ---------- scene ----------
   const compact = innerWidth < 761;
-  // Tall enough on phones for archers standing on the towers.
-  const sceneHeight = compact ? 190 : 262;
+  // Tall enough on phones for archers standing on the towers; on desktop, with the header's band on top.
+  const sceneHeight = stripHeight(Math.min(innerWidth, 1920));
   const world = new World('world--strip');
   world.el.style.height = `${sceneHeight}px`;
   // The level's own scene; `solve` plays its reaction when the spell is right.

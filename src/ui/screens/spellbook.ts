@@ -3,7 +3,7 @@ import { routeHash } from '../../app/router';
 import { SPELLS, type Spell } from '../../spellbook/spells';
 import { STAGES, parseLevelId, type LevelId, type Stage } from '../../state/levels';
 import { bookIcon, h, icon, ICONS } from '../dom';
-import { isCompact, levelStrip } from '../scenes';
+import { levelStrip, stripHeight } from '../scenes';
 import { layoutSql } from '../sql-layout';
 import { World } from '../world';
 
@@ -22,7 +22,7 @@ export function spellbookScreen(ctx: AppContext, from?: LevelId): Screen {
   // The scene of the level the player came from, or of the next page to read.
   const sceneLevel = levels.get(from ?? progress.nextLevel() ?? 'hard-5') ?? [...levels.values()][0]!;
   const width = Math.min(innerWidth, 1920);
-  const height = isCompact(width) ? 190 : 262;
+  const height = stripHeight(width);
   const world = new World('world--strip');
   world.el.style.height = `${height}px`;
   levelStrip(world, sceneLevel, width, height);

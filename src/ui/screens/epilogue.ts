@@ -3,7 +3,7 @@ import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import type { Speaker } from '../../engine/types';
 import { externalLink, h, icon, ICONS } from '../dom';
-import { isCompact } from '../scenes';
+import { isCompact, stripHeight, stripLandTop } from '../scenes';
 import { dialogue } from '../story';
 import { World } from '../world';
 
@@ -32,8 +32,7 @@ export function epilogueScreen(ctx: AppContext): Screen {
   const { i18n } = ctx;
   const t = i18n.t.bind(i18n);
   const width = Math.min(innerWidth, 1920);
-  const compact = isCompact(width);
-  const height = compact ? 190 : 262;
+  const height = stripHeight(width);
   const world = new World('world--strip');
   world.el.style.height = `${height}px`;
   epilogueScene(world, width, height);
@@ -68,7 +67,8 @@ function epilogueScene(world: World, width: number, height: number): void {
   const compact = isCompact(width);
   const k = compact ? 0.6 : 0.82;
   const ground = height - (compact ? 14 : 22);
-  world.island(-64, 36, Math.ceil(width / 64) + 2, Math.ceil(height / 64) + 1, 'spring');
+  const landTop = stripLandTop(width);
+  world.island(-64, landTop, Math.ceil(width / 64) + 2, Math.ceil((height - landTop) / 64) + 1, 'spring');
   const put = (name: Parameters<World['put']>[0], f: number, dy: number, opts: { flip?: boolean; s?: number; wide?: boolean } = {}) => {
     if (opts.wide && compact) return;
     world.put(name, f * width, ground + dy * k, { flip: opts.flip, scale: k * (opts.s ?? 1) });
