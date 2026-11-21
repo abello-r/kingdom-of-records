@@ -291,13 +291,14 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
       if (e instanceof KeyboardEvent && ['Control', 'Meta', 'Shift', 'Alt'].includes(e.key)) return;
       stopped = true;
     };
+    const scrollFor = (y: number) => scrollToY(y, reduced, () => stopped);
     const inputs = ['wheel', 'touchstart', 'pointerdown', 'keydown'] as const;
     inputs.forEach((type) => window.addEventListener(type, stop, { capture: true, passive: true }));
     endShow = () => inputs.forEach((type) => window.removeEventListener(type, stop, { capture: true }));
     try {
       const scene = element.querySelector<HTMLElement>('.scene')!.getBoundingClientRect();
       const away = scene.top < 0 || world.el.getBoundingClientRect().bottom > innerHeight;
-      if (away) await scrollToY(scrollY + scene.top, reduced, () => stopped);
+      if (away) await scrollFor(scrollY + scene.top);
       solve();
       world.celebrate();
       if (reduced) {
@@ -316,7 +317,7 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
       const visibleBottom = innerHeight - (dockEl && getComputedStyle(dockEl).display !== 'none' ? dockEl.offsetHeight : 0);
       if (top >= 0 && bottom <= visibleBottom) return;
       const target = bottom - top > visibleBottom - 24 ? top - 12 : (top + bottom) / 2 - visibleBottom / 2;
-      await scrollToY(scrollY + target, reduced, () => stopped);
+      await scrollFor(scrollY + target);
     } finally {
       endShow?.();
       endShow = null;
@@ -400,23 +401,29 @@ function pause(ms: number): Promise<void> {
 }
 
 /**
- * Scrolls the page to `y` (smoothly, or at once with reduced motion) and resolves when it gets there,
- * when the player takes over (`stopped`) or after a second at most. Does nothing once stopped.
+ * Scrolls the page to `y` (smoothly, or at once with reduced motion) and resolves when it gets there or
+ * when the player takes over (`stopped`). The smooth scroll is driven frame by frame rather than by the
+ * browser, so it simply stops when the player scrolls: their own scroll is never cancelled or overridden.
  */
 function scrollToY(y: number, reduced: boolean, stopped: () => boolean): Promise<void> {
-  const top = Math.max(0, Math.min(y, document.documentElement.scrollHeight - innerHeight));
-  if (stopped() || Math.abs(scrollY - top) < 2) return Promise.resolve();
+  const to = Math.max(0, Math.min(y, document.documentElement.scrollHeight - innerHeight));
+  const from = scrollY;
+  if (stopped() || Math.abs(from - to) < 2) return Promise.resolve();
   if (reduced) {
-    window.scrollTo({ top, behavior: 'instant' });
+    window.scrollTo({ top: to, behavior: 'instant' });
     return Promise.resolve();
   }
-  window.scrollTo({ top, behavior: 'smooth' });
+  const ms = Math.min(800, Math.max(350, 300 + Math.abs(to - from) * 0.4));
+  const ease = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - (-2 * p + 2) ** 3 / 2);
   return new Promise((resolve) => {
     const started = performance.now();
-    const check = () => {
-      if (stopped() || Math.abs(scrollY - top) < 2 || performance.now() - started > 1000) resolve();
-      else requestAnimationFrame(check);
+    const frame = (now: number) => {
+      if (stopped()) return resolve();
+      const p = Math.min(1, (now - started) / ms);
+      window.scrollTo({ top: from + (to - from) * ease(p), behavior: 'instant' });
+      if (p < 1) requestAnimationFrame(frame);
+      else resolve();
     };
-    requestAnimationFrame(check);
+    requestAnimationFrame(frame);
   });
 }
