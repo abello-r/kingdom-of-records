@@ -54,7 +54,11 @@ export function homeScene(world: World, width: number, height: number): void {
   const k = compact ? 0.6 : 1;
   const rows = compact ? 3 : 4;
   const iy = height - rows * 64 - (compact ? 64 : 44);
-  world.island(compact ? 24 : 64, iy, Math.max(4, Math.floor((width - (compact ? 48 : 128)) / 64)), rows, 'spring');
+  const left = compact ? 24 : 64;
+  const cols = Math.max(4, Math.floor((width - 2 * left) / 64));
+  // Everything is placed from the island's own edges, so nothing stands over the water.
+  const right = left + cols * 64;
+  world.island(left, iy, cols, rows, 'spring');
   const ground = iy + rows * 64 - (compact ? 40 : 70);
   if (!compact) {
     world.island(width - 330, 120, 3, 2, 'spring');
@@ -70,12 +74,15 @@ export function homeScene(world: World, width: number, height: number): void {
   const put = (name: Parameters<World['put']>[0], x: number, y: number, opts: PutOptions = {}) =>
     world.put(name, x, y, { ...opts, scale: k * (opts.scale ?? 1) });
   if (compact) {
-    put('buildings/house-1', width * 0.18, ground - 10);
-    put('buildings/house-ruin', width * 0.42, ground);
-    put('fx/fire', width * 0.42, ground + 6, { above: true });
-    put('buildings/tower', width * 0.8, ground - 6);
-    put('units/pawn-blue', width * 0.55, ground + 22);
-    put('units/sheep', width * 0.68, ground + 26);
+    const span = right - left;
+    put('buildings/house-1', left + span * 0.14, ground - 10);
+    put('buildings/house-ruin', left + span * 0.36, ground);
+    put('fx/fire', left + span * 0.36, ground + 6, { above: true });
+    // The tower stands inside the right edge (its drawing is about 68 px wide at this scale).
+    put('buildings/tower', right - 44, ground - 6);
+    put('units/pawn-blue', left + span * (span >= 300 ? 0.52 : 0.6), ground + 22);
+    // The sheep needs room between Pip and the tower; on the narrowest phones it stays out.
+    if (span >= 300) put('units/sheep', left + span * 0.68, ground + 26);
     return;
   }
   put('props/tree-1', 110, iy + 140);
@@ -83,17 +90,34 @@ export function homeScene(world: World, width: number, height: number): void {
   put('buildings/house-ruin', 340, iy + 200);
   put('fx/fire', 322, iy + 205, { above: true });
   put('fx/fire', 372, iy + 215, { scale: 0.75, above: true });
-  put('buildings/house-2', 470, iy + 150);
-  put('buildings/castle', width - 300, iy + 175);
-  put('buildings/tower', width - 90, iy + 190);
-  put('units/archer-blue', width - 90, iy + 76, { above: true });
-  put('units/sheep', width / 2 - 170, iy + 215);
-  put('units/sheep-grazing', width / 2 - 100, iy + 240, { flip: true });
-  put('units/pawn-blue', width / 2 + 10, iy + 225);
-  put('units/warrior-blue', width / 2 + 110, iy + 228, { flip: true });
-  put('units/sheep', width / 2 + 210, iy + 210, { flip: true });
   put('props/bush-1', 250, iy + 246);
-  put('props/rock-2', 640, iy + 268);
+  // Castle and tower at the island's right end: the tower (about 112 px drawn) inside the edge.
+  const towerX = right - 76;
+  const castleX = towerX - 210;
+  const castleLeft = castleX - 150;
+  if (castleLeft > 545) put('buildings/house-2', 470, iy + 150);
+  put('buildings/castle', castleX, iy + 175);
+  put('buildings/tower', towerX, iy + 190);
+  put('units/archer-blue', towerX, iy + 76, { above: true });
+  // The crowd fills the square between the houses and the castle; when the square is narrow, the
+  // least important figures stay out rather than overlap (Pip and Sir Aldric always come).
+  const from = castleLeft > 545 ? 560 : 440;
+  const to = castleLeft - 50;
+  const crowd: [Parameters<World['put']>[0], number, PutOptions][] = [
+    ['units/sheep', 215, {}],
+    ['units/sheep-grazing', 240, { flip: true }],
+    ['units/pawn-blue', 225, {}],
+    ['units/warrior-blue', 228, { flip: true }],
+    ['units/sheep', 210, { flip: true }],
+  ];
+  const priority = [2, 3, 1, 0, 4];
+  const count = Math.max(2, Math.min(crowd.length, Math.floor((to - from) / 80) + 1));
+  const keep = new Set(priority.slice(0, count));
+  const chosen = crowd.filter((_, i) => keep.has(i));
+  const step = Math.max(60, Math.min(100, (to - from) / (chosen.length - 1)));
+  const start = Math.max(from, (from + to) / 2 - (step * (chosen.length - 1)) / 2);
+  chosen.forEach(([name, dy, opts], i) => put(name, start + i * step, iy + dy, opts));
+  if (castleLeft > 700) put('props/rock-2', 640, iy + 268);
 }
 
 /** One island of the kingdom map (fixed size; the map lays islands out responsively). */
