@@ -95,6 +95,19 @@ export function isTouchFirst(): boolean {
   return typeof matchMedia === 'function' && (matchMedia('(pointer: coarse)').matches || matchMedia('(hover: none)').matches);
 }
 
+/**
+ * Resolves once the game's fonts (Jersey 10, JetBrains Mono) are loaded, so that layouts measured
+ * afterwards (the map's level card, the free sea around the texts) use their real size. On its own,
+ * `document.fonts.ready` may resolve before a font has even started to load. Never rejects.
+ */
+export function fontsLoaded(): Promise<void> {
+  if (typeof document === 'undefined' || !document.fonts) return Promise.resolve();
+  return Promise.all([document.fonts.load('16px "Jersey 10"'), document.fonts.load('16px "JetBrains Mono"')])
+    .catch(() => undefined)
+    .then(() => document.fonts.ready)
+    .then(() => undefined);
+}
+
 export function prefersReducedMotion(): boolean {
   return typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 }

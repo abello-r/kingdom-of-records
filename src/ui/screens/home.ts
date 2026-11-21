@@ -2,7 +2,7 @@ import { AUTHOR, AUTHOR_URL, KOFI_URL, REPO_URL } from '../../app/site';
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import { DEVICE_NOTE_KEY, isFlagSet, setFlag } from '../../state/flags';
-import { asset, cssUrl, externalLink, h, icon, ICONS, isTouchFirst } from '../dom';
+import { asset, cssUrl, externalLink, fontsLoaded, h, icon, ICONS, isTouchFirst } from '../dom';
 import { homeScene, type HomeLayout } from '../scenes';
 import { suggestionsLink } from '../suggestions';
 import { World } from '../world';
@@ -67,7 +67,7 @@ export function homeScreen(ctx: AppContext): Screen {
       suggestionsLink(i18n)),
   );
   // Once the texts have their final size, each duck goes to its first clear spot.
-  void document.fonts.ready.then(() => requestAnimationFrame(() => placeDucks(element, layout.ducks)));
+  void fontsLoaded().then(() => requestAnimationFrame(() => placeDucks(element, layout.ducks)));
   return { element, focus: primary };
 }
 

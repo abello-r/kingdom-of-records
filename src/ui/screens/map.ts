@@ -1,7 +1,7 @@
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import { ALL_LEVELS, STAGES, levelsOf, type LevelId, type Stage } from '../../state/levels';
-import { ICONS, bookIcon, h, icon, img } from '../dom';
+import { ICONS, bookIcon, fontsLoaded, h, icon, img } from '../dom';
 import { I18n } from '../../i18n';
 import { LANGUAGES } from '../../state/settings';
 import { MAP_ISLAND, isCompact, mapIsland } from '../scenes';
@@ -135,7 +135,7 @@ export function mapScreen(ctx: AppContext, select?: LevelId): Screen {
     ),
   );
   // Once the texts have their final size, the sea between the islands gets its route and its life.
-  void document.fonts.ready.then(() => requestAnimationFrame(() => {
+  void fontsLoaded().then(() => requestAnimationFrame(() => {
     if (!element.isConnected) return;
     const tallest = cardHeight(element, [...levels.values()]);
     const fitted = row ? fitHeight(element, zoom, tallest) : (tallest(), zoom);
