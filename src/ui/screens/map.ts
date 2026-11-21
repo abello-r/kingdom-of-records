@@ -2,9 +2,11 @@ import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
 import { ALL_LEVELS, STAGES, levelsOf, type LevelId, type Stage } from '../../state/levels';
 import { ICONS, bookIcon, h, icon, img } from '../dom';
-import { rich } from '../rich';
+import { I18n } from '../../i18n';
+import { LANGUAGES } from '../../state/settings';
 import { MAP_ISLAND, isCompact, mapIsland } from '../scenes';
-import { World, drawnBox, type Sprite, type SpriteName } from '../world';
+import { World, drawnBox, swimming, type Sprite, type SpriteName } from '../world';
+import type { Level } from '../../engine/types';
 
 /** Standard positions (feet) on an island, relative to the island's top-left corner. */
 const NODES: [number, number][] = [[50, 290], [125, 312], [200, 290], [275, 312], [350, 290]];
@@ -21,8 +23,8 @@ const GAP = 24;
 const ROW_MIN_WIDTH = 1000;
 /** Smallest island scale when fitting the map to a laptop's height: below it the standards get hard to read. */
 const MIN_ZOOM = 0.62;
-/** Widest level card. */
-const CARD_MAX = 520;
+/** Level card width: as wide as an island at full size, or a third of the row when that is less. */
+const CARD_WIDTH = MAP_ISLAND.width + PAD * 2;
 const RIBBON: Record<Stage, string> = { easy: 'blue', medium: 'purple', hard: 'red' };
 
 type NodeState = 'done' | 'current' | 'open' | 'locked';
@@ -94,7 +96,8 @@ export function mapScreen(ctx: AppContext, select?: LevelId): Screen {
     world.el.append(svg, ...standards);
 
     const previous = s > 0 ? i18n.t(`stages.${STAGES[s - 1]}.name`) : '';
-    const card = selected && selected.startsWith(stage) ? levelCard(ctx, selected) : null;
+    const level = selected && selected.startsWith(stage) ? levels.get(selected) : undefined;
+    const card = level ? levelCard(i18n, level, progress.isCompleted(level.id), ctx.memory.hintsUsed(level.id)) : null;
 
     return h(
       'section',
@@ -102,8 +105,10 @@ export function mapScreen(ctx: AppContext, select?: LevelId): Screen {
       h('h2', { id: `stage-${stage}`, class: `ribbon-small ribbon-small--${RIBBON[stage]}` },
         h('small', {}, i18n.t(`stages.${stage}.difficulty`)), ' ', i18n.t(`stages.${stage}.name`)),
       world.el,
-      locked ? h('p', { class: 'locked-note' }, icon([ICONS.lock]), i18n.t('map.lockedStage', { previous })) : null,
-      card,
+      // Below each island, room for the level card (empty, or the locked note, under the others).
+      h('div', { class: 'stage__slot' },
+        locked ? h('p', { class: 'locked-note' }, icon([ICONS.lock]), i18n.t('map.lockedStage', { previous })) : null,
+        card),
     );
   });
 
@@ -111,16 +116,18 @@ export function mapScreen(ctx: AppContext, select?: LevelId): Screen {
   const sea = new World('world--sea');
   const element = h(
     'div',
-    { class: 'screen screen--map', style: `--island-zoom:${zoom}` },
+    { class: `screen screen--map${row ? ' is-row' : ''}`, style: `--island-zoom:${zoom}` },
     sea.el,
     ctx.chrome({ href: routeHash({ name: 'home' }), labelKey: 'a11y.backToHome' }),
     h('div', { class: 'map__progress' },
       h('span', {}, i18n.t('map.progress', { done, total: ALL_LEVELS.length })),
       h('span', { class: 'bar', role: 'img', 'aria-label': `${done} / ${ALL_LEVELS.length}` },
         h('i', { style: `width:${(done / ALL_LEVELS.length) * 100}%` })),
-      h('a', { class: 'btn btn--ghost btn--small spellbook-link', href: routeHash({ name: 'spellbook' }), 'data-sound': 'page' },
-        bookIcon(), h('span', { class: 'spellbook-link__text' }, i18n.t('spellbook.title'))),
-      done > 0 ? resetButton(ctx) : null,
+      // The two buttons always have the same size (equal grid columns).
+      h('span', { class: 'map__actions' },
+        h('a', { class: 'btn btn--ghost btn--small spellbook-link', href: routeHash({ name: 'spellbook' }), 'data-sound': 'page' },
+          bookIcon(), h('span', { class: 'spellbook-link__text' }, i18n.t('spellbook.title'))),
+        done > 0 ? resetButton(ctx) : null),
     ),
     h('main', { id: 'main', class: 'map', tabindex: '-1' },
       h('h1', { class: 'visually-hidden' }, i18n.t('map.title')),
@@ -130,7 +137,8 @@ export function mapScreen(ctx: AppContext, select?: LevelId): Screen {
   // Once the texts have their final size, the sea between the islands gets its route and its life.
   void document.fonts.ready.then(() => requestAnimationFrame(() => {
     if (!element.isConnected) return;
-    const fitted = row ? fitHeight(element, zoom) : zoom;
+    const tallest = cardHeight(element, [...levels.values()]);
+    const fitted = row ? fitHeight(element, zoom, tallest) : (tallest(), zoom);
     // The level card is always in view (on phones the map is a long page; the card is below its island).
     const card = element.querySelector('.map-card');
     const box = card?.getBoundingClientRect();
@@ -141,20 +149,39 @@ export function mapScreen(ctx: AppContext, select?: LevelId): Screen {
 }
 
 /**
- * With the islands in a row the whole map fits the window, so a laptop shows it without scrolling. The
- * level card takes the width the row leaves free (so it is as short as it can be); while the page is
- * taller than the window, the islands first stop being staggered, then shrink a little more (down to
- * MIN_ZOOM). Returns the scale used.
+ * The level card always has the same size, whatever the level and the language, so nothing moves when
+ * another standard is selected: the height of the tallest card (every level, every language, solved
+ * with every hint used) at the card's current width, measured off screen and set as --card-height.
+ * Returns a function that measures it again (after the width changes).
  */
-function fitHeight(screen: HTMLElement, zoom: number): number {
+function cardHeight(screen: HTMLElement, all: Level[]): () => void {
+  const translators = LANGUAGES.map((lang) => new I18n(lang));
+  return () => {
+    const probe = h('div', { class: 'map-card-probe', 'aria-hidden': 'true' },
+      ...translators.flatMap((t) => all.map((level) => levelCard(t, level, true, level.hints.length))));
+    screen.append(probe);
+    const tallest = Math.max(...[...probe.children].map((c) => (c as HTMLElement).offsetHeight));
+    probe.remove();
+    screen.style.setProperty('--card-height', `${tallest}px`);
+  };
+}
+
+/**
+ * With the islands in a row the whole map fits the window, so a laptop shows it without scrolling. Every
+ * island keeps room for the level card below it, so the layout does not depend on the selected page;
+ * while the page is taller than the window, the islands first stop being staggered, then shrink a little
+ * more (down to MIN_ZOOM). The card keeps its width (CARD_WIDTH, or a third of the row), so it does not
+ * get taller as the islands shrink. Returns the scale used.
+ */
+function fitHeight(screen: HTMLElement, zoom: number, measureCard: () => void): number {
   let z = zoom;
   let stagger = 1;
   const apply = () => {
-    const island = ISLAND_BOX * z;
-    const free = innerWidth - 40 - GAP * 2 - island * 2;
+    const third = (innerWidth - 40 - GAP * 2) / 3;
     screen.style.setProperty('--island-zoom', String(z));
     screen.style.setProperty('--stagger', String(stagger));
-    screen.style.setProperty('--card-width', `${Math.round(Math.min(CARD_MAX, Math.max(300, island, free)))}px`);
+    screen.style.setProperty('--card-width', `${Math.floor(Math.max(ISLAND_BOX * z, Math.min(CARD_WIDTH, third)))}px`);
+    measureCard();
   };
   apply();
   const over = () => document.documentElement.scrollHeight - innerHeight;
@@ -192,11 +219,21 @@ function fillSea(screen: HTMLElement, sea: World, { compact, row, zoom }: { comp
   sea.el.style.height = `${height}px`;
 
   const islands = [...screen.querySelectorAll<HTMLElement>('.world--island')].map((el) => local(el.getBoundingClientRect()));
+  // With the islands in a row the sea is laid out without the level card, so it is the same whatever the
+  // selected page (nothing moves when another one is selected); the pieces under the card are taken out
+  // at the end. Stacked, the card is a blocker like the rest.
   const blockers: Box[] = [
     ...islands.map((b) => grow(b, -PAD * zoom + 24)),
-    ...[...screen.querySelectorAll('.stage > h2, .map-card, .locked-note, .map__progress, .chrome a, .chrome button, .chrome .lang')]
+    ...[...screen.querySelectorAll(`.stage > h2, .locked-note, .map__progress, .chrome a, .chrome button, .chrome .lang${row ? '' : ', .map-card'}`)]
       .map((el) => grow(local(el.getBoundingClientRect()), 14)),
   ];
+  const pieces: { box: Box; els: Element[] }[] = [];
+  /** Runs `draw` and records what it added to the sea, as one piece occupying `box`. */
+  const piece = (box: Box, draw: () => void) => {
+    const before = new Set(sea.el.children);
+    draw();
+    pieces.push({ box, els: [...sea.el.children].filter((c) => !before.has(c)) });
+  };
 
   // Route over the water between the islands, from the exit of one to the entry of the next.
   if (row && islands.length > 1) {
@@ -257,8 +294,10 @@ function fillSea(screen: HTMLElement, sea: World, { compact, row, zoom }: { comp
     placed.push(box);
     return box;
   };
-  // More water on very wide screens, a little more life in it.
+  // More water on very wide screens, a little more life in it; in a row a few more pieces, as those
+  // under the level card are taken out.
   const wide = width >= 1600;
+  const extra = row ? 1 : 0;
 
   /** Puts a sprite with its drawing centred in `box`. */
   const putIn = (box: Box, name: SpriteName, scale: number, opts: { flip?: boolean } = {}): Sprite => {
@@ -270,28 +309,35 @@ function fillSea(screen: HTMLElement, sea: World, { compact, row, zoom }: { comp
 
   // Islets (2 x 2 tiles with their foam) in the largest gaps, on wide screens only.
   if (!compact) {
-    const islets = [['props/bush-1', 'units/sheep'], ['props/rock-2', 'props/bush-2'], ['props/bush-2', 'props/rock-2']] as const;
-    for (const [prop, extra] of islets.slice(0, wide ? 3 : 2)) {
+    const islets = [['props/bush-1', 'units/sheep'], ['props/rock-2', 'props/bush-2'], ['props/bush-2', 'props/rock-2'], ['props/bush-1', 'props/rock-2']] as const;
+    for (const [prop, second] of islets.slice(0, (wide ? 3 : 2) + extra)) {
       const box = findSpot(128 + 40, 128 + 40);
       if (!box) continue;
       const [x, y] = [box.left + 20, box.top + 20];
-      sea.island(x, y, 2, 2, 'spring');
-      sea.put(prop, x + 46, y + 92, { scale: 0.8 });
-      sea.put(extra, x + 88, y + 108, { scale: 0.7, flip: true });
+      piece(box, () => {
+        sea.island(x, y, 2, 2, 'spring');
+        sea.put(prop, x + 46, y + 92, { scale: 0.8 });
+        sea.put(second, x + 88, y + 108, { scale: 0.7, flip: true });
+      });
     }
   }
-  for (let i = 0; i < (compact ? 1 : wide ? 3 : 2); i++) {
+  for (let i = 0; i < (compact ? 1 : wide ? 3 : 2) + extra; i++) {
     const box = findSpot(48 * k, 40 * k);
-    if (box) putIn(box, 'props/water-rock', k);
+    if (box) piece(box, () => putIn(box, 'props/water-rock', k));
   }
-  for (let i = 0; i < (compact ? 2 : wide ? 4 : 3); i++) {
+  for (let i = 0; i < (compact ? 2 : wide ? 4 : 3) + extra; i++) {
     const swim = Math.round(44 * k);
     const box = findSpot(28 * k + swim, 26 * k);
     if (!box) continue;
-    // Its course goes to the left of where it starts (see the `swim` animation).
-    const duck = putIn({ ...box, left: box.right - 28 * k }, 'props/duck', k);
-    duck.classList.add('swim');
-    duck.style.setProperty('--swim', `${swim}px`);
+    // Every other duck faces right; each swims from one end of its course to the other and back.
+    const flip = i % 2 === 1;
+    const end = flip ? { ...box, right: box.left + 28 * k } : { ...box, left: box.right - 28 * k };
+    piece(box, () => swimming(putIn(end, 'props/duck', k, { flip }), swim, flip));
+  }
+  const card = row ? screen.querySelector('.map-card') : null;
+  if (card) {
+    const under = grow(local(card.getBoundingClientRect()), 14);
+    pieces.filter((p) => hits(p.box, under)).forEach((p) => p.els.forEach((el) => el.remove()));
   }
 }
 
@@ -320,13 +366,8 @@ function resetButton(ctx: AppContext): HTMLElement {
   return h('span', { class: 'map__reset' }, open, dialog);
 }
 
-/** The selected page: its title, where it is, whether it is solved (and hints used), its task and its ideas. */
-function levelCard(ctx: AppContext, id: LevelId): HTMLElement | null {
-  const { i18n, progress, levels, memory } = ctx;
-  const level = levels.get(id);
-  if (!level) return null;
-  const solved = progress.isCompleted(id);
-  const hints = memory.hintsUsed(id);
+/** The selected page: its title, where it is, its ideas, the way in and whether it is solved (and hints used). */
+function levelCard(i18n: I18n, level: Level, solved: boolean, hints: number): HTMLElement {
   const status = h('p', { class: `map-card__status${solved ? ' is-solved' : ''}` },
     solved ? img('fx/success.png', 'map-card__tick') : null,
     i18n.t(solved ? 'map.solved' : 'map.unsolved'),
@@ -336,10 +377,9 @@ function levelCard(ctx: AppContext, id: LevelId): HTMLElement | null {
     { class: 'paper map-card' },
     h('h3', {}, level.title[i18n.language]),
     h('p', { class: 'map-card__where' }, i18n.t('map.levelOf', { n: level.order, stage: i18n.t(`stages.${level.stage}.name`) })),
-    h('p', { class: 'map-card__task' }, rich(level.task[i18n.language])),
     h('p', { class: 'chips' }, ...level.concepts.map((c) => h('code', { class: 'chip' }, c))),
     h('div', { class: 'map-card__foot' },
-      h('a', { class: 'btn btn--primary', href: routeHash({ name: 'level', id }) }, i18n.t(solved ? 'map.again' : 'map.open')),
+      h('a', { class: 'btn btn--primary', href: routeHash({ name: 'level', id: level.id }) }, i18n.t(solved ? 'map.again' : 'map.open')),
       status),
   );
 }

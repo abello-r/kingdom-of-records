@@ -79,14 +79,20 @@ list (CodeMirror's default marked `role` as a keyword).
   below the standards (the islands' bottom row), halfway to the next one, never over a standard.
 - Map: from 1000 px the three islands are in a row (shrunk to fit up to 1400 px, ribbons too) and the
   dotted route goes on over the sea from the last standard of an island to the first of the next; below
-  1000 px they are stacked. In a row the map also fits the window's height (no scroll from 1280x800,
-  including 1440x900 and 1366x768): the islands first stop being staggered, then shrink down to 62%,
-  and the level card takes the free width (up to 520 px) so it stays short. When it still does not
-  fit (smaller screens, phones), the page scrolls so the level card is in view. The open sea gets small 2x2 islets (wide screens), TS-2 water rocks and
-  swimming ducks, each in the largest free stretch of water, never over an island, ribbon, card, note or
-  control (`fillSea` in `src/ui/screens/map.ts`). The level card shows the title, the stage, the task,
-  the ideas, "Open this page" and the state (solved or not, hints used). The top bar's buttons are
-  smaller than the kit's, inside the bar; up to 1200 px the spell book is an icon.
+  1000 px they are stacked. The level card shows the title, the stage, the ideas, "Open this page" and
+  the state (solved or not, hints used), and always has the same size: the tallest card of every level
+  in every language, measured at its width. In a row every island keeps that room below it, so
+  selecting another page moves nothing (the card only goes to the island of its stage). The map also
+  fits the window's height (no scroll from 1280x800, including 1440x900 and 1366x768): the islands
+  first stop being staggered, then shrink down to 62%. When it still does not fit (smaller screens,
+  phones), the page scrolls so the level card is in view.
+- Map sea: small 2x2 islets, TS-2 water rocks and swimming ducks, each in the largest free stretch of
+  water, never over an island, ribbon, note or control (`fillSea` in `src/ui/screens/map.ts`). In a row
+  the sea is laid out without the card, so every piece keeps its place whatever the selected page; the
+  pieces under the card are left out.
+- Map top bar: "Spell book" and "Start over" are smaller than the kit's buttons, inside the bar, and
+  exactly the same size (equal grid columns) in every language; below 1200 px the bar has its own row
+  under the controls, and on phones the two buttons share a second row.
 - Buttons: CSS pixel buttons (ink outline, top highlight, bottom shade). The TS-2 button images only
   stay crisp at large sizes.
 - Hint button: always visible next to "Lanzar conjuro", with a counter of the hints **left**
@@ -179,8 +185,9 @@ the credits. Screens: `screens/epilogue-*.png`, `screens/reset-dialog-desktop.pn
   phones it is a square kit button with the TS-2 gold coin at the left of the controls bar. No boat:
   none of the packs has one.
 - **Ducks:** the TS-2 rubber duck, two or three on the title screen's sea (two small ones on phones).
-  Each swims slowly about 50 px to the left, turns round and comes back (26 s); still with reduced
-  motion. Every duck has a few candidate spots and takes the first one clear of the texts, buttons,
+  Each swims slowly back and forth over about 50 px, every other one facing right, at its own pace
+  (22 to 30 s) and from its own point in the cycle, so they never move in step (the map's ducks too);
+  still with reduced motion. Every duck has a few candidate spots and takes the first one clear of the texts, buttons,
   islands, sprites, clouds and other ducks, so small or short screens may show one or none.
 - **Suggestions:** after sending, the dialog keeps only the thanks, centred, and a "Close" button. On a
   local copy (localhost) a note says suggestions are only sent from the published site.
