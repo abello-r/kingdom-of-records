@@ -103,6 +103,12 @@ page", "Clear" and replaying a level leave the keyboard closed. On desktop the e
 Every level has its own scene in the strip above the Registry, and the world **reacts when the spell is
 right** (`src/ui/reactions.ts`, tested in `src/ui/reactions.test.ts`). Recordings: `reactions/*.gif`.
 
+After a first right answer the page scrolls smoothly up to the diorama if it is not fully on screen,
+plays the whole reaction there (`World.settled()` tells when it is over), then scrolls back to the
+success message and "Turn the page". Any scroll, tap or key from the player stops the automatic
+scrolling (the reaction still plays). With *reduce motion* the page jumps instead, shows the end
+state for 1.5 s and jumps back.
+
 | Level | Reaction |
 |---|---|
 | Easy 1 | The villagers gather in the square. |

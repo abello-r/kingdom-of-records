@@ -18,6 +18,10 @@ import { World } from '../world';
 /** Level after which the one-time "star it on GitHub" message appears, and when (after its reaction). */
 const STAR_LEVEL = 'easy-3';
 const STAR_DELAY_MS = 2200;
+/** With reduced motion, how long the diorama's end state stays on screen before coming back. */
+const STILL_VIEW_MS = 1500;
+/** Pause on the diorama once its reaction is over, before scrolling back. */
+const AFTER_REACTION_MS = 500;
 
 /** A level: the open Great Registry under a diorama of the region. */
 export function levelScreen(ctx: AppContext, level: Level): Screen {
@@ -110,6 +114,8 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
 
   // ---------- behaviour ----------
   let running = false;
+  /** Ends the automatic scrolling around a reaction (listeners off). */
+  let endShow: (() => void) | null = null;
   let starTimer = 0;
   let schema: SchemaTable[] = [];
   const editor: SqlEditor = createSqlEditor({
@@ -254,12 +260,14 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
       session.solvedNow = true;
       progress.complete(level.id);
       story.append(...level.success.map((line) => dialogue(line, true)));
-      solve();
-      world.celebrate();
     }
     renderButtons();
     renderAnswer();
-    if (firstSolve) (compact ? nextBtns[1] : nextBtns[0])!.focus();
+    if (firstSolve) {
+      // The focus goes to "Turn the page" without moving the page: the diorama comes first.
+      (compact ? nextBtns[1] : nextBtns[0])!.focus({ preventScroll: true });
+      void showReaction();
+    }
     if (firstSolve && level.id === STAR_LEVEL && REPO_URL && progress.shouldAskForStar()) {
       // After the diorama has reacted; marked as shown only once it is actually on screen.
       starTimer = window.setTimeout(() => {
@@ -267,6 +275,51 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
         session.starNudge = true;
         showStarNudge(true);
       }, prefersReducedMotion() ? 0 : STAR_DELAY_MS);
+    }
+  }
+
+  /**
+   * The kingdom's reaction to a first right answer, in view: scrolls up to the diorama if it is not fully
+   * on screen, plays the whole reaction, then scrolls back to the success message and "Turn the page".
+   * Any scroll, tap or key from the player stops the automatic scrolling (the reaction still plays).
+   * With reduced motion: jumps instead of scrolling, and the reaction shows its end state.
+   */
+  async function showReaction(): Promise<void> {
+    const reduced = prefersReducedMotion();
+    let stopped = false;
+    const stop = (e: Event) => {
+      if (e instanceof KeyboardEvent && ['Control', 'Meta', 'Shift', 'Alt'].includes(e.key)) return;
+      stopped = true;
+    };
+    const inputs = ['wheel', 'touchstart', 'pointerdown', 'keydown'] as const;
+    inputs.forEach((type) => window.addEventListener(type, stop, { capture: true, passive: true }));
+    endShow = () => inputs.forEach((type) => window.removeEventListener(type, stop, { capture: true }));
+    try {
+      const scene = element.querySelector<HTMLElement>('.scene')!.getBoundingClientRect();
+      const away = scene.top < 0 || world.el.getBoundingClientRect().bottom > innerHeight;
+      if (away) await scrollToY(scrollY + scene.top, reduced, () => stopped);
+      solve();
+      world.celebrate();
+      if (reduced) {
+        if (away) await pause(STILL_VIEW_MS);
+      } else {
+        await world.settled();
+        await pause(AFTER_REACTION_MS);
+      }
+      const note = answer.querySelector<HTMLElement>('.note--success');
+      if (stopped || !note || !element.isConnected) return;
+      // The message and the inline "Turn the page" (on phones it is in the dock, always on screen).
+      const parts = [note, nextBtns[0]!].map((el) => el.getBoundingClientRect()).filter((r) => r.height > 0);
+      const top = Math.min(...parts.map((r) => r.top));
+      const bottom = Math.max(...parts.map((r) => r.bottom));
+      const dockEl = element.querySelector<HTMLElement>('.dock');
+      const visibleBottom = innerHeight - (dockEl && getComputedStyle(dockEl).display !== 'none' ? dockEl.offsetHeight : 0);
+      if (top >= 0 && bottom <= visibleBottom) return;
+      const target = bottom - top > visibleBottom - 24 ? top - 12 : (top + bottom) / 2 - visibleBottom / 2;
+      await scrollToY(scrollY + target, reduced, () => stopped);
+    } finally {
+      endShow?.();
+      endShow = null;
     }
   }
 
@@ -318,6 +371,7 @@ export function levelScreen(ctx: AppContext, level: Level): Screen {
     focus: isTouchFirst() ? undefined : editor.view.contentDOM,
     destroy: () => {
       window.clearTimeout(starTimer);
+      endShow?.();
       editor.destroy();
       world.destroy();
     },
@@ -339,4 +393,30 @@ function cell(v: unknown): string {
   if (v === null) return 'NULL';
   if (v instanceof Uint8Array) return `<${v.length} bytes>`;
   return String(v);
+}
+
+function pause(ms: number): Promise<void> {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+/**
+ * Scrolls the page to `y` (smoothly, or at once with reduced motion) and resolves when it gets there,
+ * when the player takes over (`stopped`) or after a second at most. Does nothing once stopped.
+ */
+function scrollToY(y: number, reduced: boolean, stopped: () => boolean): Promise<void> {
+  const top = Math.max(0, Math.min(y, document.documentElement.scrollHeight - innerHeight));
+  if (stopped() || Math.abs(scrollY - top) < 2) return Promise.resolve();
+  if (reduced) {
+    window.scrollTo({ top, behavior: 'instant' });
+    return Promise.resolve();
+  }
+  window.scrollTo({ top, behavior: 'smooth' });
+  return new Promise((resolve) => {
+    const started = performance.now();
+    const check = () => {
+      if (stopped() || Math.abs(scrollY - top) < 2 || performance.now() - started > 1000) resolve();
+      else requestAnimationFrame(check);
+    };
+    requestAnimationFrame(check);
+  });
 }

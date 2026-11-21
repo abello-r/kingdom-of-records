@@ -47,6 +47,8 @@ export class World {
   /** When true, scene operations apply their end state immediately, without effects. */
   instant = prefersReducedMotion();
   private timers: number[] = [];
+  /** performance.now() when the last scheduled operation (and its effect) is over. */
+  private busyUntil = 0;
 
   constructor(className = '') {
     this.el = document.createElement('div');
@@ -113,9 +115,27 @@ export class World {
 
   // ---------- scene operations ----------
 
-  private later(delay: number, fn: () => void): void {
+  private later(delay: number, fn: () => void, lasts = 700): void {
+    if (!this.instant) this.busy(Math.max(0, delay) + lasts);
     if (this.instant || delay <= 0) fn();
     else this.timers.push(window.setTimeout(fn, delay));
+  }
+
+  /** Notes that the scene is still changing for `ms` more. */
+  private busy(ms: number): void {
+    this.busyUntil = Math.max(this.busyUntil, performance.now() + ms);
+  }
+
+  /** Resolves once every scheduled operation, walk and celebration is over (at once when there is none). */
+  settled(): Promise<void> {
+    return new Promise((resolve) => {
+      const check = () => {
+        const wait = this.busyUntil - performance.now();
+        if (wait <= 0) resolve();
+        else this.timers.push(window.setTimeout(check, wait));
+      };
+      check();
+    });
   }
 
   /** A sound tied to the scene (not played when the scene is redrawn instantly). */
@@ -187,6 +207,7 @@ export class World {
       el.style.setProperty('--sx', String(x < from ? -k : k));
       if (opts.run) setSheet(el, opts.run);
       const ms = opts.ms ?? 900;
+      this.busy(ms + 100);
       el.style.transition = `left ${ms}ms linear, top ${ms}ms linear`;
       el.style.left = `${Math.round(x)}px`;
       el.style.top = `${Math.round(y)}px`;
@@ -202,6 +223,7 @@ export class World {
       const cheer = CHEER[el.dataset.idle as SpriteName];
       if (!cheer) return;
       this.later(150 + (i % 5) * 110, () => {
+        this.busy(1400);
         setSheet(el, cheer);
         el.style.animationDelay = '0s';
         el.animate([{ translate: '0 0' }, { translate: '0 -14px' }, { translate: '0 0' }], { duration: 480, iterations: 2, easing: 'steps(4)' });
