@@ -154,6 +154,19 @@
     "developedBy": "Developed by {name}",
     "star": "Star it on GitHub"
   },
+  "suggest": {
+    "link": "Suggestions",
+    "title": "Suggestions",
+    "intro": "An idea, a bug or something to improve? Tell me.",
+    "message": "Your message",
+    "email": "Your email (optional, only to reply to you)",
+    "cancel": "Cancel",
+    "send": "Send",
+    "sending": "Sending…",
+    "thanks": "Thank you! Your suggestion has reached the Registry.",
+    "close": "Close",
+    "error": "It could not be sent. Please try again in a while."
+  },
   "reset": {
     "title": "Start over?",
     "body": "This erases the completed levels, the hints you used and the spells you were writing. Language and sound settings stay as they are.",

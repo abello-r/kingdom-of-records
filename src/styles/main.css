@@ -192,7 +192,8 @@ a { color: inherit; }
   background: rgba(22, 28, 46, .55); color: var(--parchment); font-size: 1.2rem; line-height: 1; }
 .device-note__close { width: 32px; height: 32px; padding: 0 0 3px; border: 0; background: none; color: inherit; font: inherit; font-size: 1.6rem; cursor: pointer; }
 .credits { position: absolute; left: 20px; bottom: 6px; z-index: 6000; display: flex; flex-wrap: wrap; color: var(--parchment); font-size: 1.25rem; line-height: 1.15; text-shadow: 2px 2px 0 var(--ink); }
-.credits a { color: inherit; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.credits a, .credits__link { color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.credits__link { padding: 0; border: 0; background: none; font: inherit; text-shadow: inherit; cursor: pointer; }
 /* The pixel star in kit yellow with an ink outline (also in the epilogue credits and after Easy 3). */
 .credits__star a, .star-nudge a { display: inline-flex; gap: 6px; align-items: center; }
 .credits__star .icon, .star-nudge .icon { flex: none; fill: var(--kit-yellow); stroke: var(--ink); stroke-width: .9px; paint-order: stroke; shape-rendering: crispEdges; overflow: visible; }
@@ -367,6 +368,7 @@ a { color: inherit; }
   .credits > .credits__star::before { content: '·'; margin: 0 .5em; }
   .credits__star-long { display: none; }
   .credits__star-short { display: inline; }
+  .credits > .credits__suggest { flex-basis: 100%; }
 
   .screen--map { padding: 0 0 90px; }
   .map__stages { flex-direction: column; align-items: center; gap: 18px; padding-top: 16px; }
@@ -408,6 +410,15 @@ a { color: inherit; }
   padding: 0; color: var(--ink); background: transparent; white-space: normal; text-align: left;
 }
 .confirm::backdrop { background: rgba(22, 28, 46, .72); }
+.confirm { text-shadow: none; line-height: 1.25; }
+/* Suggestions form. */
+.suggest label { display: block; margin: 12px 0 4px; font-size: 1.3rem; }
+.suggest textarea, .suggest input { box-sizing: border-box; width: 100%; padding: 8px 10px; border: 3px solid var(--ink); border-radius: 6px;
+  background: var(--page-light); color: var(--ink); font-family: inherit; font-size: 1.3rem; line-height: 1.35; }
+.suggest textarea { resize: vertical; min-height: 110px; }
+.suggest__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.suggest__status { min-height: 1.4em; margin: 12px 0 8px; font-size: 1.3rem; }
+.suggest.is-sent label, .suggest.is-sent textarea, .suggest.is-sent input, .suggest.is-sent .btn--wood { display: none; }
 .confirm h2 { margin: 0 0 8px; font-size: 2rem; line-height: 1; }
 .confirm p { margin: 0 0 24px; }
 /* Two buttons of the same size, side by side on the right; stacked and centred on phones. The padding

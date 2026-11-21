@@ -63,7 +63,8 @@ export function homeScene(world: World, width: number, height: number, opts: { k
   const compact = isCompact(width);
   const k = compact ? 0.6 : 1;
   const rows = compact ? 3 : 4;
-  const iy = height - rows * 64 - (compact ? 64 : 44);
+  // Room for the footer under the island: four short lines on phones, two lines on narrow desktops.
+  const iy = height - rows * 64 - (compact ? 86 : width < 1200 ? 64 : 44);
   const left = compact ? 24 : 64;
   const cols = Math.max(4, Math.floor((width - 2 * left) / 64));
   // Everything is placed from the island's own edges, so nothing stands over the water.

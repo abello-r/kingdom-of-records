@@ -4,6 +4,7 @@ import { routeHash } from '../../app/router';
 import { DEVICE_NOTE_KEY, isFlagSet, setFlag } from '../../state/flags';
 import { asset, cssUrl, cupIcon, externalLink, h, icon, ICONS, isTouchFirst } from '../dom';
 import { homeScene, type HomeLayout } from '../scenes';
+import { suggestionsLink } from '../suggestions';
 import { World } from '../world';
 
 /** Title screen: the island, the logo and the one thing to do next. */
@@ -62,7 +63,8 @@ export function homeScreen(ctx: AppContext): Screen {
         ? h('span', { class: 'credits__star' }, externalLink(REPO_URL, i18n.t('a11y.newTab'), {}, icon([ICONS.star]),
           h('span', { class: 'credits__star-long' }, i18n.t('footer.star')),
           h('span', { class: 'credits__star-short', lang: 'en' }, 'GitHub')))
-        : null),
+        : null,
+      suggestionsLink(i18n)),
   );
   return { element, focus: primary };
 }

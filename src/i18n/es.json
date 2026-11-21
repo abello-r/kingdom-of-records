@@ -154,6 +154,19 @@
     "developedBy": "Desarrollado por {name}",
     "star": "Dale una estrella en GitHub"
   },
+  "suggest": {
+    "link": "Sugerencias",
+    "title": "Sugerencias",
+    "intro": "¿Una idea, un error o algo que mejorar? Cuéntamelo.",
+    "message": "Tu mensaje",
+    "email": "Tu email (opcional, solo para responderte)",
+    "cancel": "Cancelar",
+    "send": "Enviar",
+    "sending": "Enviando…",
+    "thanks": "¡Gracias! Tu sugerencia ha llegado al Registro.",
+    "close": "Cerrar",
+    "error": "No se ha podido enviar. Inténtalo de nuevo en un rato."
+  },
   "reset": {
     "title": "¿Empezar de cero?",
     "body": "Se borrarán los niveles completados, las pistas usadas y los conjuros que estabas escribiendo. El idioma y el sonido se mantienen.",

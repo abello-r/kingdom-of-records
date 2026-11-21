@@ -66,6 +66,24 @@ From then on:
 `netlify.toml` also adds a few safe response headers (`X-Content-Type-Options`, `Referrer-Policy`,
 `X-Frame-Options`).
 
+## Suggestions (Netlify Forms)
+
+The "Suggestions" link in the title-screen footer opens a small form (message and an optional email)
+that is sent to **Netlify Forms** as the form `suggestions`. `index.html` holds a hidden copy of the
+form so Netlify detects it when the site is deployed; a hidden honeypot field (`bot-field`) and
+Netlify's own spam filter keep bots out. Forms only work on Netlify, not on GitHub Pages.
+
+To receive each suggestion by email:
+
+1. In Netlify, open the site, then **Project configuration** (or **Site configuration**) → **Forms**.
+2. If it shows **Enable form detection**, click it, then deploy again (**Deploys** → **Trigger deploy**
+   → **Deploy site**) so the form is detected.
+3. Still in **Forms**, under **Form notifications**, click **Add notification** → **Email notification**.
+4. Event: **New form submission**; Email to notify: your address; Form: **suggestions**. Save.
+
+Submissions are also listed in the site's **Forms** page. The free plan accepts 100 submissions per
+month. The email field is optional and only shown to you, to reply.
+
 ## Alternative: GitHub Pages
 
 Kept ready in `.github/workflows/deploy-pages.yml`. It has **no automatic trigger**: it runs only

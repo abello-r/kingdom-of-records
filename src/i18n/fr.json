@@ -154,6 +154,19 @@
     "developedBy": "Développé par {name}",
     "star": "Mets une étoile sur GitHub"
   },
+  "suggest": {
+    "link": "Suggestions",
+    "title": "Suggestions",
+    "intro": "Une idée, un bug ou quelque chose à améliorer ? Dis-le-moi.",
+    "message": "Ton message",
+    "email": "Ton e-mail (facultatif, seulement pour te répondre)",
+    "cancel": "Annuler",
+    "send": "Envoyer",
+    "sending": "Envoi…",
+    "thanks": "Merci ! Ta suggestion est arrivée au Registre.",
+    "close": "Fermer",
+    "error": "L’envoi a échoué. Réessaie un peu plus tard."
+  },
   "reset": {
     "title": "Tout recommencer ?",
     "body": "Les niveaux terminés, les indices utilisés et les sorts en cours d’écriture seront effacés. La langue et le son restent tels quels.",

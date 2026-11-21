@@ -91,9 +91,11 @@ instructions: [`docs/DEPLOY.md`](docs/DEPLOY.md).
   first click or key press (that first click already has its sound). In the top bar, the speaker
   silences everything and the note turns the music on or off; both choices are remembered. Files are
   Ogg Vorbis, with MP3 copies for browsers that cannot play Ogg.
+- **Suggestions**: the footer of the title screen has a small form sent with Netlify Forms (see
+  [`docs/DEPLOY.md`](docs/DEPLOY.md)).
 - **Saved data** (`localStorage`): `kor.progress.v1` (completed levels), `kor.settings.v1` (language,
   sound, music), `kor.hints.v1` (hints revealed), `kor.drafts.v1` (the SQL being written in each level),
-  `kor.star.v1` (the one-time "star it on GitHub" message was shown; kept when starting over).
+  `kor.star.v1` and `kor.device-note.v1` (one-time messages already shown; kept when starting over).
 
 ```
 docs/              Story, asset inventory, level format, deployment, design references
