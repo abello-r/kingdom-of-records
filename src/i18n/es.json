@@ -18,6 +18,8 @@
     "mutedMusic": "Música silenciada"
   },
   "home": {
+    "deviceNote": "Se juega mejor en ordenador",
+    "deviceNoteClose": "Cerrar el aviso",
     "start": "Abrir el Registro",
     "continue": "Seguir leyendo",
     "resume": "Te quedaste en «{level}»",

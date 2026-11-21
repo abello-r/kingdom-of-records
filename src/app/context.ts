@@ -5,6 +5,7 @@ import type { LevelMemory } from '../state/level-memory';
 import type { LevelId } from '../state/levels';
 import type { Progress } from '../state/progress';
 import type { Settings } from '../state/settings';
+import type { KeyValueStore } from '../state/storage';
 import type { Route } from './router';
 
 /** What a level remembers while the page is open (e.g. across a language change). */
@@ -21,6 +22,8 @@ export interface AppContext {
   progress: Progress;
   memory: LevelMemory;
   settings: Settings;
+  /** Browser storage, for small one-time flags kept apart from the progress. */
+  store: KeyValueStore;
   levels: Map<LevelId, Level>;
   sql: SqlClient;
   sessions: Map<LevelId, LevelSession>;

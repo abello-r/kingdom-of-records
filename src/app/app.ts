@@ -42,6 +42,7 @@ export class App {
       progress: deps.progress,
       memory: deps.memory,
       settings: deps.settings,
+      store: deps.store,
       levels: deps.levels,
       sql: deps.sql,
       sessions,

@@ -18,6 +18,8 @@
     "mutedMusic": "Music muted"
   },
   "home": {
+    "deviceNote": "Best played on a computer",
+    "deviceNoteClose": "Dismiss",
     "start": "Open the Registry",
     "continue": "Keep reading",
     "resume": "You stopped at «{level}»",

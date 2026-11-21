@@ -1,7 +1,8 @@
 import { AUTHOR, AUTHOR_URL, REPO_URL } from '../../app/site';
 import type { AppContext, Screen } from '../../app/context';
 import { routeHash } from '../../app/router';
-import { externalLink, h, icon, ICONS } from '../dom';
+import { DEVICE_NOTE_KEY, isFlagSet, setFlag } from '../../state/flags';
+import { externalLink, h, icon, ICONS, isTouchFirst } from '../dom';
 import { homeScene } from '../scenes';
 import { World } from '../world';
 
@@ -33,6 +34,7 @@ export function homeScreen(ctx: AppContext): Screen {
     { id: 'main', class: 'home__hero', tabindex: '-1' },
     logo,
     h('p', { class: 'ribbon ribbon--blue home__subtitle' }, i18n.t('app.subtitle')),
+    deviceNote(ctx),
     h('div', { class: 'home__actions' },
       primary,
       status,
@@ -63,4 +65,16 @@ export function homeScreen(ctx: AppContext): Screen {
 function developedBy(template: string, name: HTMLElement): (string | HTMLElement)[] {
   const [before = '', after = ''] = template.split('{name}');
   return [before, name, after].filter((part) => part !== '');
+}
+
+/** On touch devices, a quiet one-time note that the game is easier on a computer; closing it is remembered. */
+function deviceNote(ctx: AppContext): HTMLElement | null {
+  if (!isTouchFirst() || isFlagSet(ctx.store, DEVICE_NOTE_KEY)) return null;
+  const close = h('button', { type: 'button', class: 'device-note__close', 'aria-label': ctx.i18n.t('home.deviceNoteClose') }, '×');
+  const note = h('p', { class: 'device-note' }, h('span', {}, ctx.i18n.t('home.deviceNote')), close);
+  close.addEventListener('click', () => {
+    setFlag(ctx.store, DEVICE_NOTE_KEY);
+    note.remove();
+  });
+  return note;
 }

@@ -18,6 +18,8 @@
     "mutedMusic": "Musique coupée"
   },
   "home": {
+    "deviceNote": "Plus agréable sur ordinateur",
+    "deviceNoteClose": "Fermer l’avis",
     "start": "Ouvrir le Registre",
     "continue": "Reprendre la lecture",
     "resume": "Ta lecture s’est arrêtée à « {level} »",
